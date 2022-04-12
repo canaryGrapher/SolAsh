@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-03-30T12:41:07.880Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.55" etag="W6QEfSaIuO7QHMymwrOy" version="17.2.4" type="github">
+<mxfile host="app.diagrams.net" modified="2022-04-12T06:41:31.112Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36 Edg/100.0.1185.36" etag="dby8NXelmroUFi38WwzH" version="17.3.0" type="github">
   <diagram id="S8oW50O5ISu4FEKs-lQf" name="Page-1">
-    <mxGraphModel dx="1230" dy="600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1038" dy="689" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -8,18 +8,18 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="YjIuEHThG9GDhmDaI0j2-1" value="Login&lt;br&gt;(using MetaMask)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="140" y="192" width="120" height="60" as="geometry" />
+          <mxGeometry x="172" y="212" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="YjIuEHThG9GDhmDaI0j2-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="YjIuEHThG9GDhmDaI0j2-2" target="YjIuEHThG9GDhmDaI0j2-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="YjIuEHThG9GDhmDaI0j2-2" value="Display all received tokens on home page" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="140" y="312" width="120" height="60" as="geometry" />
+          <mxGeometry x="172" y="312" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="YjIuEHThG9GDhmDaI0j2-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="YjIuEHThG9GDhmDaI0j2-4" target="YjIuEHThG9GDhmDaI0j2-13" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d4Tpe7t1Lw4s-2PX4QYo-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="YjIuEHThG9GDhmDaI0j2-4" target="YjIuEHThG9GDhmDaI0j2-11">
+        <mxCell id="d4Tpe7t1Lw4s-2PX4QYo-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="YjIuEHThG9GDhmDaI0j2-4" target="YjIuEHThG9GDhmDaI0j2-11" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="YjIuEHThG9GDhmDaI0j2-4" value="Create a new token" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -35,43 +35,43 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="YjIuEHThG9GDhmDaI0j2-13" value="Assign to other wallets" style="rounded=1;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
-          <mxGeometry x="630" y="312" width="120" height="60" as="geometry" />
+          <mxGeometry x="571" y="313" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="YjIuEHThG9GDhmDaI0j2-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="YjIuEHThG9GDhmDaI0j2-16" target="YjIuEHThG9GDhmDaI0j2-18" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="YjIuEHThG9GDhmDaI0j2-16" value="Generates a link that can be shared. Everyone who&#39;s wallet address was added by the creator can mint that NFT by signing with their wallet." style="rounded=1;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
-          <mxGeometry x="630" y="532" width="120" height="150" as="geometry" />
+          <mxGeometry x="578" y="408" width="120" height="150" as="geometry" />
         </mxCell>
-        <mxCell id="d4Tpe7t1Lw4s-2PX4QYo-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="YjIuEHThG9GDhmDaI0j2-18" target="d4Tpe7t1Lw4s-2PX4QYo-1">
+        <mxCell id="d4Tpe7t1Lw4s-2PX4QYo-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="YjIuEHThG9GDhmDaI0j2-18" target="d4Tpe7t1Lw4s-2PX4QYo-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="YjIuEHThG9GDhmDaI0j2-18" value="Upon claiming their NTTs, the NTTs can be viewed on their profile." style="rounded=1;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
-          <mxGeometry x="630" y="732" width="120" height="80" as="geometry" />
+          <mxGeometry x="578" y="581" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="d4Tpe7t1Lw4s-2PX4QYo-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="YjIuEHThG9GDhmDaI0j2-20" target="d4Tpe7t1Lw4s-2PX4QYo-5">
+        <mxCell id="d4Tpe7t1Lw4s-2PX4QYo-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="YjIuEHThG9GDhmDaI0j2-20" target="d4Tpe7t1Lw4s-2PX4QYo-5" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d4Tpe7t1Lw4s-2PX4QYo-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="YjIuEHThG9GDhmDaI0j2-20" target="d4Tpe7t1Lw4s-2PX4QYo-4">
+        <mxCell id="d4Tpe7t1Lw4s-2PX4QYo-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="YjIuEHThG9GDhmDaI0j2-20" target="d4Tpe7t1Lw4s-2PX4QYo-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="YjIuEHThG9GDhmDaI0j2-20" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Data to be added to the NTT:&lt;br&gt;&lt;ul&gt;&lt;li&gt;Heading&lt;/li&gt;&lt;li&gt;Description (optional)&lt;/li&gt;&lt;li&gt;Associated website (optional)&lt;/li&gt;&lt;li&gt;Image (optional)&lt;/li&gt;&lt;li&gt;Wallets to be shared with (self or others)&lt;/li&gt;&lt;li&gt;Associated Community&lt;/li&gt;&lt;li&gt;Date of availability (When signing/claiming should be available)&lt;/li&gt;&lt;li&gt;Expiry date (Burn function, NTT no longer associated with the wallet address after this time)&lt;/li&gt;&lt;/ul&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="285" y="552" width="260" height="220" as="geometry" />
         </mxCell>
         <mxCell id="YjIuEHThG9GDhmDaI0j2-22" value="&lt;h1&gt;Workflow for NTT application&lt;/h1&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;align=center;" parent="1" vertex="1">
-          <mxGeometry x="330" y="50" width="200" height="120" as="geometry" />
+          <mxGeometry x="317" y="172" width="200" height="120" as="geometry" />
         </mxCell>
         <mxCell id="YjIuEHThG9GDhmDaI0j2-23" value="Non-transferable tokens" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="340" y="110" width="180" height="30" as="geometry" />
+          <mxGeometry x="319" y="232" width="180" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="d4Tpe7t1Lw4s-2PX4QYo-1" value="&lt;span&gt;&amp;nbsp; &amp;nbsp; Both the issuer and the receiver will have an option to&amp;nbsp; &amp;nbsp; &amp;nbsp; burn/revoke a token after mint.&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
-          <mxGeometry x="630" y="870" width="120" height="120" as="geometry" />
+        <mxCell id="d4Tpe7t1Lw4s-2PX4QYo-1" value="&lt;span&gt;&amp;nbsp; &amp;nbsp; Both the issuer and the receiver will have an option to&amp;nbsp; &amp;nbsp; &amp;nbsp; burn/revoke a token after mint.&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
+          <mxGeometry x="578" y="689" width="120" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="d4Tpe7t1Lw4s-2PX4QYo-4" value="NTT metadata to be uploaded to infura as a JSON." style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="10" y="627" width="210" height="70" as="geometry" />
+        <mxCell id="d4Tpe7t1Lw4s-2PX4QYo-4" value="NTT metadata to be uploaded to infura as a JSON." style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="45" y="628" width="210" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="d4Tpe7t1Lw4s-2PX4QYo-5" value="&lt;ul&gt;&lt;li&gt;Tokens can be created to distribute participation certificates for an event.&lt;/li&gt;&lt;li&gt;Tokens as skill badges&lt;/li&gt;&lt;li&gt;Token as a record of statement.&lt;/li&gt;&lt;li&gt;Tokens issued as proof of course completion.&amp;nbsp;&lt;/li&gt;&lt;/ul&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="282.5" y="820" width="265" height="148" as="geometry" />
+        <mxCell id="d4Tpe7t1Lw4s-2PX4QYo-5" value="&lt;ul&gt;&lt;li&gt;Tokens can be created to distribute participation certificates for an event.&lt;/li&gt;&lt;li&gt;Tokens as skill badges&lt;/li&gt;&lt;li&gt;Token as a record of statement.&lt;/li&gt;&lt;li&gt;Tokens issued as proof of course completion.&amp;nbsp;&lt;/li&gt;&lt;/ul&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="1" vertex="1">
+          <mxGeometry x="282.5" y="793" width="265" height="148" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
