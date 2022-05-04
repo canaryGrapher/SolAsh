@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2016",
     "lib": [
       "dom",
       "dom.iterable",
@@ -34,6 +34,9 @@
       ],
       "@resources/*": [
         "resources/*"
+      ],
+      "@layouts/*": [
+        "layouts/*"
       ],
     },
   },

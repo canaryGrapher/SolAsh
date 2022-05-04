@@ -2,9 +2,6 @@ import Head from "next/head";
 import "@styles/globals.css";
 import { AppProps } from "next/app";
 
-import Navbar from "@components/root/Navbar";
-import Footer from "@components/root/Footer";
-
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
@@ -35,9 +32,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <link rel="apple-touch-icon" href="/apple-icon.png"></link>
         <meta name="theme-color" content="#317EFB" />
       </Head>
-      <Navbar />
       <Component {...pageProps} />
-      <Footer />
     </>
   );
 };

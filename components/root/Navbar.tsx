@@ -6,8 +6,24 @@ import { Logo, UserIcon } from "@resources/exports";
 import Image from "next/image";
 import Link from "next/link";
 
-const Navbar: React.FC = () => {
-  const [isLoggedIn, setLoggedIn] = useState(true);
+interface PropsTypes {
+  toggleFunction: () => void;
+  loggedIn: boolean;
+}
+
+const LoggedOutOptions = [
+  { title: "Home", href: "/" },
+  { title: "Organizations", href: "/" },
+  { title: "News", href: "/" },
+];
+
+const LoggedInOptions = [
+  { title: "Home", href: "/" },
+  { title: "Mint NTTs", href: "/" },
+  { title: "Notifications", href: "/" },
+];
+
+const Navbar: React.FC<PropsTypes> = (props) => {
   const username = "Narendra Modi";
   const accountAddress = "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq";
   return (
@@ -20,19 +36,17 @@ const Navbar: React.FC = () => {
           height={35}
           width={35}
         />
-        <Link href="/">
-          <a className={styles.nav_items}>Home</a>
-        </Link>
-        <Link href="/">
-          <a className={styles.nav_items}>Organizations</a>
-        </Link>
-        <Link href="/">
-          <a className={styles.nav_items}>News</a>
-        </Link>
+        {(props.loggedIn ? LoggedInOptions : LoggedOutOptions).map(
+          (linkItem) => (
+            <Link href={linkItem.href}>
+              <a className={styles.nav_items}>{linkItem.title}</a>
+            </Link>
+          )
+        )}
       </div>
       <div className={styles.account_information}>
-        {isLoggedIn ? (
-          <div className={styles.userInfo}>
+        {props.loggedIn ? (
+          <div className={styles.user_information_container}>
             <div className={styles.user_avatar}>
               <Image
                 src={UserIcon}
@@ -45,14 +59,19 @@ const Navbar: React.FC = () => {
             <div className={styles.user_information}>
               <p className={styles.username}>{username}</p>
               <p className={styles.wallet_address}>
-                {accountAddress.slice(0, 4) +
-                  "..." +
-                  accountAddress.slice(accountAddress.length - 3)}
+                {accountAddress.slice(0, 5) +
+                  "....." +
+                  accountAddress.slice(accountAddress.length - 5)}
               </p>
             </div>
           </div>
         ) : (
-          <button className={styles.login_button}>Login</button>
+          <button
+            className={styles.login_button}
+            onClick={() => props.toggleFunction()}
+          >
+            Login
+          </button>
         )}
       </div>
     </nav>
