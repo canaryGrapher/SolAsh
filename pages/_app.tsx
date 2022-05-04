@@ -1,10 +1,12 @@
+import { Fragment } from "react";
+
 import Head from "next/head";
-import "@styles/globals.css";
 import { AppProps } from "next/app";
+import "@styles/globals.css";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <>
+    <Fragment>
       <Head>
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
@@ -14,6 +16,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         />
         <meta name="description" content="Description" />
         <meta name="keywords" content="Keywords" />
+        <meta name="theme-color" content="#317EFB" />
         <title>SolAsh</title>
 
         <link rel="manifest" href="/manifest.json" />
@@ -30,10 +33,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           sizes="32x32"
         />
         <link rel="apple-touch-icon" href="/apple-icon.png"></link>
-        <meta name="theme-color" content="#317EFB" />
       </Head>
       <Component {...pageProps} />
-    </>
+    </Fragment>
   );
 };
 

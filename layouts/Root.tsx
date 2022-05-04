@@ -12,7 +12,7 @@ export type LayoutProps = {
 
 const RootLayout = ({ children }: LayoutProps) => {
   const [isLoginModalOpen, setModalOpen] = useState<boolean>(false);
-  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(true);
 
   const toggleModal = () => {
     setModalOpen(!isLoginModalOpen);

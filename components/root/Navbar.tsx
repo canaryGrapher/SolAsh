@@ -37,8 +37,8 @@ const Navbar: React.FC<PropsTypes> = (props) => {
           width={35}
         />
         {(props.loggedIn ? LoggedInOptions : LoggedOutOptions).map(
-          (linkItem) => (
-            <Link href={linkItem.href}>
+          (linkItem, index) => (
+            <Link key={index} href={linkItem.href}>
               <a className={styles.nav_items}>{linkItem.title}</a>
             </Link>
           )

@@ -44,8 +44,12 @@ const LoginModal: React.FC<PropsTypes> = (props) => {
               <p>Connect your cryptowallet</p>
             </div>
             <div className={styles.login_options}>
-              {LoginOptionsProps.map((option) => (
-                <LoginOptions name={option.name} logo={option.logo} />
+              {LoginOptionsProps.map((option, index) => (
+                <LoginOptions
+                  key={index}
+                  name={option.name}
+                  logo={option.logo}
+                />
               ))}
             </div>
           </div>
