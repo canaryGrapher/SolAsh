@@ -5,10 +5,12 @@ import MetaMask_Logo from "../modals/metamask.png"
 import WalletConnect_Logo from "../modals/walletconnect.png"
 import Binance_Logo from "../modals/binance.png"
 
-import Back_Button from "../pageResources/backButton.png"
-import Form_Banner from "../pageResources/formBanner.png"
-import Create_Certificate from "../pageResources/certificateCreationIcon.png"
-import Create_Token from "../pageResources/tokenCreationIcon.png"
+import Back_Button from "../pageResources/form/backButton.png"
+import Form_Banner from "../pageResources/form/formBanner.png"
+import Create_Certificate from "../pageResources/form/certificateCreationIcon.png"
+import Create_Token from "../pageResources/form/tokenCreationIcon.png"
+
+import Home_Banner from "../pageResources/home/banner.png"
 
 export {
     Logo,
@@ -19,5 +21,6 @@ export {
     Back_Button,
     Form_Banner,
     Create_Certificate,
-    Create_Token
+    Create_Token,
+    Home_Banner
 };

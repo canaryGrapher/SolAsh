@@ -38,6 +38,9 @@
       "@layouts/*": [
         "layouts/*"
       ],
+      "@interfaces/*": [
+        "interfaces/*"
+      ]
     },
   },
   "include": [
