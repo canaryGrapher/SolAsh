@@ -2,6 +2,8 @@
   display: flex;
   margin-bottom: 30px;
   width: 100%;
+  border: 2px solid #ffecea;
+  border-radius: 5px;
 
   .certificate_image {
     padding: 10px;
@@ -31,6 +33,7 @@
       }
       .action_area {
         button {
+          margin: 10px 10px;
           padding: 5px 15px;
           color: #ff5846;
           font-size: 1.1rem;
@@ -46,9 +49,9 @@
         }
       }
     }
+
     .certificate_basic_info_grid {
-      display: grid;
-      grid-template-columns: auto auto auto;
+      display: flex;
       row-gap: 20px;
       column-gap: 60px;
 
@@ -58,15 +61,11 @@
 
         .basic_info_type {
           color: #ff5846;
-          width: 30%;
+          margin-right: 10px;
         }
-        .basic_info_value {
-          color: #ffffff;
-          width: 70%;
 
-          a {
-            text-decoration: underline;
-          }
+        .basic_info_value {
+          margin-right: 30px;
         }
       }
     }
