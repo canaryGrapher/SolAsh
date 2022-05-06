@@ -1,34 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
+import {
+  LoginPropsTypes,
+  OptionsPropsTypes,
+} from "@interfaces/components/LoginModal";
 import styles from "@styles/components/modal/Login.module.scss";
 import Link from "next/link";
-import {
-  MetaMask_Logo,
-  WalletConnect_Logo,
-  Binance_Logo,
-} from "@resources/exports";
+import { LoginOptionsData } from "@utils/components/LoginOptions";
 
 import LoginOptions from "./LoginOptions";
 
-const LoginOptionsProps = [
-  {
-    name: "Metamask Wallet",
-    logo: MetaMask_Logo,
-  },
-  {
-    name: "Wallet Connect",
-    logo: WalletConnect_Logo,
-  },
-  {
-    name: "Binance Wallet",
-    logo: Binance_Logo,
-  },
-];
-
-interface PropsTypes {
-  toggleFunction: () => void;
-}
-
-const LoginModal: React.FC<PropsTypes> = (props) => {
+const LoginModal: React.FC<LoginPropsTypes> = (props) => {
   return (
     <React.Fragment>
       <div className={styles.modal_wrapper}>
@@ -44,18 +25,21 @@ const LoginModal: React.FC<PropsTypes> = (props) => {
               <p>Connect your cryptowallet</p>
             </div>
             <div className={styles.login_options}>
-              {LoginOptionsProps.map((option, index) => (
-                <LoginOptions
-                  key={index}
-                  name={option.name}
-                  logo={option.logo}
-                />
-              ))}
+              {LoginOptionsData.map(
+                (option: OptionsPropsTypes, index: number) => (
+                  <LoginOptions
+                    key={index}
+                    name={option.name}
+                    logo={option.logo}
+                    connectWallet={props.connectWallet}
+                  />
+                )
+              )}
             </div>
           </div>
           <div className={styles.modal_footer}>
             <Link href="/">
-              <p>Need help?</p>
+              <p onClick={() => props.toggleFunction()}>Need help?</p>
             </Link>
           </div>
         </div>

@@ -11,7 +11,10 @@ import {
   Create_Token,
 } from "@resources/exports";
 
+import useLoginProvider from "hooks/auth";
+
 export default function CreateNTT() {
+  const isUserLoggedIn = useLoginProvider();
   const typeOfForm: string = "Certificate";
 
   useEffect(() => {

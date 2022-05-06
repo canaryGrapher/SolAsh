@@ -1,14 +1,13 @@
 import styles from "@styles/components/modal/Login.module.scss";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
+import { OptionsPassedPropsTypes } from "@interfaces/components/LoginModal";
 
-interface PropsTypes {
-  name: string;
-  logo: StaticImageData;
-}
-
-const LoginOptions = (props: PropsTypes) => {
+const LoginOptions = (props: OptionsPassedPropsTypes) => {
   return (
-    <div className={styles.login_options_container}>
+    <div
+      className={styles.login_options_container}
+      onClick={() => props.connectWallet(props.name)}
+    >
       <Image src={props.logo} height={150} width={150} />
       <p>{props.name}</p>
     </div>

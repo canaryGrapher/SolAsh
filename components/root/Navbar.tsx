@@ -1,29 +1,17 @@
-import { useState } from "react";
-
 import styles from "@styles/components/root/Navbar.module.scss";
 import { Logo, UserIcon } from "@resources/exports";
+
+import { NavbarPropsTypes } from "@interfaces/components/Navbar";
 
 import Image from "next/image";
 import Link from "next/link";
 
-interface PropsTypes {
-  toggleFunction: () => void;
-  loggedIn: boolean;
-}
+import {
+  LoggedInOptions,
+  LoggedOutOptions,
+} from "@utils/components/NavbarOptions";
 
-const LoggedOutOptions = [
-  { title: "Home", href: "/" },
-  { title: "Organizations", href: "/" },
-  { title: "News", href: "/" },
-];
-
-const LoggedInOptions = [
-  { title: "Home", href: "/" },
-  { title: "Mint NTTs", href: "/" },
-  { title: "Notifications", href: "/" },
-];
-
-const Navbar: React.FC<PropsTypes> = (props) => {
+const Navbar: React.FC<NavbarPropsTypes> = (props) => {
   const username = "Narendra Modi";
   const accountAddress = "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq";
   return (

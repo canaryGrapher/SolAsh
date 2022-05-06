@@ -40,6 +40,15 @@
       ],
       "@interfaces/*": [
         "interfaces/*"
+      ],
+      "@context/*": [
+        "context/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
       ]
     },
   },

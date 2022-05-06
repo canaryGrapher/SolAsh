@@ -8,10 +8,13 @@ import Certificates from "@components/pages/home/Tokens";
 import { Home_Banner } from "@resources/exports";
 import { IPassedProps, NTTtype } from "@interfaces/pages/Home";
 
+import useLoginProvider from "hooks/auth";
+
 export default function Home({ certificateData, ticketData }: IPassedProps) {
   const [selectedTab, setSelectedTab] = useState<"certificate" | "ticket">(
     "certificate"
   );
+  const isUserLoggedIn = useLoginProvider();
   return (
     <RootLayout>
       <main className={styles.main}>

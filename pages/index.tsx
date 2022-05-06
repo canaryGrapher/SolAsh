@@ -1,40 +1,24 @@
+import { useContext } from "react";
 import styles from "@styles/pages/landing/Home.module.scss";
 import RootLayout from "@layouts/Root";
 import { LandingSpecsProps } from "@interfaces/pages/Landing";
 import Specs from "@components/pages/landing/Specs";
+import { LayoutValues } from "@utils/pages/landing";
+
+import { useMetaMask } from "metamask-react";
 import {
   Landing_image,
   Start_Now_Button,
   Register_Button,
-  Fast,
-  Secure,
-  Reliable,
   Register_Image,
 } from "@resources/exports";
 import Image from "next/image";
+import Link from "next/link";
 
-const LayoutValues: LandingSpecsProps[] = [
-  {
-    heading: "Blazing fast and super cheap",
-    description:
-      "SolAsh is hosted on Polygon which makes sure that SolAsh is one of the cheapest options you can choose from. NTTs are a secure, fast and optimimzed solution for issuing certificates and tokens.",
-    image: Fast,
-  },
-  {
-    heading: "Reliable",
-    description:
-      "Being hosted on the blockchian ensures that our systems have 100% uptime, is free of government censorship, and is immutable once issued. Only you, and your issuer can in-validate a token or certificate after being signed. ",
-    image: Reliable,
-  },
-  {
-    heading: "Secure",
-    description:
-      "Your crypto wallet is the key to your account. Nobody can reset your passsword, or control the account. We cannot delete your account under any circumstances and you are the true owner of your data. ",
-    image: Secure,
-  },
-];
+import LoginContext from "@context/LoginContext";
 
 export default function Home() {
+  const loginData = useContext(LoginContext);
   return (
     <RootLayout>
       <div className={styles.container}>
@@ -58,12 +42,25 @@ export default function Home() {
                   <span>multiple use-cases</span>, with the{" "}
                   <span>simplicity</span> of any other tokens.
                 </p>
-                <Image
-                  src={Start_Now_Button}
-                  alt="start now"
-                  height={50}
-                  width={150}
-                />
+                {loginData.isLoggedIn ? (
+                  <Link href={"/dashboard"}>
+                    <Image
+                      src={Start_Now_Button}
+                      alt="start now"
+                      height={50}
+                      width={150}
+                    />
+                  </Link>
+                ) : (
+                  <div onClick={loginData.toggleLoginModal}>
+                    <Image
+                      src={Start_Now_Button}
+                      alt="start now"
+                      height={50}
+                      width={150}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -108,12 +105,14 @@ export default function Home() {
                   takes only a few minutes to verify your association with the
                   organization/community you are registering.
                 </p>
-                <Image
-                  src={Register_Button}
-                  alt="start now"
-                  height={50}
-                  width={200}
-                />
+                <Link href={"/register"}>
+                  <Image
+                    src={Register_Button}
+                    alt="start now"
+                    height={50}
+                    width={200}
+                  />
+                </Link>
               </div>
             </div>
           </div>

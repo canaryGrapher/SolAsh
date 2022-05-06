@@ -4,7 +4,16 @@ import Head from "next/head";
 import { AppProps } from "next/app";
 import "@styles/globals.css";
 
+// importing context
+import { LoginProvider } from "@context/LoginContext";
+
+// importing wallet integration
+import { MetaMaskProvider } from "metamask-react";
+
+import useLoginProvider from "hooks/auth";
+
 const MyApp = ({ Component, pageProps }: AppProps) => {
+  const isUserLoggedIn = useLoginProvider();
   return (
     <Fragment>
       <Head>
@@ -34,7 +43,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         />
         <link rel="apple-touch-icon" href="/apple-icon.png"></link>
       </Head>
-      <Component {...pageProps} />
+      <LoginProvider>
+        <MetaMaskProvider>
+          <Component {...pageProps} />
+        </MetaMaskProvider>
+      </LoginProvider>
     </Fragment>
   );
 };
