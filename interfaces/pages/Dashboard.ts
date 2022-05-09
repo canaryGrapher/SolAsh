@@ -7,11 +7,12 @@ interface NTTtype {
     associatedCommunity: string;
     title: string;
     description: string;
-    link: string | string;
+    link: string;
     issueDate: string;
     expiryDate: string | null;
-    image: string | string;
+    image: string;
     creationDate: string;
+    type: string;
 }
 
 export type { IPassedProps, NTTtype }

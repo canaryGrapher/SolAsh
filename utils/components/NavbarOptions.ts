@@ -1,12 +1,13 @@
 const LoggedOutOptions = [
-    { title: "Home", href: "/" },
+    { title: "SolAsh", href: "/" },
     { title: "Organizations", href: "/" },
     { title: "News", href: "/" },
 ];
 
 const LoggedInOptions = [
-    { title: "Home", href: "/" },
-    { title: "Mint NTTs", href: "/" },
+    { title: "Home", href: "/home" },
+    { title: "Dashboard", href: "/dashboard" },
+    { title: "Create NTTs", href: "/createNTT" },
     { title: "Notifications", href: "/" },
 ];
 

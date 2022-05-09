@@ -10,9 +10,7 @@ const useLoginProvider = () => {
 
   useEffect(() => {
     const { pathname } = Router;
-    if (isUserLoggedIn && pathname !== "/") {
-      Router.push("/dashboard");
-    } else if (!isUserLoggedIn && pathname != "/") {
+    if (!isUserLoggedIn && pathname != "/") {
       Router.push("/");
     }
   }, [isUserLoggedIn]);

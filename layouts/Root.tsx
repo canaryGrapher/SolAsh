@@ -46,7 +46,7 @@ const RootLayout: React.FC = ({ children }) => {
   };
 
   const AuthenticateUser = () => {
-    Router.push("/dashboard");
+    Router.push("/home");
   };
 
   return (

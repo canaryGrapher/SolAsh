@@ -15,7 +15,7 @@ const CreatorCards = (props: NTTtype) => {
             <p>{props.description}</p>
           </div>
           <div className={styles.action_area}>
-            <button>Edit</button>
+            <button>{props.type === "inQueue" ? "Edit" : "Burn"}</button>
           </div>
         </div>
         <div className={styles.certificate_basic_info_grid}>

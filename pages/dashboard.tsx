@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "@styles/pages/dashboard/Dashboard.module.scss";
 import RootLayout from "@layouts/Root";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import CreatorCards from "@components/pages/dashboard/CreatorCards";
 import IssueChooser from "@components/pages/dashboard/IssueChooser";
@@ -15,7 +16,10 @@ export default function Dashboard({ inQueue, issued }: IPassedProps) {
   const [selectedTab, setSelectedTab] = useState<"inQueue" | "issued">(
     "inQueue"
   );
-  const isUserLoggedIn = useLoginProvider();
+
+  useLoginProvider();
+  const router = useRouter();
+  alert(router.query);
   return (
     <RootLayout>
       <main className={styles.main}>
@@ -68,11 +72,11 @@ export default function Dashboard({ inQueue, issued }: IPassedProps) {
               <div className={styles.actual_content}>
                 {selectedTab === "inQueue" &&
                   inQueue.map((certificate: NTTtype, index: number) => (
-                    <CreatorCards {...certificate} key={index} />
+                    <CreatorCards {...certificate} type="inQueue" key={index} />
                   ))}
                 {selectedTab === "issued" &&
                   issued.map((token: NTTtype, index: number) => (
-                    <CreatorCards {...token} key={index} />
+                    <CreatorCards {...token} type="issued" key={index} />
                   ))}
               </div>
             </div>
