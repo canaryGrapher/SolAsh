@@ -6,6 +6,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0",
+    "dotenv": "^16.0.0",
     "metamask-react": "^2.3.0",
     "next": "latest",
     "next-pwa": "^5.4.1",
