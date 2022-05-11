@@ -1,19 +1,38 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    await greeter.deployed();
+describe("Factory", async function () {
+  it("deploys a factory contract", async function () {
+    const [owner, addr1] = await ethers.getSigners();
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
+    const Factory = await ethers.getContractFactory("Factory");
+    const factory = await Factory.deploy();
+    await factory.deployed();
 
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+    expect(owner.address).to.equal(factory.signer.address);
+  });
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
+  it("deploys a NTTEvent contract via factory", async function () {
+    const [owner, addr1, addr2, addr3] = await ethers.getSigners();
 
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
+    const Factory = await ethers.getContractFactory("Factory");
+    const factory = await Factory.deploy();
+    await factory.deployed();
+
+    await factory
+      .connect(addr1)
+      .deployNTT(
+        "Sample NTT event",
+        "testing creation of NTT event",
+        ["www.google.com", "www.youtube.com"],
+        "image hash",
+        "MIT",
+        0,
+        0,
+        [addr2.address, addr3.address]
+      );
+
+    const result = await factory.connect(addr1).getContractDeployedInfo();
+    expect(addr1.address).to.equal(result[0].creatorAddress);
   });
 });

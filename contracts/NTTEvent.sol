@@ -63,8 +63,11 @@ contract NTTEvent is ERC1238 {
         factory = _factory;
     }
 
-    //tODO: only allow creator to call this function
     function addToWhitelist(address[] memory list) public {
+        require(
+            msg.sender == eventInfo.creator,
+            "Only contract owner can call this function"
+        );
         uint256 size = list.length;
         for (uint256 i = 0; i < size; i++) {
             if (whitelist[list[i]] == Status.Revoked) {
@@ -74,12 +77,43 @@ contract NTTEvent is ERC1238 {
         }
     }
 
-    //tODO: only allow creator to call this function
     function removeFromWhitelist(address[] memory list) public {
+        require(
+            msg.sender == eventInfo.creator,
+            "Only contract owner can call this function"
+        );
         uint256 size = list.length;
         for (uint256 i = 0; i < size; i++) {
             delete whitelist[list[i]];
         }
+    }
+
+    function getWhitelist() public view returns (address[] memory) {
+        require(
+            msg.sender == eventInfo.creator,
+            "Only contract owner can call this function"
+        );
+        uint256 totalSize = receiverRegister.length;
+        uint256 count = 0;
+        uint256 curIndex = 0;
+
+        //Get the count of token owners who are eligble to mint
+        for (uint256 i = 0; i < totalSize; i++) {
+            address _receiver = receiverRegister[i];
+            if (whitelist[_receiver] != Status.Revoked) count += 1;
+        }
+
+        address[] memory addressList = new address[](count);
+
+        for (uint256 i = 0; i < totalSize; i++) {
+            address _receiver = receiverRegister[i];
+            if (whitelist[_receiver] != Status.Revoked) {
+                addressList[curIndex] = _receiver;
+                curIndex += 1;
+            }
+        }
+
+        return addressList;
     }
 
     function _validDate() private view returns (bool) {
@@ -248,34 +282,6 @@ contract NTTEvent is ERC1238 {
         }
 
         return tokenList;
-    }
-
-    function getWhitelist() public view returns (address[] memory) {
-        require(
-            msg.sender == eventInfo.creator,
-            "Only contract owner can call this function"
-        );
-        uint256 totalSize = receiverRegister.length;
-        uint256 count = 0;
-        uint256 curIndex = 0;
-
-        //Get the count of token owners who are eligble to mint
-        for (uint256 i = 0; i < totalSize; i++) {
-            address _receiver = receiverRegister[i];
-            if (whitelist[_receiver] != Status.Revoked) count += 1;
-        }
-
-        address[] memory addressList = new address[](count);
-
-        for (uint256 i = 0; i < totalSize; i++) {
-            address _receiver = receiverRegister[i];
-            if (whitelist[_receiver] != Status.Revoked) {
-                addressList[curIndex] = _receiver;
-                curIndex += 1;
-            }
-        }
-
-        return addressList;
     }
 
     function getReceiverStatus() public view returns (Status) {
