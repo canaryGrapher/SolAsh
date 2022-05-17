@@ -12,6 +12,19 @@ import { MetaMaskProvider } from "metamask-react";
 
 import useLoginProvider from "hooks/auth";
 
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  useQuery,
+  gql
+} from "@apollo/client";
+
+const client = new ApolloClient({
+  uri: 'https://api.thegraph.com/subgraphs/name/jatin17solanki/solash-subgraph',
+  cache: new InMemoryCache()
+});
+
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const isUserLoggedIn = useLoginProvider();
   return (
@@ -45,7 +58,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       </Head>
       <LoginProvider>
         <MetaMaskProvider>
+        <ApolloProvider client={client}>
           <Component {...pageProps} />
+        </ApolloProvider>
         </MetaMaskProvider>
       </LoginProvider>
     </Fragment>
