@@ -2,8 +2,8 @@ import styles from "@styles/pages/createNTT/NTTForm.module.scss";
 import RootLayout from "@layouts/Root";
 import Image from "next/image";
 var tagsInput = require("tags-input");
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
+import Router from "next/router";
 import {
   Form_Banner,
   Back_Button,
@@ -11,11 +11,17 @@ import {
   Create_Token,
 } from "@resources/exports";
 
-import useLoginProvider from "hooks/auth";
-
 export default function CreateNTT() {
-  useLoginProvider();
-  const typeOfForm: string = "Certificate";
+  useEffect(() => {
+    if (Router.query.type === "Certificate" || Router.query.type === "Token") {
+      setTypeOfForm(Router.query.type);
+    } else {
+      alert("Invalid type in URL! Redirecting you back to the dashboard.");
+      Router.push("/dashboard");
+    }
+  }, []);
+
+  const [typeOfForm, setTypeOfForm] = useState<any>("Certificate");
 
   useEffect(() => {
     tagsInput(document.querySelector("#walletAddresses"));

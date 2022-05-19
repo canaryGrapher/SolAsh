@@ -10,16 +10,10 @@ import IssueChooser from "@components/pages/dashboard/IssueChooser";
 import { Home_Banner } from "@resources/exports";
 import { IPassedProps, NTTtype } from "@interfaces/pages/Dashboard";
 
-import useLoginProvider from "hooks/auth";
-
 export default function Dashboard({ inQueue, issued }: IPassedProps) {
   const [selectedTab, setSelectedTab] = useState<"inQueue" | "issued">(
     "inQueue"
   );
-
-  useLoginProvider();
-  const router = useRouter();
-  alert(router.query);
   return (
     <RootLayout>
       <main className={styles.main}>

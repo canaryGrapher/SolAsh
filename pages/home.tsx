@@ -8,7 +8,6 @@ import Certificates from "@components/pages/home/Tokens";
 import { Home_Banner } from "@resources/exports";
 import { IPassedProps, NTTtype } from "@interfaces/pages/Home";
 
-import useLoginProvider from "hooks/auth";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_EVENTS } from "../utils/subgraph/queries";
 
@@ -16,15 +15,11 @@ export default function Home({ certificateData, ticketData }: IPassedProps) {
   const [selectedTab, setSelectedTab] = useState<"certificate" | "ticket">(
     "certificate"
   );
-  const isUserLoggedIn = useLoginProvider();
 
   const { loading, error, data } = useQuery(GET_ALL_EVENTS());
-  if(loading) 
-    console.log("QQ: Loading");
-  if(error) 
-    console.log("QQ: Error");
-  if(data)
-    console.log("QQ: ", data.nttcontracts[0]);
+  if (loading) console.log("QQ: Loading");
+  if (error) console.log("QQ: Error");
+  if (data) console.log("QQ: ", data.nttcontracts[0]);
 
   return (
     <RootLayout>
