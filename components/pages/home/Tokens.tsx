@@ -1,8 +1,30 @@
 import styles from "@styles/components/pages/Tokens.module.scss";
 import { NTTtype } from "@interfaces/pages/Home";
 import Image from "next/image";
+import { useMetaMask } from "metamask-react";
+import { ethers } from 'ethers';
+import  NTTEvent  from "../../../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
 
 const Certificates = (props: NTTtype) => {
+  const { status, connect, account, chainId, ethereum } = useMetaMask();
+
+  const burnTokenEvent = async (contractAddress : string, tokenId : BigInt) => {
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(contractAddress, NTTEvent.abi, signer);
+    try {
+      const transaction = await contract.burnTokenEvent(tokenId);
+      const status = await transaction.wait();
+      console.log("STATUS: ", status);
+    } 
+    catch(err : any) {
+      console.log("burnTokenEvent: ", err.data.message);
+    }
+    
+  }
+
+  // burnTokenEvent("0xcdf2edc9cf96e277913566d3b04e6b63bfe5e7c0", BigInt(3));
+
   return (
     <div className={styles.certificate_container}>
       <div className={styles.certificate_image}>

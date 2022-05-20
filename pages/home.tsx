@@ -22,7 +22,7 @@ export default function Home({ certificateData, ticketData }: IPassedProps) {
   if (loading) console.log("QQ: Loading");
   if (error) console.log("QQ: Error");
   if (data) console.log("QQ: ", userContext.userName, data.tokens);
-
+  
   return (
     <RootLayout>
       <main className={styles.main}>

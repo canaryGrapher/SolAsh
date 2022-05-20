@@ -10,6 +10,10 @@ import {
   Create_Certificate,
   Create_Token,
 } from "@resources/exports";
+import { useMetaMask } from "metamask-react";
+import { ethers } from 'ethers';
+import Factory from "../artifacts/contracts/Factory.sol/Factory.json";
+import { factoryContractAddress } from "../config";
 
 export default function CreateNTT() {
   useEffect(() => {
@@ -22,10 +26,39 @@ export default function CreateNTT() {
   }, []);
 
   const [typeOfForm, setTypeOfForm] = useState<any>("Certificate");
+  const { status, connect, account, chainId, ethereum } = useMetaMask();
 
   useEffect(() => {
     tagsInput(document.querySelector("#walletAddresses"));
   }, []);
+
+  
+  const deployNTT = async (
+    title : string = "", 
+    description : string = "", 
+    links : [] = [], 
+    imageHash : string = "", 
+    associatedCommunity : string = "",
+    startDate : BigInt, //default value should be current time
+    endDate : BigInt = BigInt(0),
+    list: [] = []
+  ) => {
+
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(factoryContractAddress, Factory.abi, signer);
+
+    try {
+      const transaction = await contract.deployNTT(title, description, links, imageHash, associatedCommunity, startDate, endDate, list);
+      const status = await transaction.wait();
+      console.log("DeployNTT: ", status);
+
+      //Navigate to dashboard : ntts in queue
+
+    } catch(err) {
+        alert("DeployNTT: " +  err);
+    }
+  }
 
   return (
     <RootLayout>
