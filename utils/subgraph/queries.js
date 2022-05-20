@@ -20,7 +20,7 @@ const GET_ALL_EVENTS = () => gql`
 
 const GET_EVENTS_BY_ADDRESS = (userAddress) => gql`
   query {
-    nttcontracts(where:{creatorAddress: '${userAddress}'}) {
+    nttcontracts(where:{creatorAddress: "${userAddress}"}) {
       id
       contractAddress
       creatorAddress
@@ -40,9 +40,9 @@ const GET_TOKENS_ISSUED = (userAddress) => gql`
   query {
     tokens(
       where: {
-        receiverAddress: '${userAddress}'
+        receiverAddress: "${userAddress}",
         isValid: true
-      }
+      },
       orderBy: timeStamp
     ) {
       id
@@ -58,4 +58,4 @@ const GET_TOKENS_ISSUED = (userAddress) => gql`
   }
 `;
 
-export { GET_ALL_EVENTS };
+export { GET_ALL_EVENTS, GET_EVENTS_BY_ADDRESS, GET_TOKENS_ISSUED };

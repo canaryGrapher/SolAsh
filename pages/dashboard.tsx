@@ -19,7 +19,6 @@ export default function Dashboard({ inQueue, issued }: IPassedProps) {
 
   useLoginProvider();
   const router = useRouter();
-  alert(router.query);
   return (
     <RootLayout>
       <main className={styles.main}>

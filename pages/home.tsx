@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import styles from "@styles/pages/home/Home.module.scss";
 import RootLayout from "@layouts/Root";
 import Image from "next/image";
@@ -9,22 +9,26 @@ import { Home_Banner } from "@resources/exports";
 import { IPassedProps, NTTtype } from "@interfaces/pages/Home";
 
 import useLoginProvider from "hooks/auth";
+import UserContext from "@context/UserContext";
 import { useQuery } from "@apollo/client";
-import { GET_ALL_EVENTS } from "../utils/subgraph/queries";
+import { GET_ALL_EVENTS, GET_TOKENS_ISSUED, GET_EVENTS_BY_ADDRESS } from "../utils/subgraph/queries";
+
 
 export default function Home({ certificateData, ticketData }: IPassedProps) {
   const [selectedTab, setSelectedTab] = useState<"certificate" | "ticket">(
     "certificate"
   );
   const isUserLoggedIn = useLoginProvider();
+  const userStates = useContext(UserContext);
 
-  const { loading, error, data } = useQuery(GET_ALL_EVENTS());
+  const { loading, error, data } = useQuery(GET_TOKENS_ISSUED (userStates.walletAddress));
   if(loading) 
     console.log("QQ: Loading");
   if(error) 
     console.log("QQ: Error");
   if(data)
-    console.log("QQ: ", data.nttcontracts[0]);
+    console.log("QQ: ", userStates.walletAddress, data.tokens);
+
 
   return (
     <RootLayout>

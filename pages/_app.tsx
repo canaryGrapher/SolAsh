@@ -6,6 +6,7 @@ import "@styles/globals.css";
 
 // importing context
 import { LoginProvider } from "@context/LoginContext";
+import { UserInformationProvider } from "@context/UserContext";
 
 // importing wallet integration
 import { MetaMaskProvider } from "metamask-react";
@@ -57,11 +58,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <link rel="apple-touch-icon" href="/apple-icon.png"></link>
       </Head>
       <LoginProvider>
-        <MetaMaskProvider>
-        <ApolloProvider client={client}>
-          <Component {...pageProps} />
-        </ApolloProvider>
-        </MetaMaskProvider>
+        <UserInformationProvider>
+          <MetaMaskProvider>
+            <ApolloProvider client={client}>
+              <Component {...pageProps} />
+            </ApolloProvider>
+          </MetaMaskProvider>
+        </UserInformationProvider>
       </LoginProvider>
     </Fragment>
   );
