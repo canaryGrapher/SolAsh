@@ -12,7 +12,7 @@ const IssueChooser = () => (
     </div>
     <div className={styles.issue_chooser_options}>
       <div className={styles.options_main}>
-        <Link href="/createNTT?type=certificate">
+        <Link href="/createNTT?type=Certificate">
           <div className={styles.option_container}>
             <Image
               src={Create_Certificate}
@@ -28,7 +28,7 @@ const IssueChooser = () => (
         <p>or</p>
       </div>
       <div className={styles.options_main}>
-        <Link href="/createNTT?type=token">
+        <Link href="/createNTT?type=Token">
           <div className={styles.option_container}>
             <Image
               src={Create_Token}

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 // importing the components
 import Navbar from "@components/root/Navbar";
@@ -11,6 +11,7 @@ import UserContext from "@context/UserContext";
 import Router from "next/router";
 
 // importing wallet connection components
+import { useMetaMask } from "metamask-react";
 import MetamaskConnect from "@layouts/MetamaskConnect";
 
 //importing interfaces
@@ -19,6 +20,20 @@ import { WalletConnectStatus } from "@interfaces/layout/WalletConnect";
 const RootLayout: React.FC = ({ children }) => {
   const authStates = useContext(LoginContext);
   const userStates = useContext(UserContext);
+  const { status, account, ethereum } = useMetaMask();
+
+  useEffect(() => {
+    if (status === "connected") {
+      authStates.toggleLogin(true);
+      userStates.set_username(account);
+      userStates.set_wallet_address(ethereum.selectedAddress);
+    } else if (status === "initializing") {
+      console.log("Looking for wallet connection state");
+    } else {
+      authStates.toggleLogin(false);
+      Router.push("/");
+    }
+  }, [status]);
 
   const [walletConnect, setWalletConnect] = useState<WalletConnectStatus>(
     WalletConnectStatus.Disabled

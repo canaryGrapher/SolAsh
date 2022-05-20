@@ -1,11 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import styles from "@styles/pages/landing/Home.module.scss";
 import RootLayout from "@layouts/Root";
 import { LandingSpecsProps } from "@interfaces/pages/Landing";
 import Specs from "@components/pages/landing/Specs";
 import { LayoutValues } from "@utils/pages/landing";
 
-import { useMetaMask } from "metamask-react";
 import {
   Landing_image,
   Start_Now_Button,
@@ -19,6 +18,7 @@ import LoginContext from "@context/LoginContext";
 
 export default function Home() {
   const loginData = useContext(LoginContext);
+
   return (
     <RootLayout>
       <div className={styles.container}>

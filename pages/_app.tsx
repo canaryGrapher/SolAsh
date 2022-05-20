@@ -11,23 +11,14 @@ import { UserInformationProvider } from "@context/UserContext";
 // importing wallet integration
 import { MetaMaskProvider } from "metamask-react";
 
-import useLoginProvider from "hooks/auth";
-
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  useQuery,
-  gql
-} from "@apollo/client";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: 'https://api.thegraph.com/subgraphs/name/jatin17solanki/solash-subgraph',
-  cache: new InMemoryCache()
+  uri: "https://api.thegraph.com/subgraphs/name/jatin17solanki/solash-subgraph",
+  cache: new InMemoryCache(),
 });
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  const isUserLoggedIn = useLoginProvider();
   return (
     <Fragment>
       <Head>
