@@ -3,6 +3,8 @@ import { Logo, UserIcon } from "@resources/exports";
 
 import { NavbarPropsTypes } from "@interfaces/components/Navbar";
 
+import { useMetaMask } from "metamask-react";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,8 +14,10 @@ import {
 } from "@utils/components/NavbarOptions";
 
 const Navbar: React.FC<NavbarPropsTypes> = (props) => {
+  const { account } = useMetaMask();
   const username = "Narendra Modi";
-  const accountAddress = "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq";
+  const accountAddress =
+    account || "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq";
   return (
     <nav className={styles.navbar}>
       <div className={styles.links_container}>
