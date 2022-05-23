@@ -94,10 +94,24 @@ const GET_TOKENS_ISSUED = (userAddress) => gql`
   }
 `;
 
+const GET_ISSUER_STATUS = (contractAddress) => gql`
+  query {
+    whitelistItems(
+      where: { contractAddress: "${contractAddress}" }
+    ) {
+      id
+      contractAddress
+      userAddress
+      status
+    }
+  }
+`;
+
 export {
   GET_ALL_EVENTS,
   GET_EVENTS_BY_ADDRESS,
   GET_TOKENS_ISSUED,
   GET_EVENTS_IN_QUEUE,
   GET_EVENTS_ISSUED,
+  GET_ISSUER_STATUS,
 };

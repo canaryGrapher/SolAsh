@@ -1,6 +1,16 @@
 import styles from "@styles/components/pages/CreatorCards.module.scss";
 import { NTTtype } from "@interfaces/pages/Dashboard";
 import Image from "next/image";
+import { useQuery } from "@apollo/client";
+import { GET_ISSUER_STATUS } from "../../../utils/subgraph/queries";
+
+function getIssuerStatus(contractAddress : string) {
+  const { loading, error, data } = useQuery(GET_ISSUER_STATUS(contractAddress));
+  if (loading) console.log("issuerStatus: Loading");
+  if (error) console.log("issuerStatus: Error");
+  if (data) console.log("issuerStatus: ", data.whitelistItems);
+}
+
 
 const CreatorCards = (props: NTTtype) => {
   return (
