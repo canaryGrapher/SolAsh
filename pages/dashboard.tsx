@@ -11,7 +11,25 @@ import { Home_Banner } from "@resources/exports";
 import { IPassedProps, NTTtype } from "@interfaces/pages/Dashboard";
 import { useMetaMask } from "metamask-react";
 import { ethers } from 'ethers';
-import  NTTEvent  from "../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
+import NTTEvent  from "../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
+import { useQuery } from "@apollo/client";
+import { GET_EVENTS_IN_QUEUE, GET_EVENTS_ISSUED } from "../utils/subgraph/queries";
+
+function inQueueEvents() {
+  const currentTime = Math.floor(new Date().getTime() / 1000);
+  const { loading, error, data } = useQuery(GET_EVENTS_IN_QUEUE(currentTime));
+  if (loading) console.log("inQueue: Loading");
+  if (error) console.log("inQueue: Error");
+  if (data) console.log("inQueue: ", data.nttcontracts);
+}
+
+function issuedEvents() {
+  const currentTime = Math.floor(new Date().getTime() / 1000);
+  const { loading, error, data } = useQuery(GET_EVENTS_ISSUED(currentTime));
+  if (loading) console.log("issued: Loading");
+  if (error) console.log("issued: Error");
+  if (data) console.log("issued: ", data.nttcontracts);
+}
 
 export default function Dashboard({ inQueue, issued }: IPassedProps) {
   const { status, connect, account, chainId, ethereum } = useMetaMask();
@@ -19,57 +37,8 @@ export default function Dashboard({ inQueue, issued }: IPassedProps) {
     "inQueue"
   );
 
-  //Functions to update details
-  const addToWhitelist = async (nttContractAddress : string, list : []) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(nttContractAddress, NTTEvent.abi, signer);
-
-    try {
-      const transaction = await contract.addToWhitelist(list);
-      const status = await transaction.wait();
-      console.log("addToWhitelist: ", status); 
-    } catch(err) {
-        alert("addToWhitelist: " +  err);
-    }
-  }  
-
-  const removeFromWhitelist = async (nttContractAddress : string, list : []) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(nttContractAddress, NTTEvent.abi, signer);
-
-    try {
-      const transaction = await contract.removeFromWhitelist(list);
-      const status = await transaction.wait();
-      console.log("removeFromWhitelist: ", status); 
-    } catch(err) {
-        alert("removeFromWhitelist: " +  err);
-    }
-  }
-
-  //TODO: default values must be the value of the existing eventdetail
-  const updateDetails = async (
-    nttContractAddress : string,
-    title : string = "", 
-    description : string = "", 
-    links : [] = [], 
-    imageHash : string = "", 
-    associatedCommunity : string = "",
-  ) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(nttContractAddress, NTTEvent.abi, signer);
-
-    try {
-      const transaction = await contract.updateDetails(title, description, links, imageHash, associatedCommunity);
-      const status = await transaction.wait();
-      console.log("updateDetails: ", status); 
-    } catch(err) {
-        alert("updateDetails: " +  err);
-    }
-  }
-
+  inQueueEvents();
+  issuedEvents();
 
   return (
     <RootLayout>

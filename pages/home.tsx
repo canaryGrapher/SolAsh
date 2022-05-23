@@ -9,7 +9,7 @@ import { Home_Banner } from "@resources/exports";
 import { IPassedProps, NTTtype } from "@interfaces/pages/Home";
 
 import { useQuery } from "@apollo/client";
-import { GET_ALL_EVENTS, GET_TOKENS_ISSUED, GET_EVENTS_BY_ADDRESS } from "../utils/subgraph/queries";
+import { GET_TOKENS_ISSUED } from "../utils/subgraph/queries";
 import  UserContext  from "@context/UserContext";
 
 export default function Home({ certificateData, ticketData }: IPassedProps) {
