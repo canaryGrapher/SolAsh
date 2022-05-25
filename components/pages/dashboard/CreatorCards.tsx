@@ -1,9 +1,17 @@
 import styles from "@styles/components/pages/CreatorCards.module.scss";
 import { NTTtype } from "@interfaces/pages/Dashboard";
 import Image from "next/image";
-import Link from "next/link";
+import { useQuery } from "@apollo/client";
+import { GET_ISSUER_STATUS } from "../../../utils/subgraph/queries";
 import { Fragment, useState } from "react";
 import IssuedNTTCardModal from "@components/modal/issuedNTT";
+import Link from "next/link";
+function getIssuerStatus(contractAddress: string) {
+  const { loading, error, data } = useQuery(GET_ISSUER_STATUS(contractAddress));
+  if (loading) console.log("issuerStatus: Loading");
+  if (error) console.log("issuerStatus: Error");
+  if (data) console.log("issuerStatus: ", data.whitelistItems);
+}
 
 const CreatorCards = (props: NTTtype) => {
   const [modal, openModal] = useState(false);

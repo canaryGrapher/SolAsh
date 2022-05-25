@@ -12,6 +12,27 @@ import { IPassedProps, NTTtype } from "@interfaces/pages/Dashboard";
 import { useMetaMask } from "metamask-react";
 import { ethers } from "ethers";
 import NTTEvent from "../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
+import { useQuery } from "@apollo/client";
+import {
+  GET_EVENTS_IN_QUEUE,
+  GET_EVENTS_ISSUED,
+} from "../utils/subgraph/queries";
+
+function inQueueEvents() {
+  const currentTime = Math.floor(new Date().getTime() / 1000);
+  const { loading, error, data } = useQuery(GET_EVENTS_IN_QUEUE(currentTime));
+  if (loading) console.log("inQueue: Loading");
+  if (error) console.log("inQueue: Error");
+  if (data) console.log("inQueue: ", data.nttcontracts);
+}
+
+function issuedEvents() {
+  const currentTime = Math.floor(new Date().getTime() / 1000);
+  const { loading, error, data } = useQuery(GET_EVENTS_ISSUED(currentTime));
+  if (loading) console.log("issued: Loading");
+  if (error) console.log("issued: Error");
+  if (data) console.log("issued: ", data.nttcontracts);
+}
 
 export default function Dashboard({ inQueue, issued }: IPassedProps) {
   const { status, connect, account, chainId, ethereum } = useMetaMask();

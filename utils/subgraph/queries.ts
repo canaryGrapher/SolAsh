@@ -36,6 +36,42 @@ const GET_EVENTS_BY_ADDRESS = (userAddress: any) => gql`
   }
 `;
 
+const GET_EVENTS_IN_QUEUE = (currentTime: any) => gql`
+  query {
+    nttcontracts(where: { startDate_gt: "${currentTime}" }) {
+      id
+      contractAddress
+      creatorAddress
+      title
+      description
+      links
+      imageHash
+      associatedCommunity
+      startDate
+      endDate
+      timeStamp
+    }
+  }
+`;
+
+const GET_EVENTS_ISSUED = (currentTime: any) => gql`
+  query {
+    nttcontracts(where: { startDate_lte: "${currentTime}" }) {
+      id
+      contractAddress
+      creatorAddress
+      title
+      description
+      links
+      imageHash
+      associatedCommunity
+      startDate
+      endDate
+      timeStamp
+    }
+  }
+`;
+
 const GET_TOKENS_ISSUED = (userAddress: any) => gql`
   query {
     tokens(
@@ -58,4 +94,24 @@ const GET_TOKENS_ISSUED = (userAddress: any) => gql`
   }
 `;
 
-export { GET_ALL_EVENTS, GET_EVENTS_BY_ADDRESS, GET_TOKENS_ISSUED };
+const GET_ISSUER_STATUS = (contractAddress: any) => gql`
+  query {
+    whitelistItems(
+      where: { contractAddress: "${contractAddress}" }
+    ) {
+      id
+      contractAddress
+      userAddress
+      status
+    }
+  }
+`;
+
+export {
+  GET_ALL_EVENTS,
+  GET_EVENTS_BY_ADDRESS,
+  GET_TOKENS_ISSUED,
+  GET_EVENTS_IN_QUEUE,
+  GET_EVENTS_ISSUED,
+  GET_ISSUER_STATUS,
+};

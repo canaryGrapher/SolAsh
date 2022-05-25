@@ -9,12 +9,17 @@ import { Home_Banner } from "@resources/exports";
 import { IPassedProps, NTTtype } from "@interfaces/pages/Home";
 
 import { useQuery } from "@apollo/client";
+<<<<<<< HEAD
 import {
   GET_ALL_EVENTS,
   GET_TOKENS_ISSUED,
   GET_EVENTS_BY_ADDRESS,
 } from "../utils/subgraph/queries";
 import UserContext from "@context/UserContext";
+=======
+import { GET_TOKENS_ISSUED } from "../utils/subgraph/queries";
+import  UserContext  from "@context/UserContext";
+>>>>>>> 50b87fcd9cc21b435e9f54a24523a0c5342c228a
 
 export default function Home({ certificateData, ticketData }: IPassedProps) {
   const [selectedTab, setSelectedTab] = useState<"certificate" | "ticket">(
