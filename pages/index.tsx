@@ -43,7 +43,7 @@ export default function Home() {
                   <span>simplicity</span> of any other tokens.
                 </p>
                 {loginData.isLoggedIn ? (
-                  <Link href={"/dashboard"}>
+                  <Link href={"/home"}>
                     <Image
                       src={Start_Now_Button}
                       alt="start now"

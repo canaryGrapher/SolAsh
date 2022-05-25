@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from "react";
 // importing the components
 import Navbar from "@components/root/Navbar";
 import Footer from "@components/root/Footer";
-import LoginModal from "@components/modal";
+import LoginModal from "@components/modal/login";
 
 // importing context
 import LoginContext from "@context/LoginContext";

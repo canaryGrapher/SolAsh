@@ -16,20 +16,35 @@
     padding: 10px;
 
     .certificate_information {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 5fr 1fr;
+      column-gap: 20px;
 
       .basic_information {
         h2 {
           color: #ff5846;
           font-size: 2rem;
         }
-        p {
+        p.ntt_description {
           color: #ffffff;
+          text-align: justify;
+        }
+        p.ntt_community {
+          padding-top: 10px;
+          color: #c5c5c5;
+          font-weight: bold;
+
+          span {
+            color: #ff5846;
+            font-weight: normal;
+          }
         }
       }
       .action_area {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
         button {
           padding: 5px 15px;
           color: #ff5846;
@@ -48,24 +63,30 @@
     }
     .certificate_basic_info_grid {
       display: grid;
-      grid-template-columns: auto auto auto;
+      grid-template-columns: auto auto;
       row-gap: 20px;
       column-gap: 60px;
+      .certificate_basic_info_grid_item {
+        display: grid;
+        grid-template-columns: auto auto;
+        row-gap: 20px;
+        column-gap: 60px;
 
-      .certificate_basic_info {
-        display: flex;
-        flex-direction: row;
+        .certificate_basic_info {
+          display: flex;
+          flex-direction: row;
 
-        .basic_info_type {
-          color: #ff5846;
-          width: 30%;
-        }
-        .basic_info_value {
-          color: #ffffff;
-          width: 70%;
+          .basic_info_type {
+            color: #ff5846;
+            width: 30%;
+          }
+          .basic_info_value {
+            color: #ffffff;
+            width: 70%;
 
-          a {
-            text-decoration: underline;
+            a {
+              text-decoration: underline;
+            }
           }
         }
       }
