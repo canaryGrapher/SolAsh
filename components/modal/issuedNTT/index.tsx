@@ -78,12 +78,15 @@ const IssuedNTTCardModal: React.FC<ModalProps> = (props) => {
                     <p>{claim.walletAddress}</p>
                     <p>{claim.claimed ? "Claimed" : "Not claimed"}</p>
                     <p>{claim.claimedOn ? claim.claimedOn : "-"}</p>
-                    <div
-                      className={styles.burn_button}
-                      onClick={props.burnToken}
-                    >
-                      <p>Burn</p>
-                    </div>
+                    {claim.claimed ? (
+                      <div
+                        className={styles.burn_button}
+                        // pass token id and contract address to burn token
+                        onClick={props.burnToken}
+                      >
+                        <p>Burn</p>
+                      </div>
+                    ) : null}
                   </div>
                 ))}
               </div>

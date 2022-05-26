@@ -109,6 +109,8 @@ export async function getServerSideProps() {
       issueDate: "2020-01-01",
       expiryDate: null,
       signedOn: "2020-01-01",
+      tokenId: "",
+      contractAddress: "",
     },
     {
       associatedCommunity: "Community 1",
@@ -125,6 +127,8 @@ export async function getServerSideProps() {
       issueDate: "2020-01-01",
       expiryDate: "2020-01-01",
       signedOn: "2020-01-01",
+      tokenId: "",
+      contractAddress: "",
     },
   ];
 
@@ -144,6 +148,8 @@ export async function getServerSideProps() {
       issueDate: "2020-01-01",
       expiryDate: "2020-01-01",
       signedOn: "2020-01-01",
+      tokenId: "",
+      contractAddress: "",
     },
     {
       associatedCommunity: "Community 1",
@@ -160,6 +166,8 @@ export async function getServerSideProps() {
       issueDate: "2020-01-01",
       expiryDate: "2020-01-01",
       signedOn: "2020-01-01",
+      tokenId: "",
+      contractAddress: "",
     },
   ];
   return {

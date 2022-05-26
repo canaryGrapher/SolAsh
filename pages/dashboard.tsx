@@ -193,6 +193,8 @@ export async function getServerSideProps() {
       issueDate: "2020-01-01",
       expiryDate: null,
       creationDate: "2020-01-01",
+      contractId: "",
+      contractAddress: "",
     },
     {
       associatedCommunity: "Community 1",
@@ -207,6 +209,8 @@ export async function getServerSideProps() {
       issueDate: "2020-01-01",
       expiryDate: "2020-01-01",
       creationDate: "2020-01-01",
+      contractId: "",
+      contractAddress: "",
     },
   ];
 
@@ -226,36 +230,43 @@ export async function getServerSideProps() {
       issueDate: "2020-01-01",
       expiryDate: "2020-01-01",
       creationDate: "2020-01-01",
+      contractAddress: "",
       claimedStatus: [
         {
           walletAddress: "0x324232603",
           claimed: false,
           claimedOn: null,
+          tokenId: "",
         },
         {
           walletAddress: "0x0r4525235",
           claimed: true,
           claimedOn: "2022-01-01",
+          tokenId: "",
         },
         {
           walletAddress: "0x0da3r3q35",
           claimed: false,
           claimedOn: null,
+          tokenId: "",
         },
         {
           walletAddress: "0x324232603",
           claimed: false,
           claimedOn: null,
+          tokenId: "",
         },
         {
           walletAddress: "0x0r4525235",
           claimed: true,
           claimedOn: "2022-01-01",
+          tokenId: "",
         },
         {
           walletAddress: "0x0da3r3q35",
           claimed: false,
           claimedOn: null,
+          tokenId: "",
         },
       ],
     },
@@ -272,21 +283,26 @@ export async function getServerSideProps() {
       issueDate: "2020-01-01",
       expiryDate: "2020-01-01",
       creationDate: "2020-01-01",
+      tokenId: "",
+      contractAddress: "",
       claimedStatus: [
         {
           walletAddress: "0x324232603",
           claimed: false,
           claimedOn: null,
+          tokenId: "",
         },
         {
           walletAddress: "0x0r4525235",
           claimed: true,
           claimedOn: "2022-01-01",
+          tokenId: "",
         },
         {
           walletAddress: "0x0da3r3q35",
           claimed: false,
           claimedOn: null,
+          tokenId: "",
         },
       ],
     },

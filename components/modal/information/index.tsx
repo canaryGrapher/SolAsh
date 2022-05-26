@@ -36,7 +36,7 @@ const InformationModal: React.FC<InformationModalProps> = (props) => {
             <div className={styles.information_area}>
               <div className={styles.information_about_dates}>
                 <div className={styles.information}>
-                  <p className={styles.label}>Issud on: </p>
+                  <p className={styles.label}>Issued on: </p>
                   <p className={styles.value}>{props.issueDate}</p>
                 </div>
                 <div className={styles.information}>
@@ -46,7 +46,7 @@ const InformationModal: React.FC<InformationModalProps> = (props) => {
                   </p>
                 </div>
                 <div className={styles.information}>
-                  <p className={styles.label}>Signed on: </p>
+                  <p className={styles.label}>Claimed on: </p>
                   <p className={styles.value}>{props.signedOn}</p>
                 </div>
               </div>
