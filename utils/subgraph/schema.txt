@@ -1,0 +1,31 @@
+tokens schema:
+    id: ID!                     //contractAddress_tokenId
+    contractAddress: Bytes!
+    tokenId: BigInt!
+    creatorAddress: Bytes!
+    receiverAddress: Bytes!
+    title: String!
+    associatedCommunity: String!
+    isValid: Boolean!
+    timeStamp: BigInt!
+
+
+nttcontracts schema:
+    id: ID!                     //integer
+    contractAddress: Bytes!
+    creatorAddress: Bytes!
+    title: String!
+    description: String!
+    links: [String!]
+    imageHash: String
+    associatedCommunity: String!
+    startDate: BigInt!
+    endDate: BigInt
+    timeStamp: BigInt!
+
+
+whitelistItems schema:
+    id: ID!                         //contractAddress_userAddress
+    contractAddress: Bytes!
+    userAddress: Bytes!
+    status: BigInt!
