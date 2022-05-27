@@ -8,10 +8,10 @@ import IssueChooser from "@components/pages/dashboard/IssueChooser";
 
 import { Home_Banner } from "@resources/exports";
 import { IPassedProps, NTTtype } from "@interfaces/pages/Dashboard";
+import { useQuery } from "@apollo/client";
 import { useMetaMask } from "metamask-react";
 import { ethers } from "ethers";
-import NTTEvent from "../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
-import { useQuery } from "@apollo/client";
+
 import {
   GET_EVENTS_IN_QUEUE,
   GET_EVENTS_ISSUED,
@@ -72,41 +72,41 @@ export default function Dashboard() {
   );
 
   //Functions to update details
-  const addToWhitelist = async (nttContractAddress: string, list: []) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      nttContractAddress,
-      NTTEvent.abi,
-      signer
-    );
+  // const addToWhitelist = async (nttContractAddress: string, list: []) => {
+  //   const provider = new ethers.providers.Web3Provider(ethereum);
+  //   const signer = provider.getSigner();
+  //   const contract = new ethers.Contract(
+  //     nttContractAddress,
+  //     // NTTEvent.abi,
+  //     signer
+  //   );
 
-    try {
-      const transaction = await contract.addToWhitelist(list);
-      const status = await transaction.wait();
-      console.log("addToWhitelist: ", status);
-    } catch (err) {
-      alert("addToWhitelist: " + err);
-    }
-  };
+  //   try {
+  //     const transaction = await contract.addToWhitelist(list);
+  //     const status = await transaction.wait();
+  //     console.log("addToWhitelist: ", status);
+  //   } catch (err) {
+  //     alert("addToWhitelist: " + err);
+  //   }
+  // };
 
-  const removeFromWhitelist = async (nttContractAddress: string, list: []) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      nttContractAddress,
-      NTTEvent.abi,
-      signer
-    );
+  // const removeFromWhitelist = async (nttContractAddress: string, list: []) => {
+  //   const provider = new ethers.providers.Web3Provider(ethereum);
+  //   const signer = provider.getSigner();
+  //   const contract = new ethers.Contract(
+  //     nttContractAddress,
+  //     NTTEvent.abi,
+  //     signer
+  //   );
 
-    try {
-      const transaction = await contract.removeFromWhitelist(list);
-      const status = await transaction.wait();
-      console.log("removeFromWhitelist: ", status);
-    } catch (err) {
-      alert("removeFromWhitelist: " + err);
-    }
-  };
+  //   try {
+  //     const transaction = await contract.removeFromWhitelist(list);
+  //     const status = await transaction.wait();
+  //     console.log("removeFromWhitelist: ", status);
+  //   } catch (err) {
+  //     alert("removeFromWhitelist: " + err);
+  //   }
+  // };
 
   const inQueue = inQueueEvents();
   const issued = issuedEvents();
