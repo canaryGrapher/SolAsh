@@ -35,6 +35,8 @@ function issuedEvents() {
 }
 
 export default function Dashboard({ inQueue, issued }: IPassedProps) {
+  inQueueEvents();
+  issuedEvents();
   const { status, connect, account, chainId, ethereum } = useMetaMask();
   const [selectedTab, setSelectedTab] = useState<"inQueue" | "issued">(
     "inQueue"
