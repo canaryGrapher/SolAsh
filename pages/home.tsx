@@ -9,8 +9,33 @@ import { Home_Banner } from "@resources/exports";
 import { IPassedProps, NTTtype } from "@interfaces/pages/Home";
 
 import { useQuery } from "@apollo/client";
-import { GET_TOKENS_ISSUED } from "../utils/subgraph/queries";
+import { GET_TOKENS_ISSUED, GET_EVENT_DETAILS } from "../utils/subgraph/queries";
 import UserContext from "@context/UserContext";
+
+
+function getTokenData(userAddress : string) {
+  const { loading, error, data } = useQuery(GET_TOKENS_ISSUED(userAddress));
+  if (loading) console.log("QQ: Loading");
+
+  if (error) console.log("QQ: Error");
+  
+  if (data){ 
+    console.log("QQ: ", userAddress, data.tokens);
+    getEventDetails(data.tokens.contractAddress);
+  }
+}
+
+function getEventDetails(contractAddress: string) {
+  // const { loading, error, data } = useQuery(GET_EVENT_DETAILS(contractAddress));
+  // if (loading) console.log("ED: Loading");
+
+  // if (error) console.log("ED: Error");
+  
+  // if (data){ 
+  //   console.log("ED: ", data.nttcontracts);
+  // }
+}
+
 
 export default function Home({ certificateData, ticketData }: IPassedProps) {
   const [selectedTab, setSelectedTab] = useState<"certificate" | "ticket">(
@@ -18,12 +43,8 @@ export default function Home({ certificateData, ticketData }: IPassedProps) {
   );
 
   const userContext = useContext(UserContext);
-  const { loading, error, data } = useQuery(
-    GET_TOKENS_ISSUED(userContext.userName)
-  );
-  if (loading) console.log("QQ: Loading");
-  if (error) console.log("QQ: Error");
-  if (data) console.log("QQ: ", userContext.userName, data.tokens);
+
+  getTokenData(userContext.userName);
 
   return (
     <RootLayout>
@@ -106,9 +127,8 @@ export async function getServerSideProps() {
         "https://www.yahoo.com",
         "https://www.bing.com",
       ],
-      issueDate: "2020-01-01",
-      expiryDate: null,
-      signedOn: "2020-01-01",
+      // issueDate: "2020-01-01",
+      claimedOn: "2020-01-01",
       tokenId: "",
       contractAddress: "",
     },
@@ -124,9 +144,8 @@ export async function getServerSideProps() {
         "https://www.yahoo.com",
         "https://www.bing.com",
       ],
-      issueDate: "2020-01-01",
-      expiryDate: "2020-01-01",
-      signedOn: "2020-01-01",
+      // issueDate: "2020-01-01",
+      claimedOn: "2020-01-01",
       tokenId: "",
       contractAddress: "",
     },
@@ -145,9 +164,8 @@ export async function getServerSideProps() {
         "https://www.yahoo.com",
         "https://www.bing.com",
       ],
-      issueDate: "2020-01-01",
-      expiryDate: "2020-01-01",
-      signedOn: "2020-01-01",
+      // issueDate: "2020-01-01",
+      claimedOn: "2020-01-01",
       tokenId: "",
       contractAddress: "",
     },
@@ -163,9 +181,8 @@ export async function getServerSideProps() {
         "https://www.yahoo.com",
         "https://www.bing.com",
       ],
-      issueDate: "2020-01-01",
-      expiryDate: "2020-01-01",
-      signedOn: "2020-01-01",
+      // issueDate: "5550-01-01",
+      claimedOn: "5555-05-01",
       tokenId: "",
       contractAddress: "",
     },

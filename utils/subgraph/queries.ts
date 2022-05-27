@@ -18,7 +18,7 @@ const GET_ALL_EVENTS = () => gql`
   }
 `;
 
-const GET_EVENTS_BY_ADDRESS = (userAddress: any) => gql`
+const GET_EVENTS_BY_ADDRESS = (userAddress: string) => gql`
   query {
     nttcontracts(where:{creatorAddress: "${userAddress}"}) {
       id
@@ -35,6 +35,26 @@ const GET_EVENTS_BY_ADDRESS = (userAddress: any) => gql`
     }
   }
 `;
+
+//Get event details given contract address
+const GET_EVENT_DETAILS = (contractAddress: string) => gql`
+  query {
+    nttcontracts(where:{contractAddress: "${contractAddress}"}) {
+      id
+      contractAddress
+      creatorAddress
+      title
+      description
+      links
+      imageHash
+      associatedCommunity
+      startDate
+      endDate
+      timeStamp
+    }
+  }
+`;
+
 
 const GET_EVENTS_IN_QUEUE = (currentTime: any) => gql`
   query {
@@ -72,9 +92,8 @@ const GET_EVENTS_ISSUED = (currentTime: any) => gql`
   }
 `;
 
-//Get event details given contract address
 
-const GET_TOKENS_ISSUED = (userAddress: any) => gql`
+const GET_TOKENS_ISSUED = (userAddress: string) => gql`
   query {
     tokens(
       where: {
@@ -96,7 +115,7 @@ const GET_TOKENS_ISSUED = (userAddress: any) => gql`
   }
 `;
 
-const GET_ISSUER_STATUS = (contractAddress: any) => gql`
+const GET_ISSUER_STATUS = (contractAddress: string) => gql`
   query {
     whitelistItems(
       where: { contractAddress: "${contractAddress}" }
@@ -112,6 +131,7 @@ const GET_ISSUER_STATUS = (contractAddress: any) => gql`
 export {
   GET_ALL_EVENTS,
   GET_EVENTS_BY_ADDRESS,
+  GET_EVENT_DETAILS,
   GET_TOKENS_ISSUED,
   GET_EVENTS_IN_QUEUE,
   GET_EVENTS_ISSUED,

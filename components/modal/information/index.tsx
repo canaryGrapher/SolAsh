@@ -35,19 +35,19 @@ const InformationModal: React.FC<InformationModalProps> = (props) => {
             <p className={styles.ntt_description}>{props.description}</p>
             <div className={styles.information_area}>
               <div className={styles.information_about_dates}>
-                <div className={styles.information}>
+                {/* <div className={styles.information}>
                   <p className={styles.label}>Issued on: </p>
                   <p className={styles.value}>{props.issueDate}</p>
-                </div>
-                <div className={styles.information}>
+                </div> */}
+                {/* <div className={styles.information}>
                   <p className={styles.label}>Expiry date: </p>
                   <p className={styles.value}>
                     {props.expiryDate ? props.expiryDate : "null"}
                   </p>
-                </div>
+                </div> */}
                 <div className={styles.information}>
                   <p className={styles.label}>Claimed on: </p>
-                  <p className={styles.value}>{props.signedOn}</p>
+                  <p className={styles.value}>{props.claimedOn}</p>
                 </div>
               </div>
               <div className={styles.information_websites}>

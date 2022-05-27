@@ -8,10 +8,9 @@ interface NTTtype {
     title: string;
     description: string;
     link: string[] | null;
-    issueDate: string;
-    expiryDate: string | null;
+    // issueDate: string;  
     image: string;
-    signedOn: string;
+    claimedOn: string;   //equivalent to token timestamp and claimedOn
 }
 
 export type { IPassedProps, NTTtype }
