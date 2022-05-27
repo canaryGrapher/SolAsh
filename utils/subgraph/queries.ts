@@ -72,6 +72,8 @@ const GET_EVENTS_ISSUED = (currentTime: any) => gql`
   }
 `;
 
+//Get event details given contract address
+
 const GET_TOKENS_ISSUED = (userAddress: any) => gql`
   query {
     tokens(
