@@ -14,10 +14,8 @@ interface NTTtype {
     title: string;
     description: string;
     link: string[];
-    issueDate: string;
-    expiryDate: string | null;
+    issueDate: string;    //equivalent to startDate
     image: string;
-    creationDate: string;
     type: string;
     claimedStatus: IClaims[];
 }

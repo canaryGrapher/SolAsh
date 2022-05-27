@@ -193,8 +193,6 @@ export async function getServerSideProps() {
         "https://www.bing.com",
       ],
       issueDate: "2020-01-01",
-      expiryDate: null,
-      creationDate: "2020-01-01",
       contractId: "",
       contractAddress: "",
     },
@@ -209,8 +207,6 @@ export async function getServerSideProps() {
         "https://www.bing.com",
       ],
       issueDate: "2020-01-01",
-      expiryDate: "2020-01-01",
-      creationDate: "2020-01-01",
       contractId: "",
       contractAddress: "",
     },
@@ -230,8 +226,6 @@ export async function getServerSideProps() {
         "https://www.bing.com",
       ],
       issueDate: "2020-01-01",
-      expiryDate: "2020-01-01",
-      creationDate: "2020-01-01",
       contractAddress: "",
       claimedStatus: [
         {
@@ -283,8 +277,6 @@ export async function getServerSideProps() {
         "https://www.bing.com",
       ],
       issueDate: "2020-01-01",
-      expiryDate: "2020-01-01",
-      creationDate: "2020-01-01",
       tokenId: "",
       contractAddress: "",
       claimedStatus: [

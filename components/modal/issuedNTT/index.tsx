@@ -37,20 +37,20 @@ const IssuedNTTCardModal: React.FC<ModalProps> = (props) => {
             <p className={styles.ntt_description}>{props.description}</p>
             <div className={styles.information_area}>
               <div className={styles.information_about_dates}>
-                <div className={styles.information}>
+                {/* <div className={styles.information}>
                   <p className={styles.label}>Created on: </p>
                   <p className={styles.value}>{props.creationDate}</p>
-                </div>
+                </div> */}
                 <div className={styles.information}>
                   <p className={styles.label}>Issued on: </p>
                   <p className={styles.value}>{props.issueDate}</p>
                 </div>
-                <div className={styles.information}>
+                {/* <div className={styles.information}>
                   <p className={styles.label}>Expiry date: </p>
                   <p className={styles.value}>
                     {props.expiryDate ? props.expiryDate : "null"}
                   </p>
-                </div>
+                </div> */}
               </div>
               <div className={styles.information_websites}>
                 <p>Associated website(s):</p>
