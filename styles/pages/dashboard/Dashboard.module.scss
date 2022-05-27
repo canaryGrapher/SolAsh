@@ -90,3 +90,20 @@
     }
   }
 }
+
+.emptyBox {
+  width: 100%;
+  height: 20vh;
+  border: 1px solid #ff5846;
+  border-radius: 5px;
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  p {
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+}

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import styles from "@styles/pages/dashboard/Dashboard.module.scss";
 import RootLayout from "@layouts/Root";
 import Image from "next/image";
-import { useRouter } from "next/router";
 
 import CreatorCards from "@components/pages/dashboard/CreatorCards";
 import IssueChooser from "@components/pages/dashboard/IssueChooser";
@@ -23,7 +22,23 @@ function inQueueEvents() {
   const { loading, error, data } = useQuery(GET_EVENTS_IN_QUEUE(currentTime));
   if (loading) console.log("inQueue: Loading");
   if (error) console.log("inQueue: Error");
-  if (data) console.log("inQueue: ", data.nttcontracts);
+
+  if (data) {
+    let formatted_data: NTTtype[] = data.nttcontracts.map((ntt: any) => {
+      return {
+        associatedCommunity: ntt.associatedCommunity,
+        title: ntt.title,
+        description: ntt.description,
+        link: ntt.links,
+        issueDate: ntt.timeStamp,
+        image: ntt.imageHash,
+        type: "Certificate",
+        claimedStatus: [],
+      };
+    });
+    return formatted_data;
+  }
+  return [];
 }
 
 function issuedEvents() {
@@ -31,13 +46,27 @@ function issuedEvents() {
   const { loading, error, data } = useQuery(GET_EVENTS_ISSUED(currentTime));
   if (loading) console.log("issued: Loading");
   if (error) console.log("issued: Error");
-  if (data) console.log("issued: ", data.nttcontracts);
+
+  if (data) {
+    let formatted_data: NTTtype[] = data.nttcontracts.map((ntt: any) => {
+      return {
+        associatedCommunity: ntt.associatedCommunity,
+        title: ntt.title,
+        description: ntt.description,
+        link: ntt.links,
+        issueDate: ntt.timeStamp,
+        image: ntt.imageHash,
+        type: "Certificate",
+        claimedStatus: [],
+      };
+    });
+    return formatted_data;
+  }
+  return [];
 }
 
-export default function Dashboard({ inQueue, issued }: IPassedProps) {
-  inQueueEvents();
-  issuedEvents();
-  const { status, connect, account, chainId, ethereum } = useMetaMask();
+export default function Dashboard() {
+  const { ethereum } = useMetaMask();
   const [selectedTab, setSelectedTab] = useState<"inQueue" | "issued">(
     "inQueue"
   );
@@ -79,37 +108,8 @@ export default function Dashboard({ inQueue, issued }: IPassedProps) {
     }
   };
 
-  //TODO: default values must be the value of the existing eventdetail
-  const updateDetails = async (
-    nttContractAddress: string,
-    title: string = "",
-    description: string = "",
-    links: [] = [],
-    imageHash: string = "",
-    associatedCommunity: string = ""
-  ) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      nttContractAddress,
-      NTTEvent.abi,
-      signer
-    );
-
-    try {
-      const transaction = await contract.updateDetails(
-        title,
-        description,
-        links,
-        imageHash,
-        associatedCommunity
-      );
-      const status = await transaction.wait();
-      console.log("updateDetails: ", status);
-    } catch (err) {
-      alert("updateDetails: " + err);
-    }
-  };
+  const inQueue = inQueueEvents();
+  const issued = issuedEvents();
 
   return (
     <RootLayout>
@@ -162,13 +162,25 @@ export default function Dashboard({ inQueue, issued }: IPassedProps) {
               </div>
               <div className={styles.actual_content}>
                 {selectedTab === "inQueue" &&
+                  inQueue.length > 0 &&
                   inQueue.map((certificate: NTTtype, index: number) => (
                     <CreatorCards {...certificate} type="inQueue" key={index} />
                   ))}
+                {selectedTab === "inQueue" && inQueue.length === 0 ? (
+                  <div className={styles.emptyBox}>
+                    <p>Ooops! Nothing found here.</p>
+                  </div>
+                ) : null}
                 {selectedTab === "issued" &&
+                  issued.length > 0 &&
                   issued.map((token: NTTtype, index: number) => (
                     <CreatorCards {...token} type="issued" key={index} />
                   ))}
+                {selectedTab === "issued" && issued.length === 0 ? (
+                  <div className={styles.emptyBox}>
+                    <p>Ooops! Nothing found here.</p>
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
@@ -176,135 +188,4 @@ export default function Dashboard({ inQueue, issued }: IPassedProps) {
       </main>
     </RootLayout>
   );
-}
-
-export async function getServerSideProps() {
-  const inQueue = [
-    {
-      associatedCommunity: "Community 1",
-      title: "Certificate 1",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed facilisis bibendum ligula et tincidunt. Nunc ultricies non enim pellentesque egestas. Nam at ullamcorper nulla, ut gravida libero. In auctor nisi eu nisi ornare, nec mattis ipsum pulvinar. Vivamus non nibh consectetur, cursus metus ac, suscipit tellus. Aenean congue, nisl sit amet auctor hendrerit, tortor orci hendrerit nisi, id vestibulum ante velit sit amet massa. Proin dapibus lectus purus, at viverra nisl porta ac. Aliquam dapibus nisi at fringilla imperdiet. Donec metus erat, bibendum quis facilisis eget, fermentum non tellus.",
-      image:
-        "https://images.unsplash.com/photo-1527871369852-eb58cb2b54e2?ixlib=rb-1.2.1&raw_url=true&q=80&fm=jpg&crop=entropy&cs=tinysrgb&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1331",
-      link: [
-        "https://www.google.com",
-        "https://www.yahoo.com",
-        "https://www.bing.com",
-      ],
-      issueDate: "2020-01-01",
-      contractId: "",
-      contractAddress: "",
-    },
-    {
-      associatedCommunity: "Community 1",
-      title: "Certificate 2",
-      description: "This is a certificate",
-      image: "https://via.placeholder.com/150",
-      link: [
-        "https://www.google.com",
-        "https://www.yahoo.com",
-        "https://www.bing.com",
-      ],
-      issueDate: "2020-01-01",
-      contractId: "",
-      contractAddress: "",
-    },
-  ];
-
-  const issued = [
-    {
-      associatedCommunity: "Community 1",
-      title: "Ticket 1",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed facilisis bibendum ligula et tincidunt. Nunc ultricies non enim pellentesque egestas. Nam at ullamcorper nulla, ut gravida libero. In auctor nisi eu nisi ornare, nec mattis ipsum pulvinar. Vivamus non nibh consectetur, cursus metus ac, suscipit tellus. Aenean congue, nisl sit amet auctor hendrerit, tortor orci hendrerit nisi, id vestibulum ante velit sit amet massa. Proin dapibus lectus purus, at viverra nisl porta ac. Aliquam dapibus nisi at fringilla imperdiet. Donec metus erat, bibendum quis facilisis eget, fermentum non tellus.",
-      image:
-        "https://images.unsplash.com/photo-1527871369852-eb58cb2b54e2?ixlib=rb-1.2.1&raw_url=true&q=80&fm=jpg&crop=entropy&cs=tinysrgb&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1331",
-      link: [
-        "https://www.google.com",
-        "https://www.yahoo.com",
-        "https://www.bing.com",
-      ],
-      issueDate: "2020-01-01",
-      contractAddress: "",
-      claimedStatus: [
-        {
-          walletAddress: "0x324232603",
-          claimed: false,
-          claimedOn: null,
-          tokenId: "",
-        },
-        {
-          walletAddress: "0x0r4525235",
-          claimed: true,
-          claimedOn: "2022-01-01",
-          tokenId: "",
-        },
-        {
-          walletAddress: "0x0da3r3q35",
-          claimed: false,
-          claimedOn: null,
-          tokenId: "",
-        },
-        {
-          walletAddress: "0x324232603",
-          claimed: false,
-          claimedOn: null,
-          tokenId: "",
-        },
-        {
-          walletAddress: "0x0r4525235",
-          claimed: true,
-          claimedOn: "2022-01-01",
-          tokenId: "",
-        },
-        {
-          walletAddress: "0x0da3r3q35",
-          claimed: false,
-          claimedOn: null,
-          tokenId: "",
-        },
-      ],
-    },
-    {
-      associatedCommunity: "Community 1",
-      title: "Ticket 2",
-      description: "This is a ticket",
-      image: "https://via.placeholder.com/150",
-      link: [
-        "https://www.google.com",
-        "https://www.yahoo.com",
-        "https://www.bing.com",
-      ],
-      issueDate: "2020-01-01",
-      tokenId: "",
-      contractAddress: "",
-      claimedStatus: [
-        {
-          walletAddress: "0x324232603",
-          claimed: false,
-          claimedOn: null,
-          tokenId: "",
-        },
-        {
-          walletAddress: "0x0r4525235",
-          claimed: true,
-          claimedOn: "2022-01-01",
-          tokenId: "",
-        },
-        {
-          walletAddress: "0x0da3r3q35",
-          claimed: false,
-          claimedOn: null,
-          tokenId: "",
-        },
-      ],
-    },
-  ];
-  return {
-    props: {
-      inQueue,
-      issued,
-    },
-  };
 }

@@ -4,33 +4,62 @@ import Image from "next/image";
 var tagsInput = require("tags-input");
 import { useEffect, useState } from "react";
 import Router from "next/router";
+import { useMetaMask } from "metamask-react";
+
 import {
   Form_Banner,
   Back_Button,
   Create_Certificate,
   Create_Token,
 } from "@resources/exports";
-import { useMetaMask } from "metamask-react";
 import { ethers } from "ethers";
 import Factory from "../artifacts/contracts/Factory.sol/Factory.json";
 import NTTEvent from "../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
 import { factoryContractAddress } from "../config";
 
 export default function CreateNTT() {
+  const [typeOfForm, setTypeOfForm] = useState<any>("Certificate");
+  const { ethereum } = useMetaMask();
+  //TODO: default values must be the value of the existing eventdetail
+  const updateDetails = async (
+    nttContractAddress: string,
+    title: string = "",
+    description: string = "",
+    links: [] = [],
+    imageHash: string = "",
+    associatedCommunity: string = ""
+  ) => {
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      nttContractAddress,
+      NTTEvent.abi,
+      signer
+    );
+
+    try {
+      const transaction = await contract.updateDetails(
+        title,
+        description,
+        links,
+        imageHash,
+        associatedCommunity
+      );
+      const status = await transaction.wait();
+      console.log("updateDetails: ", status);
+    } catch (err) {
+      alert("updateDetails: " + err);
+    }
+  };
+
   useEffect(() => {
+    tagsInput(document.querySelector("#walletAddresses"));
     if (Router.query.type === "Certificate" || Router.query.type === "Token") {
       setTypeOfForm(Router.query.type);
     } else {
       alert("Invalid type in URL! Redirecting you back to the dashboard.");
       Router.push("/dashboard");
     }
-  }, []);
-
-  const [typeOfForm, setTypeOfForm] = useState<any>("Certificate");
-  const { status, connect, account, chainId, ethereum } = useMetaMask();
-
-  useEffect(() => {
-    tagsInput(document.querySelector("#walletAddresses"));
   }, []);
 
   const importDataFromContractID = async (contractID: string) => {
@@ -109,38 +138,6 @@ export default function CreateNTT() {
       console.log("removeFromWhitelist: ", status);
     } catch (err) {
       alert("removeFromWhitelist: " + err);
-    }
-  };
-
-  //TODO: default values must be the value of the existing eventdetail
-  const updateDetails = async (
-    nttContractAddress: string,
-    title: string = "",
-    description: string = "",
-    links: [] = [],
-    imageHash: string = "",
-    associatedCommunity: string = ""
-  ) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      nttContractAddress,
-      NTTEvent.abi,
-      signer
-    );
-
-    try {
-      const transaction = await contract.updateDetails(
-        title,
-        description,
-        links,
-        imageHash,
-        associatedCommunity
-      );
-      const status = await transaction.wait();
-      console.log("updateDetails: ", status);
-    } catch (err) {
-      alert("updateDetails: " + err);
     }
   };
 

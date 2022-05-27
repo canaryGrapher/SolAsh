@@ -38,7 +38,13 @@ const CreatorCards = (props: NTTtype) => {
       ) : null}
       <div className={styles.certificate_container}>
         <div className={styles.certificate_image}>
-          <Image src={props.image} height={200} width={200} />
+          <Image
+            src={
+              "https://images.unsplash.com/photo-1642388538891-38b2d14e750e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
+            }
+            height={200}
+            width={200}
+          />
         </div>
         <div className={styles.certificate_information_container}>
           <div className={styles.certificate_information}>
