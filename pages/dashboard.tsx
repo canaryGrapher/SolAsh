@@ -32,6 +32,8 @@ function issuedEvents() {
 }
 
 export default function Dashboard({ inQueue, issued }: IPassedProps) {
+  inQueueEvents();
+  issuedEvents();
   const [selectedTab, setSelectedTab] = useState<"inQueue" | "issued">(
     "inQueue"
   );
