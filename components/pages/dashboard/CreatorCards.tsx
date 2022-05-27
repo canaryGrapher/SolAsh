@@ -6,6 +6,8 @@ import { GET_ISSUER_STATUS } from "../../../utils/subgraph/queries";
 import { Fragment, useState } from "react";
 import IssuedNTTCardModal from "@components/modal/issuedNTT";
 import Link from "next/link";
+
+
 function getIssuerStatus(contractAddress: string) {
   const { loading, error, data } = useQuery(GET_ISSUER_STATUS(contractAddress));
   if (loading) console.log("issuerStatus: Loading");

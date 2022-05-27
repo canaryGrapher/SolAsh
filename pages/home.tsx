@@ -20,7 +20,7 @@ function getTokenData(userAddress : string) {
   if (error) console.log("QQ: Error");
   
   if (data){ 
-    console.log("QQ: ", userAddress, data.tokens);
+    console.log("QQ: ", userAddress, data.tokens); 
     getEventDetails(data.tokens.contractAddress);
   }
 }

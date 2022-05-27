@@ -9,9 +9,6 @@ import IssueChooser from "@components/pages/dashboard/IssueChooser";
 
 import { Home_Banner } from "@resources/exports";
 import { IPassedProps, NTTtype } from "@interfaces/pages/Dashboard";
-import { useMetaMask } from "metamask-react";
-import { ethers } from "ethers";
-import NTTEvent from "../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
 import { useQuery } from "@apollo/client";
 import {
   GET_EVENTS_IN_QUEUE,
@@ -35,79 +32,9 @@ function issuedEvents() {
 }
 
 export default function Dashboard({ inQueue, issued }: IPassedProps) {
-  const { status, connect, account, chainId, ethereum } = useMetaMask();
   const [selectedTab, setSelectedTab] = useState<"inQueue" | "issued">(
     "inQueue"
   );
-
-  //Functions to update details
-  const addToWhitelist = async (nttContractAddress: string, list: []) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      nttContractAddress,
-      NTTEvent.abi,
-      signer
-    );
-
-    try {
-      const transaction = await contract.addToWhitelist(list);
-      const status = await transaction.wait();
-      console.log("addToWhitelist: ", status);
-    } catch (err) {
-      alert("addToWhitelist: " + err);
-    }
-  };
-
-  const removeFromWhitelist = async (nttContractAddress: string, list: []) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      nttContractAddress,
-      NTTEvent.abi,
-      signer
-    );
-
-    try {
-      const transaction = await contract.removeFromWhitelist(list);
-      const status = await transaction.wait();
-      console.log("removeFromWhitelist: ", status);
-    } catch (err) {
-      alert("removeFromWhitelist: " + err);
-    }
-  };
-
-  //TODO: default values must be the value of the existing eventdetail
-  const updateDetails = async (
-    nttContractAddress: string,
-    title: string = "",
-    description: string = "",
-    links: [] = [],
-    imageHash: string = "",
-    associatedCommunity: string = ""
-  ) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      nttContractAddress,
-      NTTEvent.abi,
-      signer
-    );
-
-    try {
-      const transaction = await contract.updateDetails(
-        title,
-        description,
-        links,
-        imageHash,
-        associatedCommunity
-      );
-      const status = await transaction.wait();
-      console.log("updateDetails: ", status);
-    } catch (err) {
-      alert("updateDetails: " + err);
-    }
-  };
 
   return (
     <RootLayout>
