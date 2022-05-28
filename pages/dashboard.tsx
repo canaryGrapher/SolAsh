@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import styles from "@styles/pages/dashboard/Dashboard.module.scss";
 import RootLayout from "@layouts/Root";
 import Image from "next/image";
@@ -11,15 +11,16 @@ import { IPassedProps, NTTtype } from "@interfaces/pages/Dashboard";
 import { useQuery } from "@apollo/client";
 import { useMetaMask } from "metamask-react";
 import { ethers } from "ethers";
+import UserContext from "@context/UserContext";
 
 import {
   GET_EVENTS_IN_QUEUE,
   GET_EVENTS_ISSUED,
 } from "../utils/subgraph/queries";
 
-function inQueueEvents() {
+function inQueueEvents(creatorAddress : string) {
   const currentTime = Math.floor(new Date().getTime() / 1000);
-  const { loading, error, data } = useQuery(GET_EVENTS_IN_QUEUE(currentTime));
+  const { loading, error, data } = useQuery(GET_EVENTS_IN_QUEUE(currentTime, creatorAddress));
   if (loading) console.log("inQueue: Loading");
   if (error) console.log("inQueue: Error");
 
@@ -41,9 +42,9 @@ function inQueueEvents() {
   return [];
 }
 
-function issuedEvents() {
+function issuedEvents(creatorAddress : string) {
   const currentTime = Math.floor(new Date().getTime() / 1000);
-  const { loading, error, data } = useQuery(GET_EVENTS_ISSUED(currentTime));
+  const { loading, error, data } = useQuery(GET_EVENTS_ISSUED(currentTime, creatorAddress));
   if (loading) console.log("issued: Loading");
   if (error) console.log("issued: Error");
 
@@ -108,8 +109,9 @@ export default function Dashboard() {
   //   }
   // };
 
-  const inQueue = inQueueEvents();
-  const issued = issuedEvents();
+  const userContext = useContext(UserContext);
+  const inQueue = inQueueEvents(userContext.userName);
+  const issued = issuedEvents(userContext.userName);
 
   return (
     <RootLayout>

@@ -56,9 +56,14 @@ const GET_EVENT_DETAILS = (contractAddress: string) => gql`
 `;
 
 
-const GET_EVENTS_IN_QUEUE = (currentTime: any) => gql`
+const GET_EVENTS_IN_QUEUE = (currentTime: any, creatorAddress : string) => gql`
   query {
-    nttcontracts(where: { startDate_gt: "${currentTime}" }) {
+    nttcontracts(
+      where: { 
+        startDate_gt: "${currentTime}",
+        creatorAddress: "${creatorAddress}" 
+      }
+    ) {
       id
       contractAddress
       creatorAddress
@@ -74,9 +79,14 @@ const GET_EVENTS_IN_QUEUE = (currentTime: any) => gql`
   }
 `;
 
-const GET_EVENTS_ISSUED = (currentTime: any) => gql`
+const GET_EVENTS_ISSUED = (currentTime: any, creatorAddress : string) => gql`
   query {
-    nttcontracts(where: { startDate_lte: "${currentTime}" }) {
+    nttcontracts(
+      where: { 
+        startDate_lte: "${currentTime}",
+        creatorAddress: "${creatorAddress}"  
+      }
+    ) {
       id
       contractAddress
       creatorAddress
