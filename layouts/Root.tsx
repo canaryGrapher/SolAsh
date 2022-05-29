@@ -20,13 +20,21 @@ import { WalletConnectStatus } from "@interfaces/layout/WalletConnect";
 const RootLayout: React.FC = ({ children }) => {
   const authStates = useContext(LoginContext);
   const userStates = useContext(UserContext);
-  const { status, account, ethereum } = useMetaMask();
+  const { status, account, ethereum, chainId } = useMetaMask();
 
   useEffect(() => {
     if (status === "connected") {
       authStates.toggleLogin(true);
       userStates.set_username(account);
       userStates.set_wallet_address(ethereum.selectedAddress);
+      userStates.set_chain_id(chainId);
+      if (chainId != "80001") {
+        alert(
+          "Please switch to the Polygon testnet (chainId: 80001) to use the application. You are currently on chainId: " +
+            chainId
+        );
+        Router.push("/");
+      }
     } else if (status === "initializing") {
       console.log("Looking for wallet connection state");
     } else {
