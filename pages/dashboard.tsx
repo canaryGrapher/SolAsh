@@ -2,72 +2,15 @@ import { useEffect, useState, useContext } from "react";
 import styles from "@styles/pages/dashboard/Dashboard.module.scss";
 import RootLayout from "@layouts/Root";
 import Image from "next/image";
-
 import CreatorCards from "@components/pages/dashboard/CreatorCards";
 import IssueChooser from "@components/pages/dashboard/IssueChooser";
-
 import { Home_Banner } from "@resources/exports";
-import { IPassedProps, NTTtype } from "@interfaces/pages/Dashboard";
-import { useQuery } from "@apollo/client";
+import { NTTtype } from "@interfaces/pages/Dashboard";
 import { useMetaMask } from "metamask-react";
-import { ethers } from "ethers";
 import UserContext from "@context/UserContext";
-
-import {
-  GET_EVENTS_IN_QUEUE,
-  GET_EVENTS_ISSUED,
-} from "../utils/subgraph/queries";
-
-function inQueueEvents(creatorAddress : string) {
-  const currentTime = Math.floor(new Date().getTime() / 1000);
-  const { loading, error, data } = useQuery(GET_EVENTS_IN_QUEUE(currentTime, creatorAddress));
-  if (loading) console.log("inQueue: Loading");
-  if (error) console.log("inQueue: Error");
-
-  if (data) {
-    let formatted_data: NTTtype[] = data.nttcontracts.map((ntt: any) => {
-      return {
-        associatedCommunity: ntt.associatedCommunity,
-        title: ntt.title,
-        description: ntt.description,
-        link: ntt.links,
-        issueDate: ntt.timeStamp,
-        image: ntt.imageHash,
-        type: "Certificate",
-        claimedStatus: [],
-      };
-    });
-    return formatted_data;
-  }
-  return [];
-}
-
-function issuedEvents(creatorAddress : string) {
-  const currentTime = Math.floor(new Date().getTime() / 1000);
-  const { loading, error, data } = useQuery(GET_EVENTS_ISSUED(currentTime, creatorAddress));
-  if (loading) console.log("issued: Loading");
-  if (error) console.log("issued: Error");
-
-  if (data) {
-    let formatted_data: NTTtype[] = data.nttcontracts.map((ntt: any) => {
-      return {
-        associatedCommunity: ntt.associatedCommunity,
-        title: ntt.title,
-        description: ntt.description,
-        link: ntt.links,
-        issueDate: ntt.timeStamp,
-        image: ntt.imageHash,
-        type: "Certificate",
-        claimedStatus: [],
-      };
-    });
-    return formatted_data;
-  }
-  return [];
-}
+import { inQueueEvents, issuedEvents } from "@graphAPI/dashboard";
 
 export default function Dashboard() {
-  const { ethereum } = useMetaMask();
   const [selectedTab, setSelectedTab] = useState<"inQueue" | "issued">(
     "inQueue"
   );

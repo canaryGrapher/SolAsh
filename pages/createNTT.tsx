@@ -5,8 +5,7 @@ var tagsInput = require("tags-input");
 import { useEffect, useState } from "react";
 import Router from "next/router";
 import { useMetaMask } from "metamask-react";
-import { useQuery } from "@apollo/client";
-import { GET_EVENT_DETAILS } from "../utils/subgraph/queries";
+import { deployNTT } from "@graphAPI/createNTT";
 
 import {
   Form_Banner,
@@ -15,144 +14,55 @@ import {
   Create_Token,
 } from "@resources/exports";
 
-import { ethers } from "ethers";
-import Factory from "../artifacts/contracts/Factory.sol/Factory.json";
-import NTTEvent from "../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
-import { factoryContractAddress } from "../config";
-
 export default function CreateNTT() {
   const [typeOfForm, setTypeOfForm] = useState<any>("Certificate");
   const { ethereum } = useMetaMask();
 
+  const mintNTT = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // prettier-ignore
+    // @ts-ignore
+    const { nttTitle, nttDescription, associatedWebsite, imageFile, associatedCommunity, startDate, endDate, walletAddresses } = e.target.elements;
+    console.log(
+      nttTitle.value,
+      nttDescription.value,
+      associatedWebsite.value,
+      imageFile.value,
+      associatedCommunity.value,
+      startDate.value,
+      endDate.value,
+      walletAddresses.value
+    );
+
+    const startDateTimestamp = new Date(startDate.value);
+    const endDateTimestamp = new Date(endDate.value);
+    deployNTT(
+      nttTitle.value,
+      nttDescription.value,
+      associatedWebsite.value.split(","),
+      "",
+      associatedCommunity.value,
+      BigInt(startDateTimestamp.getMilliseconds()),
+      BigInt(endDateTimestamp.getMilliseconds()),
+      walletAddresses.value.split(","),
+      ethereum
+    );
+  };
 
   useEffect(() => {
     tagsInput(document.querySelector("#walletAddresses"));
-    if (Router.query.type === "Certificate" || Router.query.type === "Token") {
-      setTypeOfForm(Router.query.type);
+  }, []);
+
+  useEffect(() => {
+    const route = Router.query.type;
+    if (route === "Certificate" || route === "Token") {
+      setTypeOfForm(route);
     } else {
       alert("Invalid type in URL! Redirecting you back to the dashboard.");
       Router.push("/dashboard");
     }
   }, []);
-
-
-  const getEventDetails = (contractAddress: string) => {
-    //write code to fetch contract data from contractaddress
-    const { loading, error, data } = useQuery(GET_EVENT_DETAILS(contractAddress));
-    if (loading) console.log("getEventDetails: Loading");
-
-    if (error) console.log("getEventDetails: Error");
-    
-    if (data) console.log("getEventDetails: ", data.nttcontracts);
-  };
-
-  const deployNTT = async (
-    title: string = "",
-    description: string = "",
-    links: [] = [],
-    imageHash: string = "",
-    associatedCommunity: string = "",
-    startDate: BigInt, //default value should be current time
-    endDate: BigInt = BigInt(0),
-    list: [] = []
-  ) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      factoryContractAddress,
-      Factory.abi,
-      signer
-    );
-
-    try {
-      const transaction = await contract.deployNTT(
-        title,
-        description,
-        links,
-        imageHash,
-        associatedCommunity,
-        startDate,
-        endDate,
-        list
-      );
-      const status = await transaction.wait();
-      console.log("DeployNTT: ", status);
-
-      //Navigate to dashboard : ntts in queue
-    } catch (err) {
-      alert("DeployNTT: " + err);
-    }
-  };
-
-  //Functions to update details
-  const addToWhitelist = async (nttContractAddress: string, list: []) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      nttContractAddress,
-      NTTEvent.abi,
-      signer
-    );
-
-    try {
-      const transaction = await contract.addToWhitelist(list);
-      const status = await transaction.wait();
-      console.log("addToWhitelist: ", status);
-    } catch (err) {
-      alert("addToWhitelist: " + err);
-    }
-  };
-
-  const removeFromWhitelist = async (nttContractAddress: string, list: []) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      nttContractAddress,
-      NTTEvent.abi,
-      signer
-    );
-
-    try {
-      const transaction = await contract.removeFromWhitelist(list);
-      const status = await transaction.wait();
-      console.log("removeFromWhitelist: ", status);
-    } catch (err) {
-      alert("removeFromWhitelist: " + err);
-    }
-  };
-
-  //TODO: default values must be the value of the existing eventdetail
-  const updateDetails = async (
-    nttContractAddress: string,
-    title: string = "",
-    description: string = "",
-    links: [] = [],
-    imageHash: string = "",
-    associatedCommunity: string = ""
-  ) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      nttContractAddress,
-      NTTEvent.abi,
-      signer
-    );
-
-    try {
-      const transaction = await contract.updateDetails(
-        title,
-        description,
-        links,
-        imageHash,
-        associatedCommunity
-      );
-      const status = await transaction.wait();
-      console.log("updateDetails: ", status);
-    } catch (err) {
-      alert("updateDetails: " + err);
-    }
-  };
-
 
   return (
     <RootLayout>
@@ -200,7 +110,7 @@ export default function CreateNTT() {
                 </div>
               </div>
               <div className={styles.form_wrapper}>
-                <form>
+                <form onSubmit={mintNTT}>
                   <div className={styles.form_component}>
                     <label>
                       Associated Community/Organization
