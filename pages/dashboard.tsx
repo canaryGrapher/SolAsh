@@ -72,43 +72,6 @@ export default function Dashboard() {
     "inQueue"
   );
 
-  //Functions to update details
-  // const addToWhitelist = async (nttContractAddress: string, list: []) => {
-  //   const provider = new ethers.providers.Web3Provider(ethereum);
-  //   const signer = provider.getSigner();
-  //   const contract = new ethers.Contract(
-  //     nttContractAddress,
-  //     // NTTEvent.abi,
-  //     signer
-  //   );
-
-  //   try {
-  //     const transaction = await contract.addToWhitelist(list);
-  //     const status = await transaction.wait();
-  //     console.log("addToWhitelist: ", status);
-  //   } catch (err) {
-  //     alert("addToWhitelist: " + err);
-  //   }
-  // };
-
-  // const removeFromWhitelist = async (nttContractAddress: string, list: []) => {
-  //   const provider = new ethers.providers.Web3Provider(ethereum);
-  //   const signer = provider.getSigner();
-  //   const contract = new ethers.Contract(
-  //     nttContractAddress,
-  //     NTTEvent.abi,
-  //     signer
-  //   );
-
-  //   try {
-  //     const transaction = await contract.removeFromWhitelist(list);
-  //     const status = await transaction.wait();
-  //     console.log("removeFromWhitelist: ", status);
-  //   } catch (err) {
-  //     alert("removeFromWhitelist: " + err);
-  //   }
-  // };
-
   const userContext = useContext(UserContext);
   const inQueue = inQueueEvents(userContext.userName);
   const issued = issuedEvents(userContext.userName);

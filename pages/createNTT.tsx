@@ -20,37 +20,7 @@ import { factoryContractAddress } from "../config";
 export default function CreateNTT() {
   const [typeOfForm, setTypeOfForm] = useState<any>("Certificate");
   const { ethereum } = useMetaMask();
-  //TODO: default values must be the value of the existing eventdetail
-  const updateDetails = async (
-    nttContractAddress: string,
-    title: string = "",
-    description: string = "",
-    links: [] = [],
-    imageHash: string = "",
-    associatedCommunity: string = ""
-  ) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      nttContractAddress,
-      NTTEvent.abi,
-      signer
-    );
 
-    try {
-      const transaction = await contract.updateDetails(
-        title,
-        description,
-        links,
-        imageHash,
-        associatedCommunity
-      );
-      const status = await transaction.wait();
-      console.log("updateDetails: ", status);
-    } catch (err) {
-      alert("updateDetails: " + err);
-    }
-  };
 
   useEffect(() => {
     tagsInput(document.querySelector("#walletAddresses"));
@@ -140,6 +110,39 @@ export default function CreateNTT() {
       alert("removeFromWhitelist: " + err);
     }
   };
+
+  //TODO: default values must be the value of the existing eventdetail
+  const updateDetails = async (
+    nttContractAddress: string,
+    title: string = "",
+    description: string = "",
+    links: [] = [],
+    imageHash: string = "",
+    associatedCommunity: string = ""
+  ) => {
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      nttContractAddress,
+      NTTEvent.abi,
+      signer
+    );
+
+    try {
+      const transaction = await contract.updateDetails(
+        title,
+        description,
+        links,
+        imageHash,
+        associatedCommunity
+      );
+      const status = await transaction.wait();
+      console.log("updateDetails: ", status);
+    } catch (err) {
+      alert("updateDetails: " + err);
+    }
+  };
+
 
   return (
     <RootLayout>
