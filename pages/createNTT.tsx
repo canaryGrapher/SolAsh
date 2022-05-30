@@ -5,6 +5,8 @@ var tagsInput = require("tags-input");
 import { useEffect, useState } from "react";
 import Router from "next/router";
 import { useMetaMask } from "metamask-react";
+import { useQuery } from "@apollo/client";
+import { GET_EVENT_DETAILS } from "../utils/subgraph/queries";
 
 import {
   Form_Banner,
@@ -12,6 +14,7 @@ import {
   Create_Certificate,
   Create_Token,
 } from "@resources/exports";
+
 import { ethers } from "ethers";
 import Factory from "../artifacts/contracts/Factory.sol/Factory.json";
 import NTTEvent from "../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
@@ -32,8 +35,15 @@ export default function CreateNTT() {
     }
   }, []);
 
-  const importDataFromContractID = async (contractID: string) => {
-    //write code to fetch contract data from contractID
+
+  const getEventDetails = (contractAddress: string) => {
+    //write code to fetch contract data from contractaddress
+    const { loading, error, data } = useQuery(GET_EVENT_DETAILS(contractAddress));
+    if (loading) console.log("getEventDetails: Loading");
+
+    if (error) console.log("getEventDetails: Error");
+    
+    if (data) console.log("getEventDetails: ", data.nttcontracts);
   };
 
   const deployNTT = async (
