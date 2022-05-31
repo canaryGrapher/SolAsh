@@ -3,7 +3,7 @@ import NTTEvent from "../../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
 import { ethers } from "ethers";
 import { useMetaMask } from "metamask-react";
 import { useQuery } from "@apollo/client";
-import { GET_USER_STATUS } from "@utils/subgraph/queries";
+import { GET_USER_STATUS, GET_EVENT_DETAILS } from "../../utils/subgraph/queries";
 import UserContext from "@context/UserContext";
 import { useRouter } from "next/router";
 
@@ -43,6 +43,22 @@ const getUserStatus = (contractAddress: string, username: string) => {
 
   return 0;
 };
+
+
+const getEventDetails = (contractAddress: string) => {
+    const { loading, error, data } = useQuery(
+        GET_EVENT_DETAILS(contractAddress)
+    );
+    if (loading) console.log("getEventDetails: Loading");
+
+    if (error) console.log("getEventDetails: Error");
+
+    if (data) {
+      console.log("getEventDetails: ", data.nttcontracts);
+      return data.nttcontracts[0];
+    }
+};
+
 
 //Move this function inside the component
 const mintToken = async (contractAddress: string) => {
