@@ -1,5 +1,4 @@
 import { InformationModalProps } from "@interfaces/components/InformationModal";
-import Image from "next/image";
 import styles from "@styles/components/modal/Information.module.scss";
 import { Fragment } from "react";
 
@@ -10,7 +9,7 @@ const InformationModal: React.FC<InformationModalProps> = (props) => {
         <div className={styles.modal}>
           <div className={styles.image_container}>
             <div className={styles.certificate_image}>
-              <Image src={props.imageHash} height={300} width={300} />
+              <img src={props.imageHash} height={300} width={300} />
               <div className={styles.action_area}>
                 <div
                   className={styles.action_area_button}

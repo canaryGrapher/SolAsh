@@ -18,6 +18,7 @@ interface NTTtype {
     image: string;
     type: string;
     claimedStatus: IClaims[];
+    contractAddress: string;
 }
 
 

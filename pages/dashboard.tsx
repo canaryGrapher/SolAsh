@@ -6,7 +6,6 @@ import CreatorCards from "@components/pages/dashboard/CreatorCards";
 import IssueChooser from "@components/pages/dashboard/IssueChooser";
 import { Home_Banner } from "@resources/exports";
 import { NTTtype } from "@interfaces/pages/Dashboard";
-import { useMetaMask } from "metamask-react";
 import UserContext from "@context/UserContext";
 import { inQueueEvents, issuedEvents } from "@graphAPI/dashboard";
 
@@ -82,7 +81,12 @@ export default function Dashboard() {
                 {selectedTab === "issued" &&
                   issued.length > 0 &&
                   issued.map((token: NTTtype, index: number) => (
-                    <CreatorCards {...token} type="issued" key={index} />
+                    <CreatorCards
+                      {...token}
+                      type="issued"
+                      key={index}
+                      contractAddress={token.contractAddress}
+                    />
                   ))}
                 {selectedTab === "issued" && issued.length === 0 ? (
                   <div className={styles.emptyBox}>

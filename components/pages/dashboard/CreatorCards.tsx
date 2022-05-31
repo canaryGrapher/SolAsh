@@ -1,19 +1,27 @@
 import styles from "@styles/components/pages/CreatorCards.module.scss";
 import { NTTtype } from "@interfaces/pages/Dashboard";
-import Image from "next/image";
 import { useQuery } from "@apollo/client";
 import { GET_ISSUER_STATUS } from "../../../utils/subgraph/queries";
 import { Fragment, useState } from "react";
 import IssuedNTTCardModal from "@components/modal/issuedNTT";
 import Link from "next/link";
 
-
 function getIssuerStatus(contractAddress: string) {
   const { loading, error, data } = useQuery(GET_ISSUER_STATUS(contractAddress));
   if (loading) console.log("issuerStatus: Loading");
   if (error) console.log("issuerStatus: Error");
-  if (data) console.log("issuerStatus: ", data.whitelistItems);
+  if (data) {
+    console.log("issuerStatus: ", data.whitelistItems);
+    return data.whitelistItems;
+  }
 }
+/*
+whitelistItems schema:
+    id: ID!                         //contractAddress_userAddress
+    contractAddress: Bytes!
+    userAddress: Bytes!
+    status: BigInt!
+*/
 
 const CreatorCards = (props: NTTtype) => {
   const [modal, openModal] = useState(false);
@@ -36,11 +44,13 @@ const CreatorCards = (props: NTTtype) => {
           {...props}
           closeModal={closeModal}
           burnToken={burnToken}
+          getIssuerStatus={getIssuerStatus}
+          contractAddress={props.contractAddress}
         />
       ) : null}
       <div className={styles.certificate_container}>
         <div className={styles.certificate_image}>
-          <Image
+          <img
             src={
               "https://images.unsplash.com/photo-1642388538891-38b2d14e750e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
             }

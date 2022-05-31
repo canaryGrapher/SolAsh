@@ -56,7 +56,7 @@ const GET_EVENT_DETAILS = (contractAddress: string) => gql`
 `;
 
 
-const GET_EVENTS_IN_QUEUE = (currentTime: any, creatorAddress : string) => gql`
+const GET_EVENTS_IN_QUEUE = (currentTime: any, creatorAddress: string) => gql`
   query {
     nttcontracts(
       where: { 
@@ -79,7 +79,7 @@ const GET_EVENTS_IN_QUEUE = (currentTime: any, creatorAddress : string) => gql`
   }
 `;
 
-const GET_EVENTS_ISSUED = (currentTime: any, creatorAddress : string) => gql`
+const GET_EVENTS_ISSUED = (currentTime: any, creatorAddress: string) => gql`
   query {
     nttcontracts(
       where: { 
@@ -118,6 +118,9 @@ const GET_TOKENS_ISSUED = (userAddress: string) => gql`
       creatorAddress
       receiverAddress
       title
+      description
+      links
+      imageHash
       associatedCommunity
       isValid
       timeStamp
@@ -138,7 +141,7 @@ const GET_ISSUER_STATUS = (contractAddress: string) => gql`
   }
 `;
 
-const GET_USER_STATUS = (contractAddress : string, userAddress : string) => gql`
+const GET_USER_STATUS = (contractAddress: string, userAddress: string) => gql`
   query {
     whitelistItems(
       where: { 

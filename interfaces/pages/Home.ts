@@ -52,6 +52,8 @@ interface TokenDetailType {
     timeStamp: string;
 }
 
+type TokenDetailsProps = TokenDetailType[] | []
+
 type finalTokenType = NTTtype[] | []
 
-export type { IPassedProps, NTTtype, TokenType, EventDetailsType, TokenDetailType, finalTokenType }
+export type { IPassedProps, NTTtype, TokenType, EventDetailsType, TokenDetailType, finalTokenType, TokenDetailsProps };

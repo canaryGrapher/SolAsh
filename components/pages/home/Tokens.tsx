@@ -1,7 +1,6 @@
 import styles from "@styles/components/pages/Tokens.module.scss";
 import { NTTtype, TokenDetailType } from "@interfaces/pages/Home";
 import InformationModal from "@components/modal/information";
-import Image from "next/image";
 import { useMetaMask } from "metamask-react";
 import { ethers } from "ethers";
 import NTTEvent from "../../../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
@@ -57,7 +56,7 @@ const Certificates = (props: TokenDetailType) => {
       ) : null}
       <div className={styles.certificate_container}>
         <div className={styles.certificate_image}>
-          <Image src={props.imageHash} height={200} width={200} />
+          <img src={props.imageHash} height={200} width={200} />
         </div>
         <div className={styles.certificate_information_container}>
           <div className={styles.certificate_information}>

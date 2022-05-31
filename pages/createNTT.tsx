@@ -35,11 +35,19 @@ export default function CreateNTT() {
       walletAddresses.value
     );
 
-    const startDateTimestamp = Math.floor(new Date(startDate.value).getTime() / 1000);
-    const endDateTimestamp = Math.floor(new Date(endDate.value).getTime() / 1000);;
+    const startDateTimestamp = Math.floor(
+      new Date(startDate.value).getTime() / 1000
+    );
+    const endDateTimestamp = Math.floor(
+      new Date(endDate.value).getTime() / 1000
+    );
 
     console.log("DATE1: ", startDateTimestamp, endDateTimestamp);
-    console.log("DATE2: ", BigInt(startDateTimestamp), BigInt(endDateTimestamp));
+    console.log(
+      "DATE2: ",
+      BigInt(startDateTimestamp),
+      BigInt(endDateTimestamp)
+    );
 
     deployNTT(
       nttTitle.value,
@@ -189,7 +197,6 @@ export default function CreateNTT() {
                           type="text"
                           name="walletAddresses"
                           id="walletAddresses"
-                          required={true}
                           placeholder="Start typing..."
                         />
                       </div>

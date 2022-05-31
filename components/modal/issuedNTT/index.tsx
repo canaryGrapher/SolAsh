@@ -1,18 +1,18 @@
 import { InformationModalProps } from "@interfaces/components/InformationModal";
-import Image from "next/image";
 import styles from "@styles/components/modal/IssuedNTTModal.module.scss";
 import { Fragment } from "react";
 
 import { ModalProps } from "@interfaces/components/creatorModal";
 
 const IssuedNTTCardModal: React.FC<ModalProps> = (props) => {
+  const issuerData = props.getIssuerStatus(props.contractAddress);
   return (
     <div className={styles.overlay}>
       <div className={styles.container}>
         <div className={styles.modal}>
           <div className={styles.image_container}>
             <div className={styles.certificate_image}>
-              <Image
+              <img
                 src={
                   "https://images.unsplash.com/photo-1642388538891-38b2d14e750e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
                 }
@@ -77,13 +77,20 @@ const IssuedNTTCardModal: React.FC<ModalProps> = (props) => {
                 <div className={styles.claims_list_item}>
                   <p>Wallet Address</p>
                   <p>Claimed?</p>
-                  <p>Claim date</p>
                 </div>
-                {props.claimedStatus?.map((claim) => (
+                {issuerData?.map((claim: any) => (
                   <div className={styles.claims_list_item}>
-                    <p>{claim.walletAddress}</p>
-                    <p>{claim.claimed ? "Claimed" : "Not claimed"}</p>
-                    <p>{claim.claimedOn ? claim.claimedOn : "-"}</p>
+                    <p>{claim.userAddress}</p>
+                    <p>
+                      {claim.status == "0"
+                        ? "Revoked"
+                        : claim.status == "1"
+                        ? "Claimed"
+                        : claim.status == "2"
+                        ? "Not claimed"
+                        : "Error"}
+                    </p>
+                    {/* <p>{claim.claimedOn ? claim.claimedOn : "-"}</p> */}
                     {claim.claimed ? (
                       <div
                         className={styles.burn_button}
