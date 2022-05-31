@@ -19,8 +19,8 @@ export default function Home() {
   // const [tokensData, setTokensData] = useState<NTTtype[] | []>([]);
 
   const fetchData = async () => {
-    const data = await getTokenData(userContext.userName);
-    console.log("Data: ", data);
+    const data = await getHomeData(userContext.userName);
+    console.log("Data1: ", data);
   };
 
   fetchData();

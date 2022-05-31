@@ -39,6 +39,19 @@ interface EventDetailsType {
     timeStamp: string;
 }
 
+interface TokenDetailType {
+    tokenId: string;
+    contractAddress: string;
+    creatorAddress: string;
+    receiverAddress: string;
+    title: string;
+    description: string;
+    links: string[] | [];
+    imageHash: string;
+    associatedCommunity: string;
+    timeStamp: string;
+}
+
 type finalTokenType = NTTtype[] | []
 
-export type { IPassedProps, NTTtype, TokenType, EventDetailsType, finalTokenType }
+export type { IPassedProps, NTTtype, TokenType, EventDetailsType, TokenDetailType, finalTokenType }
