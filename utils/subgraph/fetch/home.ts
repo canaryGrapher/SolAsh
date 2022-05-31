@@ -36,6 +36,7 @@ const getTokenData = async (userAddress: string) => {
     }
     return [];
 };
+
 const getEventDetails = async (contractAddress: string) => {
     const { loading, error, data } = useQuery(GET_EVENT_DETAILS(contractAddress));
     if (loading) console.log("ED: Loading");

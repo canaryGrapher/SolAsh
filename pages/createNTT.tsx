@@ -35,16 +35,20 @@ export default function CreateNTT() {
       walletAddresses.value
     );
 
-    const startDateTimestamp = new Date(startDate.value);
-    const endDateTimestamp = new Date(endDate.value);
+    const startDateTimestamp = Math.floor(new Date(startDate.value).getTime() / 1000);
+    const endDateTimestamp = Math.floor(new Date(endDate.value).getTime() / 1000);;
+
+    console.log("DATE1: ", startDateTimestamp, endDateTimestamp);
+    console.log("DATE2: ", BigInt(startDateTimestamp), BigInt(endDateTimestamp));
+
     deployNTT(
       nttTitle.value,
       nttDescription.value,
       associatedWebsite.value.split(","),
       "",
       associatedCommunity.value,
-      BigInt(startDateTimestamp.getMilliseconds()),
-      BigInt(endDateTimestamp.getMilliseconds()),
+      BigInt(startDateTimestamp),
+      BigInt(endDateTimestamp),
       walletAddresses.value.split(","),
       ethereum
     );
