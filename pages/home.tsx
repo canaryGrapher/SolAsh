@@ -16,14 +16,14 @@ export default function Home() {
     const userContext = useContext(UserContext);
 
     const ticketsData: TokenDetailType[] = [];
-    const tokensData: TokenDetailType[] = [];
+    const tokensData: TokenDetailType[] = getHomeData(userContext.userName).then((data: TokenDetailType[]) => data);
 
-    const fetchData = async () => {
-        const data = await getHomeData(userContext.userName);
-        console.log("fetchData:" , tokensData);
-    }
+    // const fetchData = async () => {
+    //     const data = await getHomeData(userContext.userName);
+    //     console.log("fetchData:" , tokensData);
+    // }
 
-    fetchData();
+    // fetchData();
 
     return (
       <RootLayout>
