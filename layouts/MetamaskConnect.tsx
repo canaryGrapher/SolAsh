@@ -95,7 +95,7 @@ const WalletConnected = ({
   return (
     <div className={styles.notification}>
       <h2>Connected</h2>
-      <p>{`Connected account ${account} on chain ID ${chainId}`}</p>
+      <p>{`Connected account ${account} on chain ID ${parseInt(chainId, 16)}`}</p>
       <button onClick={ButtonClickAction}>Got It</button>
     </div>
   );
