@@ -115,6 +115,7 @@ export default function CreateNTT() {
                     <label>
                       Associated Community/Organization
                       <input
+                        required={true}
                         className={styles.inputFields}
                         name="associatedCommunity"
                         id="associatedCommunity"
@@ -125,6 +126,7 @@ export default function CreateNTT() {
                     <label>
                       NTT Title
                       <input
+                        required={true}
                         className={styles.inputFields}
                         name="nttTitle"
                         id="nttTitle"
@@ -150,6 +152,7 @@ export default function CreateNTT() {
                           name="startDate"
                           id="startDate"
                           type="date"
+                          defaultValue={new Date().toISOString().split("T")[0]}
                           placeholder="When should we make this NTT available?"
                         />
                       </label>
@@ -161,6 +164,7 @@ export default function CreateNTT() {
                           id="endDate"
                           type="date"
                           placeholder="When should we stop redemption?"
+                          required={true}
                         />
                       </label>
                     </div>
@@ -181,6 +185,7 @@ export default function CreateNTT() {
                           type="text"
                           name="walletAddresses"
                           id="walletAddresses"
+                          required={true}
                           placeholder="Start typing..."
                         />
                       </div>
