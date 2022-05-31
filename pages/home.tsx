@@ -4,9 +4,9 @@ import RootLayout from "@layouts/Root";
 import Image from "next/image";
 import Certificates from "@components/pages/home/Tokens";
 import { Home_Banner } from "@resources/exports";
-import { NTTtype, TokenType, EventDetailsType } from "@interfaces/pages/Home";
+import { NTTtype } from "@interfaces/pages/Home";
 import UserContext from "@context/UserContext";
-import { getTokenData } from "@graphAPI/home";
+import { getHomeData } from "@graphAPI/home";
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState<"certificate" | "ticket">(

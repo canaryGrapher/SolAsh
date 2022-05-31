@@ -8,7 +8,7 @@ interface NTTtype {
     title: string;
     description: string;
     link: string[] | null;
-    // issueDate: string;  
+    issueDate: string;
     image: string;
     claimedOn: string;   //equivalent to token timestamp and claimedOn
 }
