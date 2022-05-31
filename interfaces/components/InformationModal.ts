@@ -1,6 +1,6 @@
-import { NTTtype } from "@interfaces/pages/Home"
+import { NTTtype, TokenDetailType } from "@interfaces/pages/Home"
 
-interface InformationModalProps extends NTTtype {
+interface InformationModalProps extends TokenDetailType {
     closeModal: () => void;
     revokeToken: () => void;
 

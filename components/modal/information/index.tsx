@@ -10,7 +10,7 @@ const InformationModal: React.FC<InformationModalProps> = (props) => {
         <div className={styles.modal}>
           <div className={styles.image_container}>
             <div className={styles.certificate_image}>
-              <Image src={props.image} height={300} width={300} />
+              <Image src={props.imageHash} height={300} width={300} />
               <div className={styles.action_area}>
                 <div
                   className={styles.action_area_button}
@@ -47,12 +47,12 @@ const InformationModal: React.FC<InformationModalProps> = (props) => {
                 </div> */}
                 <div className={styles.information}>
                   <p className={styles.label}>Claimed on: </p>
-                  <p className={styles.value}>{props.claimedOn}</p>
+                  <p className={styles.value}>{props.timeStamp}</p>
                 </div>
               </div>
               <div className={styles.information_websites}>
                 <p>Associated website(s):</p>
-                {props.link?.map((item) => (
+                {props.links?.map((item) => (
                   <Fragment>
                     <a href={item} target="_blank" referrerPolicy="no-referrer">
                       {item}

@@ -1,5 +1,5 @@
 import styles from "@styles/components/pages/Tokens.module.scss";
-import { NTTtype } from "@interfaces/pages/Home";
+import { NTTtype, TokenDetailType } from "@interfaces/pages/Home";
 import InformationModal from "@components/modal/information";
 import Image from "next/image";
 import { useMetaMask } from "metamask-react";
@@ -7,7 +7,7 @@ import { ethers } from "ethers";
 import NTTEvent from "../../../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
 import { Fragment, useState } from "react";
 
-const Certificates = (props: NTTtype) => {
+const Certificates = (props: TokenDetailType) => {
   const { ethereum } = useMetaMask();
   const [modal, openModal] = useState(false);
 
@@ -57,7 +57,7 @@ const Certificates = (props: NTTtype) => {
       ) : null}
       <div className={styles.certificate_container}>
         <div className={styles.certificate_image}>
-          <Image src={props.image} height={200} width={200} />
+          <Image src={props.imageHash} height={200} width={200} />
         </div>
         <div className={styles.certificate_information_container}>
           <div className={styles.certificate_information}>
