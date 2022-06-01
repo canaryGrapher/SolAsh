@@ -1,0 +1,99 @@
+.wrapper {
+  width: 100vw;
+  min-height: 80vh;
+  background-color: #111111;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .container {
+    max-height: 60%;
+    width: 60%;
+    background-color: #2d2d2d;
+    margin: auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+
+    .imageContainer {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .informationContainer {
+      padding-left: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .information_container {
+        h2 {
+          color: #ff5846;
+          font-size: 3rem;
+        }
+        p.community_information {
+          font-size: smaller;
+          color: #0e0e0e;
+          background-color: #ededed;
+          padding: 4px 8px 4px 8px;
+          color: #ff5846;
+          width: fit-content;
+          font-weight: 600;
+          border-radius: 5px;
+          margin-bottom: 10px;
+
+          span {
+            font-weight: bold;
+            color: #000000;
+          }
+        }
+        p.ntt_description {
+          color: #ffffff;
+          text-align: justify;
+        }
+
+        .information_area {
+          margin-top: 20px;
+
+          .information_about_dates {
+            display: grid;
+            grid-template-columns: 1fr;
+
+            .information {
+              display: flex;
+              font-weight: 700;
+
+              .label {
+                color: #ff5846;
+                padding-right: 6px;
+              }
+
+              .value {
+                color: #ffffff;
+              }
+            }
+          }
+
+          .information_websites {
+            p {
+              color: #ff5846;
+              font-weight: 700;
+              margin-top: 15px;
+            }
+
+            a {
+              color: #e2e2e2;
+              padding-left: 2px;
+
+              &:hover {
+                text-decoration: underline;
+                color: rgb(80, 80, 255);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
