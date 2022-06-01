@@ -1,121 +1,55 @@
 import { useState, Fragment, useEffect } from "react";
 import RootLayout from "@layouts/Root";
 import styles from "@styles/pages/claim/Claims.module.scss";
-import NTTEvent from "@contracts/NTTEvent.sol/NTTEvent.json";
-import { ethers } from "ethers";
 import { useMetaMask } from "metamask-react";
-import { useQuery } from "@apollo/client";
-import {
-  GET_USER_STATUS,
-  GET_EVENT_DETAILS,
-} from "../../utils/subgraph/queries";
 import { useRouter } from "next/router";
+import { getUserStatus, getEventDetails, mintToken } from "@graphAPI/claim";
 
-const Months = [
-  "Januray",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
-/*
-1. The link to this page shall be: localhost:port/claim/[contractAddress]
-2. Prompt the user to login if not, and redirect to this page on successful login
-3. After login, query the graph data to get the status of the current account:
-    3.1 if the account status is notClaimed then show the user the mint page
-        3.1.1 The mint page should show the details of the token and a mint button
-    3.2 if the account status is claimed, then inform the user that the token as already been minted, redirect to the home page
-    3.3 if the account status is revoked, then display a message showing not eligible to mint the token
-4. After the mint is successful, show success message and redirect to home page
-
-Status{
-    Revoked,     0
-    Claimed,     1 
-    NotClaimed   2
-}
-*/
-//   |
-//   |
-//  \ /
-//   v
-const getUserStatus = (contractAddress: string, username: string) => {
-  console.log("Usercontet: ", username);
-  const { loading, error, data } = useQuery(
-    GET_USER_STATUS(contractAddress, username)
-  );
-
-  if (loading) console.log("getUserStatus: Loading");
-  if (error) console.log("getUserStatus: Error");
-
-  if (data) {
-    console.log("getUserStatus: ", data.whitelistItems[0].stat);
-    return data.whitelistItems[0].status;
-  }
-
-  return 0;
-};
-
-const getDate = (dateItem: number) => {
-  const date = dateItem ? new Date(dateItem) : new Date();
-  return `${date.getDate()} ${Months[date.getMonth()]} ${date.getFullYear()}`;
-};
-
-const getEventDetails = (contractAddress: string) => {
-  const { loading, error, data } = useQuery(GET_EVENT_DETAILS(contractAddress));
-  if (loading) console.log("getEventDetails: Loading");
-
-  if (error) console.log("getEventDetails: Error");
-
-  if (data) {
-    console.log("getEventDetails: ", data.nttcontracts);
-    return data.nttcontracts[0];
-  }
-};
-
-//Move this function inside the component
-const mintToken = async (contractAddress: string) => {
-  const { ethereum } = useMetaMask();
-  const provider = new ethers.providers.Web3Provider(ethereum);
-  const signer = provider.getSigner();
-  const contract = new ethers.Contract(contractAddress, NTTEvent.abi, signer);
-
-  try {
-    const transaction = await contract.mint();
-    const status = await transaction.wait();
-    console.log("MINT STATUS: ", status);
-  } catch (err: any) {
-    console.log("Mint token: ", err.data.message);
-  }
+const getDate = (dateItemInSeconds: number) => {
+  let date = new Date(1970, 0, 1);
+  date.setSeconds(dateItemInSeconds);
+  console.log("Date: ", date);
+  return date.toLocaleString(undefined, { timeZone: "Asia/Kolkata" });
 };
 
 export default function Claim() {
+  const { ethereum } = useMetaMask();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [createdOnDate, setCreatedOnDate] = useState("");
+  const [status, setStatus] = useState("");
   const { account } = useMetaMask();
   const router = useRouter();
-  //   const userContext = useContext(UserContext);
   const parsedUrl: string = router.asPath.split("/")[2];
-  // @ts-ignore
-  const status = getUserStatus(parsedUrl, account);
-  const getEventData = getEventDetails(parsedUrl);
-  useEffect(() => {
-    let TempcreatedOnDate = getDate(Number(getEventData?.timeStamp)) || "";
-    let TempendDate = getDate(Number(getEventData?.endDate)) || "";
-    let TempstartDate = getDate(Number(getEventData?.startDate)) || "";
 
+  // @ts-ignore
+  const _status = getUserStatus(parsedUrl, account);
+  const getEventData = getEventDetails(parsedUrl);
+
+  useEffect(() => {
+    const TempcreatedOnDate = getDate(Number(getEventData?.timeStamp)) || "";
+
+    const TempstartDate = getDate(Number(getEventData?.startDate)) || "";
+
+    const TempendDate =
+      getEventData?.endDate != "0"
+        ? getDate(Number(getEventData?.endDate))
+        : "Eternity";
+
+    const currentDate = new Date();
+
+    if (
+      TempendDate != "Ethernity" &&
+      Math.floor(currentDate.getTime() / 1000) > Number(getEventData?.endDate)
+    ) {
+      setStatus("Expired");
+    } else {
+      setStatus(_status);
+    }
     setCreatedOnDate(TempcreatedOnDate);
     setEndDate(TempendDate);
     setStartDate(TempstartDate);
-  }, [getEventData]);
+  }, [getEventData, _status]);
 
   return (
     <RootLayout>
@@ -123,6 +57,17 @@ export default function Claim() {
         <div className={styles.container}>
           <div className={styles.imageContainer}>
             <img src={getEventData?.imageHash} />
+            {status === "2" ? (
+              <button onClick={() => mintToken(parsedUrl, ethereum)}>
+                Claim
+              </button>
+            ) : status === "1" ? (
+              <p className={styles.notice}>You already claimed this token</p>
+            ) : status === "0" ? (
+              <p className={styles.notice}>This Token is not claimable</p>
+            ) : (
+              <p className={styles.notice}>Claimable status has expired</p>
+            )}
           </div>
           <div className={styles.informationContainer}>
             <div className={styles.information_container}>
@@ -158,10 +103,6 @@ export default function Claim() {
                     <p className={styles.value}>
                       {getEventData?.contractAddress}
                     </p>
-                  </div>
-                  <div className={styles.information}>
-                    <p className={styles.label}>NTT ID: </p>
-                    <p className={styles.value}>{getEventData?.id}</p>
                   </div>
                 </div>
                 <div className={styles.information_websites}>
