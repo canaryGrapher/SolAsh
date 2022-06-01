@@ -52,7 +52,7 @@ const deployNTT = async (
 
         //Navigate to dashboard : ntts in queue
     } catch (err) {
-        alert("DeployNTT: " + err);
+        console.log("DeployNTT: " + err);
     }
 };
 
@@ -125,4 +125,39 @@ const updateDetails = async (
     }
 };
 
-export { getEventDetails, deployNTT, addToWhitelist, removeFromWhitelist, updateDetails };
+const mintNTT = async (e: React.ChangeEvent<HTMLFormElement>, ethereum: any) => {
+    // prettier-ignore
+    // @ts-ignore
+    const { nttTitle, nttDescription, associatedWebsite, imageFile, associatedCommunity, startDate, endDate, walletAddresses } = e.target.elements;
+    console.log(
+        nttTitle.value,
+        nttDescription.value,
+        associatedWebsite.value,
+        imageFile.value,
+        associatedCommunity.value,
+        startDate.value,
+        endDate.value,
+        walletAddresses.value
+    );
+
+    const startDateTimestamp = Math.floor(
+        new Date(startDate.value).getTime() / 1000
+    );
+    const endDateTimestamp = endDate.value ? Math.floor(
+        new Date(endDate.value).getTime() / 1000
+    ) : 0;
+
+    return await deployNTT(
+        nttTitle.value,
+        nttDescription.value,
+        associatedWebsite.value.split(","),
+        "",
+        associatedCommunity.value,
+        BigInt(startDateTimestamp),
+        BigInt(endDateTimestamp),
+        walletAddresses.value.split(","),
+        ethereum
+    );
+};
+
+export { getEventDetails, deployNTT, addToWhitelist, removeFromWhitelist, updateDetails, mintNTT };

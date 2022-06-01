@@ -44,6 +44,7 @@ interface TokenDetailType {
     contractAddress: string;
     creatorAddress: string;
     receiverAddress: string;
+    transactionHash: string;
     title: string;
     description: string;
     links: string[] | [];

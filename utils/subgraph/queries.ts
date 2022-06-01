@@ -117,6 +117,7 @@ const GET_TOKENS_ISSUED = (userAddress: string) => gql`
       tokenId
       creatorAddress
       receiverAddress
+      transactionHash
       title
       description
       links

@@ -34,22 +34,54 @@ const InformationModal: React.FC<InformationModalProps> = (props) => {
             <p className={styles.ntt_description}>{props.description}</p>
             <div className={styles.information_area}>
               <div className={styles.information_about_dates}>
-                {/* <div className={styles.information}>
-                  <p className={styles.label}>Issued on: </p>
-                  <p className={styles.value}>{props.issueDate}</p>
-                </div> */}
-                {/* <div className={styles.information}>
-                  <p className={styles.label}>Expiry date: </p>
-                  <p className={styles.value}>
-                    {props.expiryDate ? props.expiryDate : "null"}
-                  </p>
-                </div> */}
                 <div className={styles.information}>
                   <p className={styles.label}>Claimed on: </p>
                   <p className={styles.value}>{props.timeStamp}</p>
                 </div>
+                <div className={styles.information}>
+                  <p className={styles.label}>Token Id: </p>
+                  <p className={styles.value}>{props.tokenId}</p>
+                </div>
+                <div className={styles.information}>
+                  <p className={styles.label}>Creator Address: </p>
+                  <p className={styles.value}>
+                    <a
+                      href={`https://mumbai.polygonscan.com/address/${props.creatorAddress}`}
+                      target="_blank"
+                      referrerPolicy="no-referrer"
+                    >
+                      {props.creatorAddress}
+                    </a>
+                  </p>
+                </div>
+                <div className={styles.information}>
+                  <p className={styles.label}>Contract Address: </p>
+                  <p className={styles.value}>
+                    <a
+                      href={`https://mumbai.polygonscan.com/address/${props.contractAddress}`}
+                      target="_blank"
+                      referrerPolicy="no-referrer"
+                    >
+                      {props.contractAddress}
+                    </a>
+                  </p>
+                </div>
               </div>
               <div className={styles.information_websites}>
+                <p>
+                  Transaction:{" "}
+                  <a
+                    href={`https://mumbai.polygonscan.com/tx/${props.transactionHash}`}
+                    target="_blank"
+                    referrerPolicy="no-referrer"
+                  >
+                    {`mumbai.polygonscan.com/tx/${
+                      props.transactionHash.slice(0, 6) +
+                      "...." +
+                      props.transactionHash.slice(-4)
+                    }`}
+                  </a>
+                </p>
                 <p>Associated website(s):</p>
                 {props.links?.map((item) => (
                   <Fragment>

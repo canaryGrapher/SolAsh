@@ -179,6 +179,17 @@
               }
             }
 
+            .errorMessage {
+              color: #ffffff;
+              font-size: 1.05rem;
+              text-align: center;
+              font-weight: bold;
+              margin: 5px 0;
+              span {
+                color: #ff5846;
+              }
+            }
+
             .submit_button {
               margin: 40px auto 20px auto;
               padding: 10px 30px;

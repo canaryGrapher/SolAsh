@@ -14,6 +14,7 @@ const getHomeData = (userAddress: string) => {
                     title: token.title,
                     creatorAddress: token.creatorAddress,
                     receiverAddress: token.receiverAddress,
+                    transactionHash: token.transactionHash,
                     tokenId: token.tokenId,
                     associatedCommunity: token.associatedCommunity,
                     description: token.description || "",
