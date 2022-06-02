@@ -20,12 +20,12 @@ const getEventDetails = (contractAddress: string) => {
 const deployNTT = async (
     title: string = "",
     description: string = "",
-    links: [] = [],
+    links: string[] = [""],
     imageHash: string = "",
     associatedCommunity: string = "",
     startDate: BigInt, //default value should be current time
     endDate: BigInt = BigInt(0),
-    list: [] = [],
+    list: string[] = [""],
     ethereum: any
 ) => {
     const provider = new ethers.providers.Web3Provider(ethereum);
@@ -125,37 +125,45 @@ const updateDetails = async (
     }
 };
 
-const mintNTT = async (e: React.ChangeEvent<HTMLFormElement>, ethereum: any) => {
-    // prettier-ignore
-    // @ts-ignore
-    const { nttTitle, nttDescription, associatedWebsite, imageFile, associatedCommunity, startDate, endDate, walletAddresses } = e.target.elements;
+const mintNTT = async (
+    nttTitle : string, 
+    nttDescription : string, 
+    associatedWebsite : string, 
+    imageFile : string, 
+    associatedCommunity : string, 
+    startDate : any, 
+    endDate : any, 
+    walletAddresses : string,
+    ethereum: any) => {
+    
+
     console.log(
-        nttTitle.value,
-        nttDescription.value,
-        associatedWebsite.value,
-        imageFile.value,
-        associatedCommunity.value,
-        startDate.value,
-        endDate.value,
-        walletAddresses.value
+        nttTitle,
+        nttDescription,
+        associatedWebsite,
+        imageFile,
+        associatedCommunity,
+        startDate,
+        endDate,
+        walletAddresses
     );
 
     const startDateTimestamp = Math.floor(
-        new Date(startDate.value).getTime() / 1000
+        new Date(startDate).getTime() / 1000
     );
     const endDateTimestamp = endDate.value ? Math.floor(
-        new Date(endDate.value).getTime() / 1000
+        new Date(endDate).getTime() / 1000
     ) : 0;
 
     return await deployNTT(
-        nttTitle.value,
-        nttDescription.value,
-        associatedWebsite.value.split(","),
-        "",
-        associatedCommunity.value,
+        nttTitle,
+        nttDescription,
+        associatedWebsite.split(","),
+        imageFile,
+        associatedCommunity,
         BigInt(startDateTimestamp),
         BigInt(endDateTimestamp),
-        walletAddresses.value.split(","),
+        walletAddresses.split(","),
         ethereum
     );
 };

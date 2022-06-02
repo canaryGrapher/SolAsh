@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Fragment, useEffect, useState } from "react";
 import Router from "next/router";
 import { useMetaMask } from "metamask-react";
-import { mintNTT } from "@graphAPI/createNTT";
+import { mintNTT, deployNTT } from "@graphAPI/createNTT";
 import Waiting from "@components/modal/misc/Waiting";
 // @ts-ignore
 import WAValidator from "wallet-address-validator";
@@ -71,12 +71,12 @@ export default function CreateNTT({ parameters }: any) {
   // form related states
   const [startDateValue, setStartDateValue] = useState<any>();
   const [endDateValue, setEndDateValue] = useState<any>();
-  const [walletValue, setWalletValue] = useState<string>();
-  const [communityValue, setCommunityValue] = useState<string>();
-  const [descriptionValue, setDescriptionValue] = useState<string>();
-  const [nttTitleValue, setNTTTitleValue] = useState<string>();
-  const [websiteValue, setWebsiteValue] = useState<string>();
-  const [imageUrl, setImageUrl] = useState<string>();
+  const [walletValue, setWalletValue] = useState<string>("");
+  const [communityValue, setCommunityValue] = useState<string>("");
+  const [descriptionValue, setDescriptionValue] = useState<string>("");
+  const [nttTitleValue, setNTTTitleValue] = useState<string>("");
+  const [websiteValue, setWebsiteValue] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const mintFunction = async (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -87,7 +87,7 @@ export default function CreateNTT({ parameters }: any) {
     );
     if (validInput) {
       setLoading(true);
-      mintNTT(e, ethereum)
+      mintNTT(nttTitleValue, descriptionValue, websiteValue, imageUrl, communityValue, startDateValue, endDateValue, walletValue, ethereum)
         .then((res) => {
           console.log(res);
           setMessage(
@@ -129,15 +129,17 @@ export default function CreateNTT({ parameters }: any) {
     // @ts-ignore
     const file = event.target.files[0];
 
+    if(!file) return ;
+    
     try {
       const added = await client.add(file, {
         progress: (prog) => console.log(`Received: ${prog}`),
       });
 
       const url = `https://ipfs.io/ipfs/${added.path}`;
-      setImageUrl(url);
+      setImageUrl(added.path);
 
-      console.log("Added file to IPFS:", imageUrl);
+      console.log("Added file to IPFS:" + imageUrl + " : " + url);
     } catch (error) {
       console.log("Error uploading file to IPFS: ", error);
     }

@@ -44,7 +44,7 @@ const Certificates = (props: TokenDetailType) => {
   };
 
   // burnTokenEvent("0xcdf2edc9cf96e277913566d3b04e6b63bfe5e7c0", BigInt(3));
-
+  console.log("IMG: ", props.imageHash);
   return (
     <Fragment>
       {modal ? (
@@ -56,7 +56,15 @@ const Certificates = (props: TokenDetailType) => {
       ) : null}
       <div className={styles.certificate_container}>
         <div className={styles.certificate_image}>
-          <img src={props.imageHash} height={200} width={200} />
+          <img 
+            src={
+              props.imageHash ? `https://ipfs.io/ipfs/${props.imageHash}` 
+              : 
+              "https://images.unsplash.com/photo-1642388538891-38b2d14e750e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
+              } 
+              height={200} 
+              width={200} 
+          />
         </div>
         <div className={styles.certificate_information_container}>
           <div className={styles.certificate_information}>
