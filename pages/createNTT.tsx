@@ -8,6 +8,22 @@ import { mintNTT } from "@graphAPI/createNTT";
 import Waiting from "@components/modal/misc/Waiting";
 // @ts-ignore
 import WAValidator from "wallet-address-validator";
+import { create } from "ipfs-http-client";
+
+const projectId = "26T71DQUMGsDqJcbmNzNdD2btBg";
+const projectSecret = "e54718eac074f9920126927927c75b23";
+const projectIdAndSecret = `${projectId}:${projectSecret}`;
+
+const client = create({
+  host: "ipfs.infura.io",
+  port: 5001,
+  protocol: "https",
+  headers: {
+    authorization: `Basic ${Buffer.from(projectIdAndSecret).toString(
+      "base64"
+    )}`,
+  },
+});
 
 const validateWalletInput = (wallet: string) => {
   const wallets = wallet.split(",");
@@ -60,7 +76,7 @@ export default function CreateNTT({ parameters }: any) {
   const [descriptionValue, setDescriptionValue] = useState<string>();
   const [nttTitleValue, setNTTTitleValue] = useState<string>();
   const [websiteValue, setWebsiteValue] = useState<string>();
-
+  const [imageUrl, setImageUrl] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const mintFunction = async (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -107,6 +123,25 @@ export default function CreateNTT({ parameters }: any) {
       }
     }
   };
+
+  const onImageChange = async (event : React.ChangeEvent<HTMLInputElement>) => {
+    //upload image to IPFS
+    // @ts-ignore
+    const file = event.target.files[0];
+
+    try {
+      const added = await client.add(file, {
+        progress: (prog) => console.log(`Received: ${prog}`),
+      });
+
+      const url = `https://ipfs.io/ipfs/${added.path}`;
+      setImageUrl(url);
+
+      console.log("Added file to IPFS:", imageUrl);
+    } catch (error) {
+      console.log("Error uploading file to IPFS: ", error);
+    }
+  }
 
   var tzoffset = new Date().getTimezoneOffset() * 60000;
   const today = new Date(Date.now() - tzoffset);
@@ -290,6 +325,7 @@ export default function CreateNTT({ parameters }: any) {
                           id="imageFile"
                           type="file"
                           accept="image/*"
+                          onChange={onImageChange}
                         />
                       </label>
                       <p className={styles.errorMessage}>
