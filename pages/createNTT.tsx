@@ -9,6 +9,12 @@ import Waiting from "@components/modal/misc/Waiting";
 // @ts-ignore
 import WAValidator from "wallet-address-validator";
 import { create } from "ipfs-http-client";
+import {
+  Form_Banner,
+  Back_Button,
+  Create_Certificate,
+  Create_Token,
+} from "@resources/exports";
 
 const projectId = "26T71DQUMGsDqJcbmNzNdD2btBg";
 const projectSecret = "e54718eac074f9920126927927c75b23";
@@ -27,38 +33,49 @@ const client = create({
 
 const validateWalletInput = (wallet: string) => {
   const wallets = wallet.split(",");
-  console.log();
+  console.log(wallets);
   let isValid = true;
   for (let i = 0; i < wallets.length; i++) {
-    if (!WAValidator.validate(wallets[i].trim(), "ETH")) {
-      isValid = false;
-      console.log(`Wallet ${wallets[i]} is not valid`);
-    } else {
-      console.log(`Wallet ${wallets[i]} is valid`);
+    const currentWallet = wallets[i].trim();
+    console.log("Current Wallet: ", currentWallet);
+    if (currentWallet.length > 0) {
+      if (!WAValidator.validate(currentWallet, "ETH")) {
+        isValid = false;
+        console.log(`Wallet ${wallets[i]} is not valid`);
+      } else {
+        console.log(`Wallet ${wallets[i]} is valid`);
+      }
     }
   }
   return isValid;
 };
 
-function hasDuplicates(wallets: string) {
+function containsDuplicates(wallets: string) {
   const array = wallets.split(",");
-  var valuesSoFar = [];
-  for (var i = 0; i < array.length; ++i) {
-    var value = array[i];
-    if (valuesSoFar.indexOf(value) !== -1) {
-      return true;
-    }
-    valuesSoFar.push(value);
+  const newArray = array.map((element: string) => {
+    return element.trim();
+  });
+  if (newArray.length !== new Set(newArray).size) {
+    return true;
   }
   return false;
 }
 
-import {
-  Form_Banner,
-  Back_Button,
-  Create_Certificate,
-  Create_Token,
-} from "@resources/exports";
+const generateTimeStamp = () => {
+  var tzoffset = new Date().getTimezoneOffset() * 60000;
+  const today = new Date(Date.now() - tzoffset);
+  const startDate = new Date(today.getTime());
+  startDate.setTime(startDate.getTime() + 60 * 60 * 1000 * 2);
+  const StartFormat = startDate
+    .toISOString()
+    .substring(0, ((startDate.toISOString().indexOf("T") | 0) + 6) | 0);
+  const endDate = new Date(today.getTime() + 60 * 60 * 1000 * 2);
+
+  const NextFormat = endDate
+    .toISOString()
+    .substring(0, ((endDate.toISOString().indexOf("T") | 0) + 6) | 0);
+  return { StartFormat: StartFormat, NextFormat: NextFormat };
+};
 
 export default function CreateNTT({ parameters }: any) {
   const { ethereum } = useMetaMask();
@@ -69,15 +86,16 @@ export default function CreateNTT({ parameters }: any) {
   );
 
   // form related states
-  const [startDateValue, setStartDateValue] = useState<any>();
-  const [endDateValue, setEndDateValue] = useState<any>();
+  const [startDateValue, setStartDateValue] = useState<any>("");
+  const [endDateValue, setEndDateValue] = useState<any>("");
   const [walletValue, setWalletValue] = useState<string>("");
   const [communityValue, setCommunityValue] = useState<string>("");
   const [descriptionValue, setDescriptionValue] = useState<string>("");
   const [nttTitleValue, setNTTTitleValue] = useState<string>("");
   const [websiteValue, setWebsiteValue] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [uploadMessage, setUploadMessage] = useState<string>("");
 
   const mintFunction = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -87,7 +105,17 @@ export default function CreateNTT({ parameters }: any) {
     );
     if (validInput) {
       setLoading(true);
-      mintNTT(nttTitleValue, descriptionValue, websiteValue, imageUrl, communityValue, startDateValue, endDateValue, walletValue, ethereum)
+      mintNTT(
+        nttTitleValue,
+        descriptionValue,
+        websiteValue,
+        imageUrl,
+        communityValue,
+        startDateValue,
+        endDateValue,
+        walletValue,
+        ethereum
+      )
         .then((res) => {
           console.log(res);
           setMessage(
@@ -109,28 +137,32 @@ export default function CreateNTT({ parameters }: any) {
     }
   };
 
-  const checkValidity = () => {
-    if (walletValue) {
-      const valid = validateWalletInput(walletValue);
-      if (!valid) {
-        setErrorMessage("One or more wallet addresses isn't valid");
-      } else {
-        setErrorMessage("");
-      }
-      const duplicates = hasDuplicates(walletValue);
-      if (duplicates) {
-        setErrorMessage("One or more repeated wallet addresses");
+  const checkValidity = (value: string) => {
+    console.log(value);
+    setErrorMessage("");
+    setWalletValue(value);
+    const duplicates = containsDuplicates(value);
+    if (duplicates) {
+      setErrorMessage("One or more repeated wallet addresses");
+    } else {
+      if (value.length > 0) {
+        const valid = validateWalletInput(value);
+        if (!valid) {
+          setErrorMessage("One or more wallet addresses isn't valid");
+        } else {
+          setErrorMessage("");
+        }
       }
     }
   };
 
-  const onImageChange = async (event : React.ChangeEvent<HTMLInputElement>) => {
+  const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     //upload image to IPFS
     // @ts-ignore
     const file = event.target.files[0];
 
-    if(!file) return ;
-    
+    if (!file) return;
+    setUploadMessage("Uploading image...");
     try {
       const added = await client.add(file, {
         progress: (prog) => console.log(`Received: ${prog}`),
@@ -138,25 +170,14 @@ export default function CreateNTT({ parameters }: any) {
 
       const url = `https://ipfs.io/ipfs/${added.path}`;
       setImageUrl(added.path);
-
       console.log("Added file to IPFS:" + imageUrl + " : " + url);
+      setUploadMessage("Uploaded");
     } catch (error) {
       console.log("Error uploading file to IPFS: ", error);
     }
-  }
+  };
 
-  var tzoffset = new Date().getTimezoneOffset() * 60000;
-  const today = new Date(Date.now() - tzoffset);
-  const startDate = new Date(today.getTime());
-  startDate.setTime(startDate.getTime() + 60 * 60 * 1000 * 2);
-  const StartFormat = startDate
-    .toISOString()
-    .substring(0, ((startDate.toISOString().indexOf("T") | 0) + 6) | 0);
-  const endDate = new Date(today.getTime() + 60 * 60 * 1000 * 2);
-
-  const NextFormat = endDate
-    .toISOString()
-    .substring(0, ((endDate.toISOString().indexOf("T") | 0) + 6) | 0);
+  const { StartFormat, NextFormat } = generateTimeStamp();
 
   useEffect(() => {
     const route = parameters;
@@ -222,7 +243,6 @@ export default function CreateNTT({ parameters }: any) {
                     onSubmit={(e: React.ChangeEvent<HTMLFormElement>) =>
                       mintFunction(e)
                     }
-                    onChange={checkValidity}
                   >
                     <div className={styles.form_component}>
                       <label>
@@ -314,7 +334,7 @@ export default function CreateNTT({ parameters }: any) {
                           required={true}
                           name="walletAddresses"
                           value={walletValue}
-                          onChange={(e) => setWalletValue(e.target.value)}
+                          onChange={(e) => checkValidity(e.target.value)}
                           id="walletAddresses"
                           placeholder="Start typing..."
                         ></textarea>
@@ -329,6 +349,7 @@ export default function CreateNTT({ parameters }: any) {
                           accept="image/*"
                           onChange={onImageChange}
                         />
+                        <p>{uploadMessage}</p>
                       </label>
                       <p className={styles.errorMessage}>
                         {errorMessage ? <span>Error: </span> : null}
@@ -351,9 +372,13 @@ export default function CreateNTT({ parameters }: any) {
 
 export async function getServerSideProps({ query }: any) {
   const parameters = query.type;
+  const mode = query.mode;
+  const contractAddress = query.contractAddress ? query.contractAddress : "";
   return {
     props: {
       parameters,
+      mode,
+      contractAddress,
     },
   };
 }

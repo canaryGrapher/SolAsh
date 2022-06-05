@@ -37,6 +37,7 @@ const CreatorCards = (props: NTTtype) => {
   const closeModal = () => {
     openModal(false);
   };
+  // console.log(props);
   return (
     <Fragment>
       {modal ? (
@@ -52,8 +53,9 @@ const CreatorCards = (props: NTTtype) => {
         <div className={styles.certificate_image}>
           <img
             src={
-              props.image ? `https://ipfs.io/ipfs/${props.image}` : 
-              "https://images.unsplash.com/photo-1642388538891-38b2d14e750e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
+              props.image
+                ? `https://ipfs.io/ipfs/${props.image}`
+                : "https://images.unsplash.com/photo-1642388538891-38b2d14e750e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
             }
             height={200}
             width={200}
@@ -67,7 +69,9 @@ const CreatorCards = (props: NTTtype) => {
             </div>
             <div className={styles.action_area}>
               {props.type === "inQueue" ? (
-                <Link href={`/createNTT?type=Certificate&id=${"HI"}`}>
+                <Link
+                  href={`/createNTT?type=Certificate&address=${props.contractAddress}&mode=edit`}
+                >
                   <button>Edit</button>
                 </Link>
               ) : (

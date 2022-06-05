@@ -126,16 +126,16 @@ const updateDetails = async (
 };
 
 const mintNTT = async (
-    nttTitle : string, 
-    nttDescription : string, 
-    associatedWebsite : string, 
-    imageFile : string, 
-    associatedCommunity : string, 
-    startDate : any, 
-    endDate : any, 
-    walletAddresses : string,
+    nttTitle: string,
+    nttDescription: string,
+    associatedWebsite: string,
+    imageFile: string,
+    associatedCommunity: string,
+    startDate: any,
+    endDate: any,
+    walletAddresses: string,
     ethereum: any) => {
-    
+
 
     console.log(
         nttTitle,
@@ -151,7 +151,7 @@ const mintNTT = async (
     const startDateTimestamp = Math.floor(
         new Date(startDate).getTime() / 1000
     );
-    const endDateTimestamp = endDate.value ? Math.floor(
+    const endDateTimestamp = endDate.value && endDate.length > 0 ? Math.floor(
         new Date(endDate).getTime() / 1000
     ) : 0;
 

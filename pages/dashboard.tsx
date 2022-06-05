@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import styles from "@styles/pages/dashboard/Dashboard.module.scss";
 import RootLayout from "@layouts/Root";
 import Image from "next/image";
@@ -17,7 +17,7 @@ export default function Dashboard() {
   const userContext = useContext(UserContext);
   const inQueue = inQueueEvents(userContext.userName);
   const issued = issuedEvents(userContext.userName);
-
+  console.log(inQueue);
   return (
     <RootLayout>
       <main className={styles.main}>
