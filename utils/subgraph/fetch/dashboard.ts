@@ -24,6 +24,7 @@ function inQueueEvents(creatorAddress: string) {
                 image: ntt.imageHash,
                 type: "Certificate",
                 claimedStatus: [],
+                contractAddress: ntt.contractAddress,
             };
         });
         return formatted_data;

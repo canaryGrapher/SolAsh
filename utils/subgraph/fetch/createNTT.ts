@@ -50,11 +50,41 @@ const deployNTT = async (
         const status = await transaction.wait();
         console.log("DeployNTT: ", status);
 
+        const deployedContractAddress =  await getNTTContractCreatedEvent(ethereum);
+        console.log("deployNTT address: ", deployedContractAddress);
+        return deployedContractAddress;
         //Navigate to dashboard : ntts in queue
     } catch (err) {
         console.log("DeployNTT: " + err);
     }
 };
+
+const getNTTContractCreatedEvent = async (ethereum : any) => {
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const contract = new ethers.Contract(
+        factoryContractAddress,
+        Factory.abi,
+        provider
+    );
+    
+    const addr = contract.on("NTTContractCreated", (
+        contractId : BigInt, 
+        contractAddress: string,
+        creatorAddress: string,
+        title: string,
+        description: string,
+        links: string[],
+        imageHash: string,
+        associatedCommunity: string,
+        startDate: BigInt,
+        endDate: BigInt,
+        ) => {
+        console.log("NTTContractCreated: ", contractAddress);
+        return contractAddress;
+    });
+    console.log("getNTTContractCreatedEvent: ", addr);
+}
+
 
 //Functions to update details
 const addToWhitelist = async (nttContractAddress: string, list: [], ethereum: any) => {
