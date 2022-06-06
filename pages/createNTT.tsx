@@ -2,9 +2,9 @@ import styles from "@styles/pages/createNTT/NTTForm.module.scss";
 import RootLayout from "@layouts/Root";
 import Image from "next/image";
 import { Fragment, useEffect, useState } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useMetaMask } from "metamask-react";
-import { mintNTT, deployNTT } from "@graphAPI/createNTT";
+import { mintNTT, getEventDetails, updateDetails } from "@graphAPI/createNTT";
 import Waiting from "@components/modal/misc/Waiting";
 // @ts-ignore
 import WAValidator from "wallet-address-validator";
@@ -33,17 +33,12 @@ const client = create({
 
 const validateWalletInput = (wallet: string) => {
   const wallets = wallet.split(",");
-  console.log(wallets);
   let isValid = true;
   for (let i = 0; i < wallets.length; i++) {
     const currentWallet = wallets[i].trim();
-    console.log("Current Wallet: ", currentWallet);
     if (currentWallet.length > 0) {
       if (!WAValidator.validate(currentWallet, "ETH")) {
         isValid = false;
-        console.log(`Wallet ${wallets[i]} is not valid`);
-      } else {
-        console.log(`Wallet ${wallets[i]} is valid`);
       }
     }
   }
@@ -77,7 +72,8 @@ const generateTimeStamp = () => {
   return { StartFormat: StartFormat, NextFormat: NextFormat };
 };
 
-export default function CreateNTT({ parameters }: any) {
+export default function CreateNTT({ parameters, mode, contractAddress }: any) {
+  const router = useRouter();
   const { ethereum } = useMetaMask();
   const [loading, setLoading] = useState(false);
   const [typeOfForm, setTypeOfForm] = useState<any>("Certificate");
@@ -96,6 +92,26 @@ export default function CreateNTT({ parameters }: any) {
   const [imageUrl, setImageUrl] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [uploadMessage, setUploadMessage] = useState<string>("");
+  const [dataLoaded, setDataLoaded] = useState<boolean>(false);
+
+  if (contractAddress && !dataLoaded) {
+    fetchFormData(contractAddress).then((res) => {
+      setCommunityValue(res.communityValue);
+      setDescriptionValue(res.descriptionValue);
+      setWebsiteValue(res.linksValue);
+      setNTTTitleValue(res.titleValue);
+      setImageUrl(res.imageHash);
+      setDataLoaded(true);
+    });
+  }
+
+  const formSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    if (mode === "edit") {
+      updateFunction(e);
+    } else {
+      mintFunction(e);
+    }
+  };
 
   const mintFunction = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -117,7 +133,6 @@ export default function CreateNTT({ parameters }: any) {
         ethereum
       )
         .then((res) => {
-          console.log(res);
           setMessage(
             "Your transaction was added to queue successfully! Check out your wallet for further actions"
           );
@@ -137,8 +152,36 @@ export default function CreateNTT({ parameters }: any) {
     }
   };
 
+  const updateFunction = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    updateDetails(
+      contractAddress,
+      nttTitleValue,
+      descriptionValue,
+      websiteValue,
+      imageUrl,
+      communityValue,
+      ethereum
+    )
+      .then((res) => {
+        setMessage(
+          "Your transaction was updated successfully! Check out your wallet for further actions"
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        setMessage("There was an error updating your NTT. Please try again.");
+      })
+      .finally(() => {
+        setLoading(false);
+        // @ts-ignore
+        document.getElementById("form-fields").reset();
+        // Router.push("/dashboard");
+      });
+  };
+
   const checkValidity = (value: string) => {
-    console.log(value);
     setErrorMessage("");
     setWalletValue(value);
     const duplicates = containsDuplicates(value);
@@ -185,7 +228,7 @@ export default function CreateNTT({ parameters }: any) {
       setTypeOfForm(route);
     } else {
       alert("Invalid type in URL! Redirecting you back to the dashboard.");
-      Router.push("/dashboard");
+      router.push("/dashboard");
     }
   }),
     [];
@@ -213,7 +256,10 @@ export default function CreateNTT({ parameters }: any) {
                       "' using the form"}
                   </p>
                 </div>
-                <div className={styles.form_close_container}>
+                <div
+                  className={styles.form_close_container}
+                  onClick={() => router.back()}
+                >
                   <Image src={Back_Button} alt="Close" height={50} width={50} />
                   <p>Go back</p>
                 </div>
@@ -241,7 +287,7 @@ export default function CreateNTT({ parameters }: any) {
                   <form
                     id="form-fields"
                     onSubmit={(e: React.ChangeEvent<HTMLFormElement>) =>
-                      mintFunction(e)
+                      formSubmit(e)
                     }
                   >
                     <div className={styles.form_component}>
@@ -283,37 +329,41 @@ export default function CreateNTT({ parameters }: any) {
                           rows={5}
                         ></textarea>
                       </label>
-                      <div className={styles.split_forms}>
-                        <label>
-                          When should we make this NTT available?
-                          <input
-                            className={styles.inputFields}
-                            name="startDate"
-                            id="startDate"
-                            type="datetime-local"
-                            required={true}
-                            min={StartFormat}
-                            value={startDateValue}
-                            onChange={(e) => setStartDateValue(e.target.value)}
-                            pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
-                            placeholder="When should we make this NTT available?"
-                          />
-                        </label>
-                        <label>
-                          When should we stop redemption?
-                          <input
-                            className={styles.inputFields}
-                            name="endDate"
-                            id="endDate"
-                            type="datetime-local"
-                            value={endDateValue}
-                            onChange={(e) => setEndDateValue(e.target.value)}
-                            pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
-                            min={NextFormat}
-                            placeholder="When should we stop redemption?"
-                          />
-                        </label>
-                      </div>
+                      {mode != "edit" ? (
+                        <div className={styles.split_forms}>
+                          <label>
+                            When should we make this NTT available?
+                            <input
+                              className={styles.inputFields}
+                              name="startDate"
+                              id="startDate"
+                              type="datetime-local"
+                              required={true}
+                              min={StartFormat}
+                              value={startDateValue}
+                              onChange={(e) =>
+                                setStartDateValue(e.target.value)
+                              }
+                              pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
+                              placeholder="When should we make this NTT available?"
+                            />
+                          </label>
+                          <label>
+                            When should we stop redemption?
+                            <input
+                              className={styles.inputFields}
+                              name="endDate"
+                              id="endDate"
+                              type="datetime-local"
+                              value={endDateValue}
+                              onChange={(e) => setEndDateValue(e.target.value)}
+                              pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
+                              min={NextFormat}
+                              placeholder="When should we stop redemption?"
+                            />
+                          </label>
+                        </div>
+                      ) : null}
                       <label>
                         Associated website
                         <input
@@ -326,21 +376,23 @@ export default function CreateNTT({ parameters }: any) {
                           placeholder="Is this NTT associated with a website?"
                         />
                       </label>
+                      {mode != "edit" ? (
+                        <label>
+                          Wallets to share with
+                          <textarea
+                            className={styles.inputFields}
+                            rows={5}
+                            required={true}
+                            name="walletAddresses"
+                            value={walletValue}
+                            onChange={(e) => checkValidity(e.target.value)}
+                            id="walletAddresses"
+                            placeholder="Start typing..."
+                          ></textarea>
+                        </label>
+                      ) : null}
                       <label>
-                        Wallets to share with
-                        <textarea
-                          className={styles.inputFields}
-                          rows={5}
-                          required={true}
-                          name="walletAddresses"
-                          value={walletValue}
-                          onChange={(e) => checkValidity(e.target.value)}
-                          id="walletAddresses"
-                          placeholder="Start typing..."
-                        ></textarea>
-                      </label>
-                      <label>
-                        Associated Image(s)
+                        Associated Image
                         <input
                           className={styles.inputFields}
                           name="imageFile"
@@ -349,15 +401,30 @@ export default function CreateNTT({ parameters }: any) {
                           accept="image/*"
                           onChange={onImageChange}
                         />
-                        <p>{uploadMessage}</p>
+                        <p className={styles.uploadMessage}>{uploadMessage}</p>
+                        {imageUrl ? (
+                          <>
+                            <img
+                              className={styles.imageView}
+                              src={`https://ipfs.io/ipfs/${imageUrl}`}
+                              alt="NTT Image"
+                            />
+                          </>
+                        ) : null}
                       </label>
                       <p className={styles.errorMessage}>
                         {errorMessage ? <span>Error: </span> : null}
                         {errorMessage}
                       </p>
-                      <button className={styles.submit_button}>
-                        {loading ? "Transacting..." : "Add to queue"}
-                      </button>
+                      {mode === "edit" ? (
+                        <button className={styles.submit_button}>
+                          {loading ? "Transacting..." : "Update"}
+                        </button>
+                      ) : (
+                        <button className={styles.submit_button}>
+                          {loading ? "Transacting..." : "Add to queue"}
+                        </button>
+                      )}
                     </div>
                   </form>
                 </div>
@@ -371,9 +438,9 @@ export default function CreateNTT({ parameters }: any) {
 }
 
 export async function getServerSideProps({ query }: any) {
-  const parameters = query.type;
-  const mode = query.mode;
-  const contractAddress = query.contractAddress ? query.contractAddress : "";
+  const parameters = query.type ? query.type : "Certificate";
+  const mode = query.mode ? query.mode : "create";
+  const contractAddress = query.address ? query.address : "";
   return {
     props: {
       parameters,
@@ -382,3 +449,20 @@ export async function getServerSideProps({ query }: any) {
     },
   };
 }
+
+const fetchFormData = async (contractAddress: string) => {
+  // "2022-06-16T16:10"
+  const data = await getEventDetails(contractAddress);
+  const communityValue = data ? data.associatedCommunity : "";
+  const descriptionValue = data ? data.description : "";
+  const linksValue = data ? data.links.join(", ") : "";
+  const titleValue = data ? data.title : "";
+  const imageHash = data ? data.imageHash : "";
+  return {
+    communityValue,
+    descriptionValue,
+    linksValue,
+    titleValue,
+    imageHash,
+  };
+};

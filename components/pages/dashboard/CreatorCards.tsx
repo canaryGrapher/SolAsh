@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/client";
 import { GET_ISSUER_STATUS } from "../../../utils/subgraph/queries";
 import { Fragment, useState } from "react";
 import IssuedNTTCardModal from "@components/modal/issuedNTT";
+import WhitelistEditModal from "@components/modal/editWhitelist";
 import Link from "next/link";
 
 function getIssuerStatus(contractAddress: string) {
@@ -24,29 +25,46 @@ whitelistItems schema:
 */
 
 const CreatorCards = (props: NTTtype) => {
-  const [modal, openModal] = useState(false);
+  const [informationModal, openInformationModal] = useState(false);
+  const [editWhiteListModal, openEditWhiteListModal] = useState(false);
 
   const burnToken = async () => {
     const confirmation = confirm("Are you sure you want to revoke this token?");
   };
 
   const viewInformationModal = () => {
-    if (!modal) openModal(true);
+    if (!informationModal) openInformationModal(true);
+  };
+
+  const viewwhitelistModal = () => {
+    if (!editWhiteListModal) openEditWhiteListModal(true);
   };
 
   const closeModal = () => {
-    openModal(false);
+    openInformationModal(false);
   };
-  // console.log(props);
+
+  const closeWhitelistModal = () => {
+    openEditWhiteListModal(false);
+  };
+
   return (
     <Fragment>
-      {modal ? (
+      {informationModal ? (
         <IssuedNTTCardModal
           {...props}
           closeModal={closeModal}
           burnToken={burnToken}
           getIssuerStatus={getIssuerStatus}
           contractAddress={props.contractAddress}
+        />
+      ) : null}
+      {editWhiteListModal ? (
+        <WhitelistEditModal
+          {...props}
+          closeModal={closeWhitelistModal}
+          contractAddress={props.contractAddress}
+          getIssuerStatus={getIssuerStatus}
         />
       ) : null}
       <div className={styles.certificate_container}>
@@ -66,14 +84,19 @@ const CreatorCards = (props: NTTtype) => {
             <div className={styles.basic_information}>
               <h2>{props.title}</h2>
               <p>{props.description}</p>
+              <p>{`Start date: `}</p>
+              <p>{`End date: `}</p>
             </div>
             <div className={styles.action_area}>
               {props.type === "inQueue" ? (
-                <Link
-                  href={`/createNTT?type=Certificate&address=${props.contractAddress}&mode=edit`}
-                >
-                  <button>Edit</button>
-                </Link>
+                <Fragment>
+                  <Link
+                    href={`/createNTT?type=Certificate&address=${props.contractAddress}&mode=edit`}
+                  >
+                    <button>Edit details</button>
+                  </Link>
+                  <button onClick={viewwhitelistModal}>Edit whitelist</button>
+                </Fragment>
               ) : (
                 <button onClick={viewInformationModal}>View</button>
               )}

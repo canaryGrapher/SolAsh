@@ -4,17 +4,55 @@ import NTTEvent from "@contracts/NTTEvent.sol/NTTEvent.json";
 import { factoryContractAddress } from "../../../config";
 import { useQuery } from "@apollo/client";
 import { GET_EVENT_DETAILS } from "@utils/subgraph/queries";
+import axios from "axios";
+const SUBGRAPH_URL = "https://api.thegraph.com/subgraphs/name/jatin17solanki/solash-subgraph";
 
-const getEventDetails = (contractAddress: string) => {
-    //write code to fetch contract data from contractaddress
-    const { loading, error, data } = useQuery(
-        GET_EVENT_DETAILS(contractAddress)
-    );
-    if (loading) console.log("getEventDetails: Loading");
+// const getEventDetails = (contractAddress: string) => {
+//     //write code to fetch contract data from contractaddress
+//     const { loading, error, data } = useQuery(
+//         GET_EVENT_DETAILS(contractAddress)
+//     );
+//     if (loading) console.log("getEventDetails: Loading");
 
-    if (error) console.log("getEventDetails: Error");
+//     if (error) console.log("getEventDetails: Error");
 
-    if (data) console.log("getEventDetails: ", data.nttcontracts);
+//     if (data) {
+//         return data.nttcontracts[0];
+//     }
+//     return null
+// };
+
+const getEventDetails = async (contractAddress: string) => {
+    const query = `query {
+        nttcontracts(where:{contractAddress: "${contractAddress}"}) {
+        id
+        contractAddress
+        creatorAddress
+        title
+        description
+        links
+        imageHash
+        associatedCommunity
+        startDate
+        endDate
+        timeStamp
+        }
+    }`;
+
+    try {
+        const response = await axios.post(SUBGRAPH_URL, {
+            query,
+        });
+        if (response.data.errors) {
+            console.error(response.data.errors);
+            throw new Error(`Error making subgraph query ${response.data.errors}`);
+        }
+        console.log("AXIOS: ", response.data.data.nttcontracts[0]);
+        return response.data.data.nttcontracts[0];
+    } catch (error: any) {
+        console.error(error);
+        throw new Error(`Could not query the subgraph ${error.message}`);
+    }
 };
 
 const deployNTT = async (
@@ -50,25 +88,40 @@ const deployNTT = async (
         const status = await transaction.wait();
         console.log("DeployNTT: ", status);
 
-        const deployedContractAddress =  await getNTTContractCreatedEvent(ethereum);
-        console.log("deployNTT address: ", deployedContractAddress);
-        return deployedContractAddress;
+        const events = status?.events;
+        const deployedContractAddr = extractReturnValue(events);
+        console.log("deployedContractAddr: ", deployedContractAddr);
+        return deployedContractAddr;
+
         //Navigate to dashboard : ntts in queue
     } catch (err) {
         console.log("DeployNTT: " + err);
     }
 };
 
-const getNTTContractCreatedEvent = async (ethereum : any) => {
+const extractReturnValue = (events: any) => {
+    let addr;
+    events.forEach((eventItem: any) => {
+        if (eventItem && eventItem.event === "NTTContractCreated") {
+            addr = eventItem.args.contractAddress;
+            console.log("EXT1: ", addr);
+        }
+    });
+
+    return addr;
+}
+
+
+const getNTTContractCreatedEvent = async (ethereum: any) => {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const contract = new ethers.Contract(
         factoryContractAddress,
         Factory.abi,
         provider
     );
-    
+
     const addr = contract.on("NTTContractCreated", (
-        contractId : BigInt, 
+        contractId: BigInt,
         contractAddress: string,
         creatorAddress: string,
         title: string,
@@ -78,11 +131,12 @@ const getNTTContractCreatedEvent = async (ethereum : any) => {
         associatedCommunity: string,
         startDate: BigInt,
         endDate: BigInt,
-        ) => {
+    ) => {
         console.log("NTTContractCreated: ", contractAddress);
         return contractAddress;
     });
-    console.log("getNTTContractCreatedEvent: ", addr);
+    // console.log("getNTTContractCreatedEvent: ", addr);
+    return addr
 }
 
 
@@ -127,7 +181,7 @@ const updateDetails = async (
     nttContractAddress: string,
     title: string = "",
     description: string = "",
-    links: [] = [],
+    links: string,
     imageHash: string = "",
     associatedCommunity: string = "",
     ethereum: any
@@ -144,7 +198,7 @@ const updateDetails = async (
         const transaction = await contract.updateDetails(
             title,
             description,
-            links,
+            links.split(","),
             imageHash,
             associatedCommunity
         );

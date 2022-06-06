@@ -1,0 +1,178 @@
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.55);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 600;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  .container {
+    width: 80%;
+    margin: 30px auto 20px auto;
+    background-color: #000000;
+
+    .modal {
+      position: relative;
+      width: 85%;
+      margin: 20px auto;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      column-gap: 20px;
+
+      .certificate_image {
+        .action_area {
+          margin-top: 20px;
+          display: flex;
+          flex-direction: column;
+
+          .action_area_button {
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+            margin: 5px 2px;
+            border-radius: 20px;
+
+            &:first-of-type {
+              background-color: #ffffff;
+              color: #ff5846;
+              &:hover {
+                background-color: #ff5846;
+                color: #ffffff;
+              }
+            }
+            &:nth-of-type(2) {
+              background-color: #ff5846;
+              color: #ffffff;
+              &:hover {
+                background-color: #ffffff;
+                color: #ff5846;
+              }
+            }
+          }
+        }
+      }
+
+      .information_container {
+        h2 {
+          color: #ff5846;
+          font-size: 3rem;
+        }
+        p.community_information {
+          font-size: smaller;
+          color: #0e0e0e;
+          background-color: #ededed;
+          padding: 4px 8px 4px 8px;
+          color: #ff5846;
+          width: fit-content;
+          font-weight: 600;
+          border-radius: 5px;
+          margin-bottom: 10px;
+
+          span {
+            font-weight: bold;
+            color: #000000;
+          }
+        }
+        p.ntt_description {
+          color: #ffffff;
+          text-align: justify;
+        }
+
+        .whitelist_action_area {
+          margin-top: 20px;
+          display: flex;
+          flex-direction: column;
+
+          .input_area {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 4fr 1fr;
+            gap: 5px;
+
+            input {
+              width: 100%;
+              padding: 10px;
+              font-size: 1.1rem;
+              border: 3px solid #ff5846;
+              border-radius: 5px;
+              background-color: transparent;
+              color: #f8f8f8;
+              font-weight: bold;
+            }
+
+            button {
+              width: 100%;
+              padding: 10px;
+              border-radius: 5px;
+              background-color: #ff5846;
+              color: #ffffff;
+              border: 1px solid #ff5846;
+              font-size: 1.1rem;
+
+              margin-right: 10px;
+              cursor: pointer;
+              &:hover {
+                background-color: #ffffff;
+                color: #ff5846;
+              }
+            }
+          }
+
+          .address_boxes {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+
+            .address_box {
+              border: 2px solid #ff5846;
+              border-radius: 10px;
+              width: 100%;
+              display: grid;
+              grid-template-columns: 4fr 1fr;
+              margin: 10px 0px;
+
+              gap: 5px;
+
+              p {
+                margin: auto 15px;
+                font-size: 1.1rem;
+                color: #ffffff;
+                font-weight: medium;
+              }
+
+              .action_area {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                .action_area_button {
+                  cursor: pointer;
+                  width: 100%;
+                  padding: 10px;
+                  text-align: center;
+                  margin: 5px 2px;
+                  border-radius: 5px;
+
+                  p {
+                    color: #ff5846;
+
+                    &:hover {
+                      text-decoration: underline;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
