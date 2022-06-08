@@ -13,11 +13,11 @@ export default function Dashboard() {
   const [selectedTab, setSelectedTab] = useState<"inQueue" | "issued">(
     "inQueue"
   );
-
   const userContext = useContext(UserContext);
   const inQueue = inQueueEvents(userContext.userName);
   const issued = issuedEvents(userContext.userName);
   console.log(inQueue);
+  console.log(issued);
   return (
     <RootLayout>
       <main className={styles.main}>

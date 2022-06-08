@@ -5,34 +5,36 @@ import { useMetaMask } from "metamask-react";
 import { ethers } from "ethers";
 import NTTEvent from "../../../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
 import { Fragment, useState } from "react";
+import { useRouter } from "next/router";
 
 const Certificates = (props: TokenDetailType) => {
+  const router = useRouter();
   const { ethereum } = useMetaMask();
   const [modal, openModal] = useState(false);
 
-  const revokeToken = async () => {
+  const revokeToken = async (contractAddress: string, tokenId: BigInt) => {
     const confirmation = confirm("Are you sure you want to revoke this token?");
     if (confirmation) {
-      const burnTokenEvent = async (
-        contractAddress: string,
-        tokenId: BigInt
-      ) => {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(
-          contractAddress,
-          NTTEvent.abi,
-          signer
-        );
-        try {
-          const transaction = await contract.burnTokenEvent(tokenId);
-          const status = await transaction.wait();
-          console.log("STATUS: ", status);
-        } catch (err: any) {
-          console.log("burnTokenEvent: ", err.data.message);
-        }
-      };
+      props.loaderState(true);
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        contractAddress,
+        NTTEvent.abi,
+        signer
+      );
+      try {
+        const transaction = await contract.burnTokenEvent(tokenId);
+        const status = await transaction.wait();
+        console.log("STATUS: ", status);
+        props.loaderState(false);
+        router.reload();
+      } catch (err: any) {
+        console.log("burnTokenEvent: ", err.data.message);
+        props.loaderState(false);
+      }
     }
+    // }
   };
 
   const viewInformationModal = () => {
@@ -51,19 +53,21 @@ const Certificates = (props: TokenDetailType) => {
         <InformationModal
           {...props}
           closeModal={closeModal}
-          revokeToken={revokeToken}
+          revokeToken={() =>
+            revokeToken(props.contractAddress, BigInt(props.tokenId))
+          }
         />
       ) : null}
       <div className={styles.certificate_container}>
         <div className={styles.certificate_image}>
-          <img 
+          <img
             src={
-              props.imageHash ? `https://ipfs.io/ipfs/${props.imageHash}` 
-              : 
-              "https://images.unsplash.com/photo-1642388538891-38b2d14e750e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
-              } 
-              height={200} 
-              width={200} 
+              props.imageHash
+                ? `https://ipfs.io/ipfs/${props.imageHash}`
+                : "https://images.unsplash.com/photo-1642388538891-38b2d14e750e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
+            }
+            height={200}
+            width={200}
           />
         </div>
         <div className={styles.certificate_information_container}>

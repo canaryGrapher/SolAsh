@@ -25,6 +25,8 @@ function inQueueEvents(creatorAddress: string) {
                 type: "Certificate",
                 claimedStatus: [],
                 contractAddress: ntt.contractAddress,
+                startDate: ntt.startDate,
+                endDate: ntt.endDate,
             };
         });
         return formatted_data;
@@ -52,6 +54,8 @@ function issuedEvents(creatorAddress: string) {
                 type: "Certificate",
                 claimedStatus: [],
                 contractAddress: ntt.contractAddress,
+                startDate: ntt.startDate,
+                endDate: ntt.endDate,
             };
         });
         return formatted_data;

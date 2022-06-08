@@ -7,8 +7,10 @@ import { Home_Banner } from "@resources/exports";
 import { TokenDetailType } from "@interfaces/pages/Home";
 import UserContext from "@context/UserContext";
 import { getHomeData } from "@graphAPI/home";
+import Waiting from "@components/modal/misc/Waiting";
 
 export default function Home() {
+  const [loading, setLoading] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<"certificate" | "ticket">(
     "certificate"
   );
@@ -18,7 +20,9 @@ export default function Home() {
   const tokensData: TokenDetailType[] = getHomeData(userContext.userName);
   const ticketsData: TokenDetailType[] = [];
 
-  return (
+  return loading ? (
+    <Waiting message="Your Transaction is in progrees" />
+  ) : (
     <RootLayout>
       <main className={styles.main}>
         <div className={styles.container}>
@@ -72,7 +76,11 @@ export default function Home() {
                   tokensData.length > 0 &&
                   tokensData?.map(
                     (certificate: TokenDetailType, index: number) => (
-                      <Certificates {...certificate} key={index} />
+                      <Certificates
+                        {...certificate}
+                        key={index}
+                        loaderState={setLoading}
+                      />
                     )
                   )}
                 {selectedTab === "certificate" && tokensData.length === 0 && (
@@ -83,7 +91,11 @@ export default function Home() {
                 {selectedTab === "ticket" &&
                   ticketsData.length > 0 &&
                   ticketsData.map((token: TokenDetailType, index: number) => (
-                    <Certificates {...token} key={index} />
+                    <Certificates
+                      {...token}
+                      key={index}
+                      loaderState={setLoading}
+                    />
                   ))}
                 {selectedTab === "ticket" && ticketsData.length === 0 && (
                   <div className={styles.emptyBox}>

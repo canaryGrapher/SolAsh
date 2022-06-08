@@ -1,8 +1,30 @@
-import { Fragment } from "react";
+import { useState } from "react";
 import styles from "@styles/components/modal/whitelistModal.module.scss";
+import { useMetaMask } from "metamask-react";
 
 const WhitelistEditModal = (props: any) => {
-  const addresses = ["0x1", "0x2", "0x3"];
+  const issuerData = props.getIssuerStatus(props.contractAddress);
+  const { ethereum } = useMetaMask();
+
+  const [walletAddress, setWalletAddress] = useState<string>("");
+
+  const removeWallet = async (wallet: string) => {
+    console.log("Clicked remove");
+    const data = await props.removeFromWhiteList(
+      ethereum,
+      props.contractAddress,
+      [wallet]
+    );
+    console.log("Wallet removed: ", data);
+  };
+  const addWallet = async () => {
+    const data = await props.addToWhiteList(
+      props.contractAddress,
+      [walletAddress],
+      ethereum
+    );
+    console.log("Wallet added: ", data);
+  };
   return (
     <div className={styles.overlay}>
       <div className={styles.container}>
@@ -39,17 +61,20 @@ const WhitelistEditModal = (props: any) => {
                 <input
                   type="text"
                   placeholder="Enter a new whitelist address"
+                  value={walletAddress}
+                  onChange={(e) => setWalletAddress(e.target.value)}
                 />
-                <button>Add</button>
+                <button onClick={addWallet}>Add</button>
               </div>
               <div className={styles.address_boxes}>
-                {addresses.map((address: string) => (
-                  <div className={styles.address_box}>
-                    <p>{address}</p>
+                {issuerData?.map((address: any, index: number) => (
+                  <div className={styles.address_box} key={index}>
+                    <p>{address.userAddress}</p>
                     <div className={styles.action_area}>
                       <div
                         className={styles.action_area_button}
                         // onClick={props.closeModal}
+                        onClick={() => removeWallet(address.userAddress)}
                       >
                         <p>Remove</p>
                       </div>

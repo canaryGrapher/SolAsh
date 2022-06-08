@@ -1,18 +1,24 @@
 import styles from "@styles/components/pages/CreatorCards.module.scss";
 import { NTTtype } from "@interfaces/pages/Dashboard";
 import { useQuery } from "@apollo/client";
-import { GET_ISSUER_STATUS } from "../../../utils/subgraph/queries";
+import {
+  GET_ISSUER_STATUS,
+  GET_NOTCLAIMED_USERS,
+} from "../../../utils/subgraph/queries";
 import { Fragment, useState } from "react";
 import IssuedNTTCardModal from "@components/modal/issuedNTT";
 import WhitelistEditModal from "@components/modal/editWhitelist";
 import Link from "next/link";
+import { addToWhitelist, removeFromWhitelist } from "@graphAPI/createNTT";
+import {} from "@graphAPI/dashboard";
 
 function getIssuerStatus(contractAddress: string) {
-  const { loading, error, data } = useQuery(GET_ISSUER_STATUS(contractAddress));
+  const { loading, error, data } = useQuery(
+    GET_NOTCLAIMED_USERS(contractAddress)
+  );
   if (loading) console.log("issuerStatus: Loading");
   if (error) console.log("issuerStatus: Error");
   if (data) {
-    console.log("issuerStatus: ", data.whitelistItems);
     return data.whitelistItems;
   }
 }
@@ -65,6 +71,8 @@ const CreatorCards = (props: NTTtype) => {
           closeModal={closeWhitelistModal}
           contractAddress={props.contractAddress}
           getIssuerStatus={getIssuerStatus}
+          removeFromWhiteList={removeFromWhitelist}
+          addToWhiteList={addToWhitelist}
         />
       ) : null}
       <div className={styles.certificate_container}>
@@ -84,8 +92,22 @@ const CreatorCards = (props: NTTtype) => {
             <div className={styles.basic_information}>
               <h2>{props.title}</h2>
               <p>{props.description}</p>
-              <p>{`Start date: `}</p>
-              <p>{`End date: `}</p>
+              <p>
+                Magic Link:{" "}
+                <a
+                  href={`http://localhost:3000/claim/${props.contractAddress}`}
+                >{`http://localhost:3000/claim/${props.contractAddress}`}</a>
+              </p>
+              <p>{`Start date: ${new Date(parseInt(props.startDate) * 1000)
+                .toString()
+                .slice(0, -30)}`}</p>
+              <p>{`End date: ${
+                props.endDate === "0"
+                  ? "nil"
+                  : new Date(parseInt(props.endDate) * 1000)
+                      .toString()
+                      .slice(0, -30)
+              }`}</p>
             </div>
             <div className={styles.action_area}>
               {props.type === "inQueue" ? (

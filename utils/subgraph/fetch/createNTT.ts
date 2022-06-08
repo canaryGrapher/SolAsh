@@ -2,25 +2,10 @@ import { ethers } from "ethers";
 import Factory from "@contracts/Factory.sol/Factory.json";
 import NTTEvent from "@contracts/NTTEvent.sol/NTTEvent.json";
 import { factoryContractAddress } from "../../../config";
-import { useQuery } from "@apollo/client";
-import { GET_EVENT_DETAILS } from "@utils/subgraph/queries";
+// import { useQuery } from "@apollo/client";
+// import { GET_EVENT_DETAILS } from "@utils/subgraph/queries";
 import axios from "axios";
 const SUBGRAPH_URL = "https://api.thegraph.com/subgraphs/name/jatin17solanki/solash-subgraph";
-
-// const getEventDetails = (contractAddress: string) => {
-//     //write code to fetch contract data from contractaddress
-//     const { loading, error, data } = useQuery(
-//         GET_EVENT_DETAILS(contractAddress)
-//     );
-//     if (loading) console.log("getEventDetails: Loading");
-
-//     if (error) console.log("getEventDetails: Error");
-
-//     if (data) {
-//         return data.nttcontracts[0];
-//     }
-//     return null
-// };
 
 const getEventDetails = async (contractAddress: string) => {
     const query = `query {

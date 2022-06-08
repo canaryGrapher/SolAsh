@@ -29,6 +29,14 @@
         }
         p {
           color: #ffffff;
+
+          &:nth-of-type(2) {
+            padding-bottom: 10px;
+            padding-top: 5px;
+            a {
+              color: rgb(88, 88, 221);
+            }
+          }
         }
       }
       .action_area {

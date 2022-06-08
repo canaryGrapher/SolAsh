@@ -1,5 +1,4 @@
 import styles from "@styles/components/modal/Waiting.module.scss";
-import { printIntrospectionSchema } from "graphql";
 
 const Waiting = (props: { message: string }) => {
   return (

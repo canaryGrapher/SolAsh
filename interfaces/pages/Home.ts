@@ -51,6 +51,7 @@ interface TokenDetailType {
     imageHash: string;
     associatedCommunity: string;
     timeStamp: string;
+    loaderState: (arg: boolean) => void;
 }
 
 type TokenDetailsProps = TokenDetailType[] | []

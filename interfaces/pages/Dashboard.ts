@@ -19,6 +19,8 @@ interface NTTtype {
     type: string;
     claimedStatus: IClaims[];
     contractAddress: string;
+    startDate: string;
+    endDate: string;
 }
 
 

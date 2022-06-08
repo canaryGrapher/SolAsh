@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useMetaMask } from "metamask-react";
 import { mintNTT, getEventDetails, updateDetails } from "@graphAPI/createNTT";
 import Waiting from "@components/modal/misc/Waiting";
+import Success from "@components/modal/misc/Success";
 // @ts-ignore
 import WAValidator from "wallet-address-validator";
 import { create } from "ipfs-http-client";
@@ -93,6 +94,7 @@ export default function CreateNTT({ parameters, mode, contractAddress }: any) {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [uploadMessage, setUploadMessage] = useState<string>("");
   const [dataLoaded, setDataLoaded] = useState<boolean>(false);
+  const [mintedAddress, setMintedAddress] = useState<string>("");
 
   if (contractAddress && !dataLoaded) {
     fetchFormData(contractAddress).then((res) => {
@@ -132,7 +134,9 @@ export default function CreateNTT({ parameters, mode, contractAddress }: any) {
         walletValue,
         ethereum
       )
-        .then((res) => {
+        .then((res: any) => {
+          setMintedAddress(res);
+          console.log(res);
           setMessage(
             "Your transaction was added to queue successfully! Check out your wallet for further actions"
           );
@@ -142,6 +146,9 @@ export default function CreateNTT({ parameters, mode, contractAddress }: any) {
           setMessage("There was an error minting your NTT. Please try again.");
         })
         .finally(() => {
+          // setMessage(
+          //   `Your NTT is deployed and can be claimed from http://localhost:3000/claim/${mintedAddress}`
+          // );
           setLoading(false);
           // @ts-ignore
           document.getElementById("form-fields").reset();
@@ -177,13 +184,14 @@ export default function CreateNTT({ parameters, mode, contractAddress }: any) {
         setLoading(false);
         // @ts-ignore
         document.getElementById("form-fields").reset();
-        // Router.push("/dashboard");
+        alert("Update complete");
+        router.push("/dashboard");
       });
   };
 
   const checkValidity = (value: string) => {
     setErrorMessage("");
-    setWalletValue(value);
+    setWalletValue(value.trim());
     const duplicates = containsDuplicates(value);
     if (duplicates) {
       setErrorMessage("One or more repeated wallet addresses");
@@ -236,6 +244,9 @@ export default function CreateNTT({ parameters, mode, contractAddress }: any) {
   return (
     <Fragment>
       {loading ? <Waiting message={message} /> : null}
+      {mintedAddress.length > 0 ? (
+        <Success message={"http://localhost:3000/claim/" + mintedAddress} />
+      ) : null}
       <RootLayout>
         <main className={styles.main}>
           <div className={styles.container}>

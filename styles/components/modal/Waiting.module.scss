@@ -43,11 +43,30 @@
         color: #ff5846;
         font-size: 1.6rem;
       }
-      .subtitle > p {
+
+      p {
+        font-weight: 700;
+      }
+
+      a {
+        color: rgb(88, 88, 221);
+      }
+
+      p.subtitle {
         font-size: smaller;
         color: #ffffff;
         font-size: 1.2rem;
         font-weight: medium;
+      }
+
+      .close {
+        width: 100%;
+        button {
+          cursor: pointer;
+          width: 80%;
+          margin: 10px auto;
+          padding: 5px;
+        }
       }
     }
   }

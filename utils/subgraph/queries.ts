@@ -142,6 +142,20 @@ const GET_ISSUER_STATUS = (contractAddress: string) => gql`
   }
 `;
 
+const GET_NOTCLAIMED_USERS = (contractAddress: string) => gql`
+  query {
+    whitelistItems(
+      where: { contractAddress: "${contractAddress}", status: "2" }
+    ) {
+      id
+      contractAddress
+      userAddress
+      status
+    }
+  }
+`;
+
+
 const GET_USER_STATUS = (contractAddress: string, userAddress: string) => gql`
   query {
     whitelistItems(
@@ -167,5 +181,6 @@ export {
   GET_EVENTS_IN_QUEUE,
   GET_EVENTS_ISSUED,
   GET_ISSUER_STATUS,
-  GET_USER_STATUS
+  GET_USER_STATUS,
+  GET_NOTCLAIMED_USERS,
 };
