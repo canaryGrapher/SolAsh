@@ -10,7 +10,6 @@ import IssuedNTTCardModal from "@components/modal/issuedNTT";
 import WhitelistEditModal from "@components/modal/editWhitelist";
 import Link from "next/link";
 import { addToWhitelist, removeFromWhitelist } from "@graphAPI/createNTT";
-import {} from "@graphAPI/dashboard";
 
 function getIssuerStatus(contractAddress: string) {
   const { loading, error, data } = useQuery(
@@ -22,13 +21,6 @@ function getIssuerStatus(contractAddress: string) {
     return data.whitelistItems;
   }
 }
-/*
-whitelistItems schema:
-    id: ID!                         //contractAddress_userAddress
-    contractAddress: Bytes!
-    userAddress: Bytes!
-    status: BigInt!
-*/
 
 const CreatorCards = (props: NTTtype) => {
   const [informationModal, openInformationModal] = useState(false);

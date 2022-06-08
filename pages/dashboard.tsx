@@ -8,8 +8,11 @@ import { Home_Banner } from "@resources/exports";
 import { NTTtype } from "@interfaces/pages/Dashboard";
 import UserContext from "@context/UserContext";
 import { inQueueEvents, issuedEvents } from "@graphAPI/dashboard";
+import Waiting from "@components/modal/misc/Waiting";
 
 export default function Dashboard() {
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const [selectedTab, setSelectedTab] = useState<"inQueue" | "issued">(
     "inQueue"
   );
@@ -18,7 +21,9 @@ export default function Dashboard() {
   const issued = issuedEvents(userContext.userName);
   console.log(inQueue);
   console.log(issued);
-  return (
+  return loading ? (
+    <Waiting message={message} />
+  ) : (
     <RootLayout>
       <main className={styles.main}>
         <div className={styles.container}>
@@ -71,7 +76,13 @@ export default function Dashboard() {
                 {selectedTab === "inQueue" &&
                   inQueue.length > 0 &&
                   inQueue.map((certificate: NTTtype, index: number) => (
-                    <CreatorCards {...certificate} type="inQueue" key={index} />
+                    <CreatorCards
+                      {...certificate}
+                      type="inQueue"
+                      key={index}
+                      setLoading={setLoading}
+                      setMessage={setMessage}
+                    />
                   ))}
                 {selectedTab === "inQueue" && inQueue.length === 0 ? (
                   <div className={styles.emptyBox}>

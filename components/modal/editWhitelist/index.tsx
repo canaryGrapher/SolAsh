@@ -2,27 +2,25 @@ import { useState } from "react";
 import styles from "@styles/components/modal/whitelistModal.module.scss";
 import { useMetaMask } from "metamask-react";
 
-const WhitelistEditModal = (props: any) => {
+import { WhiteLitEditModalTypes } from "@interfaces/pages/Dashboard";
+
+const WhitelistEditModal = (props: WhiteLitEditModalTypes) => {
   const issuerData = props.getIssuerStatus(props.contractAddress);
   const { ethereum } = useMetaMask();
 
   const [walletAddress, setWalletAddress] = useState<string>("");
 
   const removeWallet = async (wallet: string) => {
-    console.log("Clicked remove");
-    const data = await props.removeFromWhiteList(
-      ethereum,
-      props.contractAddress,
-      [wallet]
-    );
+    props.setLoading(true);
+    props.setMessage("Removing address from whitelist...");
+    const data = props.removeFromWhiteList(ethereum, props.contractAddress, [
+      wallet,
+    ]);
     console.log("Wallet removed: ", data);
   };
   const addWallet = async () => {
-    const data = await props.addToWhiteList(
-      props.contractAddress,
-      [walletAddress],
-      ethereum
-    );
+    const wallet: string[] = [walletAddress];
+    const data = props.addToWhiteList(props.contractAddress, wallet, ethereum);
     console.log("Wallet added: ", data);
   };
   return (
@@ -67,6 +65,7 @@ const WhitelistEditModal = (props: any) => {
                 <button onClick={addWallet}>Add</button>
               </div>
               <div className={styles.address_boxes}>
+                {/* @ts-ignore */}
                 {issuerData?.map((address: any, index: number) => (
                   <div className={styles.address_box} key={index}>
                     <p>{address.userAddress}</p>

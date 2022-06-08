@@ -126,7 +126,7 @@ const getNTTContractCreatedEvent = async (ethereum: any) => {
 
 
 //Functions to update details
-const addToWhitelist = async (nttContractAddress: string, list: [], ethereum: any) => {
+const addToWhitelist = async (nttContractAddress: string, list: string[], ethereum: any) => {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
@@ -144,7 +144,7 @@ const addToWhitelist = async (nttContractAddress: string, list: [], ethereum: an
     }
 };
 
-const removeFromWhitelist = async (ethereum: any, nttContractAddress: string, list: []) => {
+const removeFromWhitelist = async (ethereum: any, nttContractAddress: string, list: string[]) => {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
