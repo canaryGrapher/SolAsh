@@ -129,6 +129,34 @@ const GET_TOKENS_ISSUED = (userAddress: string) => gql`
   }
 `;
 
+
+const GET_TOKEN = (contractAddress : string, userAddress : string) => gql`
+  query {
+    tokens(
+      where: {
+        receiverAddress: "${userAddress}",
+        contractAddress: "${contractAddress}",
+        isValid: true
+      },
+      orderBy: timeStamp
+    ) {
+      id
+      contractAddress
+      tokenId
+      creatorAddress
+      receiverAddress
+      transactionHash
+      title
+      description
+      links
+      imageHash
+      associatedCommunity
+      isValid
+      timeStamp
+    }
+  }
+`;
+
 const GET_ISSUER_STATUS = (contractAddress: string) => gql`
   query {
     whitelistItems(
@@ -183,4 +211,5 @@ export {
   GET_ISSUER_STATUS,
   GET_USER_STATUS,
   GET_NOTCLAIMED_USERS,
+  GET_TOKEN,
 };
