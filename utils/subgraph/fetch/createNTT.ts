@@ -2,8 +2,6 @@ import { ethers } from "ethers";
 import Factory from "@contracts/Factory.sol/Factory.json";
 import NTTEvent from "@contracts/NTTEvent.sol/NTTEvent.json";
 import { factoryContractAddress } from "../../../config";
-// import { useQuery } from "@apollo/client";
-// import { GET_EVENT_DETAILS } from "@utils/subgraph/queries";
 import axios from "axios";
 const SUBGRAPH_URL = "https://api.thegraph.com/subgraphs/name/jatin17solanki/solash-subgraph";
 

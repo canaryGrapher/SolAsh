@@ -3,9 +3,45 @@ import styles from "@styles/components/modal/IssuedNTTModal.module.scss";
 import { Fragment } from "react";
 
 import { ModalProps } from "@interfaces/components/creatorModal";
+import axios from "axios";
+const SUBGRAPH_URL = "https://api.thegraph.com/subgraphs/name/jatin17solanki/solash-subgraph";
 
 const IssuedNTTCardModal: React.FC<ModalProps> = (props) => {
   const issuerData = props.getIssuerStatus(props.contractAddress);
+  console.log("Props: ", props);
+  console.log("IssuerData: ", issuerData);
+
+  const getTokenData = async (contractAddress : string, userAddress : string) => {
+    const query = `query {
+      tokens(
+        where: {
+          receiverAddress: "${userAddress}",
+          contractAddress: "${contractAddress}",
+          isValid: true
+        },
+        orderBy: timeStamp
+      ) {
+        contractAddress
+        tokenId
+      }
+    }`;
+
+    try {
+        const response = await axios.post(SUBGRAPH_URL, {
+            query,
+        });
+        if (response.data.errors) {
+            console.error(response.data.errors);
+            throw new Error(`getTokenData, Error making subgraph query ${response.data.errors}`);
+        }
+        console.log("getTokenData: ", response.data.data.tokens[0]);
+        return response.data.data.tokens[0];
+    } catch (error: any) {
+        console.error(error);
+        throw new Error(`getTokenData, Could not query the subgraph ${error.message}`);
+    }
+  }
+
   return (
     <div className={styles.overlay}>
       <div className={styles.container}>
@@ -14,7 +50,9 @@ const IssuedNTTCardModal: React.FC<ModalProps> = (props) => {
             <div className={styles.certificate_image}>
               <img
                 src={
-                  "https://images.unsplash.com/photo-1642388538891-38b2d14e750e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
+                  props.image
+                    ? `https://ipfs.io/ipfs/${props.image}`
+                    : "https://images.unsplash.com/photo-1642388538891-38b2d14e750e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
                 }
                 height={300}
                 width={300}
