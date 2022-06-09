@@ -95,8 +95,8 @@ const IssuedNTTCardModal: React.FC<ModalProps> = (props) => {
               </div>
               <div className={styles.information_websites}>
                 <p>Associated website(s):</p>
-                {props.link?.map((item: any) => (
-                  <Fragment>
+                {props.link?.map((item: any, index: number) => (
+                  <Fragment key={index}>
                     <a href={item} target="_blank" referrerPolicy="no-referrer">
                       {item}
                     </a>
@@ -114,8 +114,8 @@ const IssuedNTTCardModal: React.FC<ModalProps> = (props) => {
                   <p>Claimed?</p>
                   <p>Action</p>
                 </div>
-                {issuerData?.map((claim: any) => (
-                  <div className={styles.claims_list_item}>
+                {issuerData?.map((claim: any, index: number) => (
+                  <div className={styles.claims_list_item} key={index}>
                     <p>{claim.userAddress}</p>
                     <p>
                       {claim.status == "0"

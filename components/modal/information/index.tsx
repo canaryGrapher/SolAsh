@@ -45,7 +45,13 @@ const InformationModal: React.FC<InformationModalProps> = (props) => {
               <div className={styles.information_about_dates}>
                 <div className={styles.information}>
                   <p className={styles.label}>Claimed on: </p>
-                  <p className={styles.value}>{props.timeStamp}</p>
+                  <p className={styles.value}>{`${
+                    props.timeStamp === "0"
+                      ? "nil"
+                      : new Date(parseInt(props.timeStamp) * 1000)
+                          .toString()
+                          .slice(0, -30)
+                  }`}</p>
                 </div>
                 <div className={styles.information}>
                   <p className={styles.label}>Token Id: </p>
@@ -90,8 +96,8 @@ const InformationModal: React.FC<InformationModalProps> = (props) => {
               </div>
               <div className={styles.information_websites}>
                 <p>Associated website(s):</p>
-                {props.links?.map((item) => (
-                  <Fragment>
+                {props.links?.map((item, index) => (
+                  <Fragment key={index}>
                     <a href={item} target="_blank" referrerPolicy="no-referrer">
                       {item}
                     </a>

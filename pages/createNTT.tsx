@@ -17,8 +17,8 @@ import {
   Create_Token,
 } from "@resources/exports";
 
-const projectId = "26T71DQUMGsDqJcbmNzNdD2btBg";
-const projectSecret = "e54718eac074f9920126927927c75b23";
+const projectId = process.env.NEXT_PUBLIC_IPFS_PROJECT_ID;
+const projectSecret = process.env.NEXT_PUBLIC_IPFS_PROJECT_SECRET;
 const projectIdAndSecret = `${projectId}:${projectSecret}`;
 
 const client = create({
@@ -354,7 +354,7 @@ export default function CreateNTT({ parameters, mode, contractAddress }: any) {
                               id="startDate"
                               type="datetime-local"
                               required={true}
-                              // min={StartFormat}
+                              min={StartFormat}
                               value={startDateValue}
                               onChange={(e) =>
                                 setStartDateValue(e.target.value)

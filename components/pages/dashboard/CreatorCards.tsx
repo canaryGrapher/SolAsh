@@ -119,31 +119,41 @@ const CreatorCards = (props: NTTtype) => {
             <div className={styles.basic_information}>
               <h2>{props.title}</h2>
               <p>{props.description}</p>
-              <p>
-                Magic Link:{" "}
-                <a
-                  href={`http://localhost:3000/claim/${props.contractAddress}`}
-                >{`http://localhost:3000/claim/${props.contractAddress}`}</a>
-                <span
-                  onClick={() => {
-                    navigator.clipboard.writeText(
-                      `http://localhost:3000/claim/${props.contractAddress}`
-                    );
-                  }}
-                >
-                  Copy
-                </span>
-              </p>
-              <p>{`Start date: ${new Date(parseInt(props.startDate) * 1000)
-                .toString()
-                .slice(0, -30)}`}</p>
-              <p>{`End date: ${
-                props.endDate === "0"
-                  ? "nil"
-                  : new Date(parseInt(props.endDate) * 1000)
-                      .toString()
-                      .slice(0, -30)
-              }`}</p>
+              <div className={styles.information_bar}>
+                <div className={styles.information_bar_item}>
+                  <p>Magic Link:</p>
+                  <p>
+                    <a
+                      href={`http://localhost:3000/claim/${props.contractAddress}`}
+                    >{`http://localhost:3000/claim/${props.contractAddress}`}</a>
+                    <span
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          `http://localhost:3000/claim/${props.contractAddress}`
+                        );
+                      }}
+                    >
+                      Copy
+                    </span>
+                  </p>
+                </div>
+                <div className={styles.information_bar_item}>
+                  <p>Start date:</p>
+                  <p>{`${new Date(parseInt(props.startDate) * 1000)
+                    .toString()
+                    .slice(0, -30)}`}</p>
+                </div>
+                <div className={styles.information_bar_item}>
+                  <p>End date:</p>
+                  <p>{`${
+                    props.endDate === "0"
+                      ? "nil"
+                      : new Date(parseInt(props.endDate) * 1000)
+                          .toString()
+                          .slice(0, -30)
+                  }`}</p>
+                </div>
+              </div>
             </div>
             <div className={styles.action_area}>
               {props.type === "inQueue" ? (

@@ -223,8 +223,8 @@ export default function Claim() {
                   </div>
                   <div className={styles.information_websites}>
                     <p>Associated website(s):</p>
-                    {getEventData?.links?.map((item: string) => (
-                      <Fragment>
+                    {getEventData?.links?.map((item: string, index: number) => (
+                      <Fragment key={index}>
                         <a
                           href={`https://${item}`}
                           target="_blank"

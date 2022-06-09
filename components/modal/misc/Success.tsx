@@ -12,7 +12,7 @@ const Success = (props: { message: string }) => {
         <div className={styles.content}>
           <div className={styles.title}>
             <h2>Your NTT was issued successfully.</h2>
-            <p>You can share this link with wallet you have whitelisted:</p>
+            <p>You can share this link with wallets you have whitelisted:</p>
           </div>
           <div className={styles.subtitle}>
             <a href={props.message}>{props.message}</a>
