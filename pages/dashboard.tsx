@@ -97,6 +97,8 @@ export default function Dashboard() {
                       type="issued"
                       key={index}
                       contractAddress={token.contractAddress}
+                      setLoading={setLoading}
+                      setMessage={setMessage}
                     />
                   ))}
                 {selectedTab === "issued" && issued.length === 0 ? (

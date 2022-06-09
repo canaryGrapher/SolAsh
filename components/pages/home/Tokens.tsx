@@ -1,9 +1,9 @@
 import styles from "@styles/components/pages/Tokens.module.scss";
-import { NTTtype, TokenDetailType } from "@interfaces/pages/Home";
+import { TokenDetailType } from "@interfaces/pages/Home";
 import InformationModal from "@components/modal/information";
 import { useMetaMask } from "metamask-react";
 import { ethers } from "ethers";
-import NTTEvent from "../../../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
+import NTTEvent from "@contracts/NTTEvent.sol/NTTEvent.json";
 import { Fragment, useState } from "react";
 import { useRouter } from "next/router";
 import { stockImageUrl } from "config";
@@ -31,7 +31,6 @@ const Certificates = (props: TokenDetailType) => {
         props.loaderState(false);
         router.reload();
       } catch (err: any) {
-        console.log("burnTokenEvent: ", err.data.message);
         props.loaderState(false);
       }
     }

@@ -21,9 +21,9 @@ interface NTTtype {
     contractAddress: string;
     startDate: string;
     endDate: string;
+    setMessage: (arg: string) => void;
+    setLoading: (arg: boolean) => void;
     imageHash?: string;
-    setMessage: (message: string) => void;
-    setLoading: (status: boolean) => void;
 }
 
 interface WhiteLitEditModalTypes extends NTTtype {

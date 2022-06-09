@@ -11,6 +11,10 @@ import WhitelistEditModal from "@components/modal/editWhitelist";
 import Link from "next/link";
 import { addToWhitelist, removeFromWhitelist } from "@graphAPI/createNTT";
 import { stockImageUrl } from "config";
+import { ethers } from "ethers";
+import NTTEvent from "../../../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
+import { useRouter } from "next/router";
+import { useMetaMask } from "metamask-react";
 
 function getIssuerStatus(contractAddress: string) {
   const { loading, error, data } = useQuery(
@@ -23,13 +27,42 @@ function getIssuerStatus(contractAddress: string) {
   }
 }
 
+function getClaimedStatus(contractAddress: string) {
+  const { loading, error, data } = useQuery(GET_ISSUER_STATUS(contractAddress));
+  if (loading) console.log("issuerStatus: Loading");
+  if (error) console.log("issuerStatus: Error");
+  if (data) {
+    return data.whitelistItems;
+  }
+}
+
 const CreatorCards = (props: NTTtype) => {
+  const router = useRouter();
+  const { ethereum } = useMetaMask();
   const [informationModal, openInformationModal] = useState(false);
   const [editWhiteListModal, openEditWhiteListModal] = useState(false);
 
-  const burnToken = async () => {
+  const burnToken = async (contractAddress: string, tokenId: string) => {
     const confirmation = confirm("Are you sure you want to revoke this token?");
-    alert("Yo");
+    props.setLoading(true);
+    if (confirmation) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        contractAddress,
+        NTTEvent.abi,
+        signer
+      );
+      try {
+        const transaction = await contract.burnTokenEvent(tokenId);
+        const status = await transaction.wait();
+        console.log("STATUS: ", status);
+        props.setLoading(false);
+        router.reload();
+      } catch (err: any) {
+        props.setLoading(false);
+      }
+    }
   };
 
   const viewInformationModal = () => {
@@ -55,7 +88,7 @@ const CreatorCards = (props: NTTtype) => {
           {...props}
           closeModal={closeModal}
           burnToken={burnToken}
-          getIssuerStatus={getIssuerStatus}
+          getIssuerStatus={getClaimedStatus}
           contractAddress={props.contractAddress}
         />
       ) : null}
@@ -91,6 +124,15 @@ const CreatorCards = (props: NTTtype) => {
                 <a
                   href={`http://localhost:3000/claim/${props.contractAddress}`}
                 >{`http://localhost:3000/claim/${props.contractAddress}`}</a>
+                <span
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `http://localhost:3000/claim/${props.contractAddress}`
+                    );
+                  }}
+                >
+                  Copy
+                </span>
               </p>
               <p>{`Start date: ${new Date(parseInt(props.startDate) * 1000)
                 .toString()

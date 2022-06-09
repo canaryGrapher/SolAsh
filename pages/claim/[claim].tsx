@@ -138,7 +138,7 @@ export default function Claim() {
               <img
                 src={
                   getEventData?.imageHash
-                    ? getEventData?.imageHash
+                    ? `https://ipfs.io/ipfs/${getEventData?.imageHash}`
                     : stockImageUrl
                 }
                 height={400}
@@ -168,15 +168,31 @@ export default function Claim() {
                   <div className={styles.information_about_dates}>
                     <div className={styles.information}>
                       <p className={styles.label}>Issue started on: </p>
-                      <p className={styles.value}>{startDate}</p>
+                      <p className={styles.value}>
+                        {" "}
+                        {new Date(parseInt(getEventData?.startDate) * 1000)
+                          .toString()
+                          .slice(0, -30)}
+                      </p>
                     </div>
                     <div className={styles.information}>
                       <p className={styles.label}>Claim before: </p>
-                      <p className={styles.value}>{endDate}</p>
+                      <p className={styles.value}>
+                        {" "}
+                        {getEventData?.endDate === "0"
+                          ? "Eternity"
+                          : new Date(parseInt(getEventData?.endDate) * 1000)
+                              .toString()
+                              .slice(0, -30)}
+                      </p>
                     </div>
                     <div className={styles.information}>
                       <p className={styles.label}>Created on: </p>
-                      <p className={styles.value}>{createdOnDate}</p>
+                      <p className={styles.value}>
+                        {new Date(parseInt(getEventData?.timeStamp) * 1000)
+                          .toString()
+                          .slice(0, -30)}
+                      </p>
                     </div>
                     <div className={styles.information}>
                       <p className={styles.label}>Created by: </p>
@@ -185,6 +201,7 @@ export default function Claim() {
                           href={`https://mumbai.polygonscan.com/address/${getEventData?.creatorAddress}`}
                           target="_blank"
                           referrerPolicy="no-referrer"
+                          className={styles.polygonscan_link}
                         >
                           {getEventData?.creatorAddress}
                         </a>
@@ -197,6 +214,7 @@ export default function Claim() {
                           href={`https://mumbai.polygonscan.com/address/${getEventData?.contractAddress}`}
                           target="_blank"
                           referrerPolicy="no-referrer"
+                          className={styles.polygonscan_link}
                         >
                           {getEventData?.contractAddress}
                         </a>
@@ -208,7 +226,7 @@ export default function Claim() {
                     {getEventData?.links?.map((item: string) => (
                       <Fragment>
                         <a
-                          href={item}
+                          href={`https://${item}`}
                           target="_blank"
                           referrerPolicy="no-referrer"
                         >

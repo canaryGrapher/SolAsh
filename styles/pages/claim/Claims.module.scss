@@ -95,6 +95,13 @@
               .value {
                 font-weight: normal;
                 color: #ffffff;
+
+                .polygonscan_link {
+                  &:hover {
+                    text-decoration: underline;
+                    color: rgb(80, 80, 255);
+                  }
+                }
               }
             }
           }

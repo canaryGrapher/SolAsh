@@ -75,22 +75,20 @@ const InformationModal: React.FC<InformationModalProps> = (props) => {
                     </a>
                   </p>
                 </div>
+                <div className={styles.information}>
+                  <p className={styles.label}>Transaction: </p>
+                  <p className={styles.value}>
+                    <a
+                      href={`https://mumbai.polygonscan.com/tx/${props.transactionHash}`}
+                      target="_blank"
+                      referrerPolicy="no-referrer"
+                    >
+                      mumbai.polygonscan.com
+                    </a>
+                  </p>
+                </div>
               </div>
               <div className={styles.information_websites}>
-                <p>
-                  Transaction:{" "}
-                  <a
-                    href={`https://mumbai.polygonscan.com/tx/${props.transactionHash}`}
-                    target="_blank"
-                    referrerPolicy="no-referrer"
-                  >
-                    {`mumbai.polygonscan.com/tx/${
-                      props.transactionHash.slice(0, 6) +
-                      "...." +
-                      props.transactionHash.slice(-4)
-                    }`}
-                  </a>
-                </p>
                 <p>Associated website(s):</p>
                 {props.links?.map((item) => (
                   <Fragment>

@@ -25,10 +25,9 @@
       column-gap: 20px;
 
       .certificate_image {
+        text-align: center;
         .action_area {
           margin-top: 20px;
-          display: flex;
-          flex-direction: column;
 
           .action_area_button {
             cursor: pointer;
@@ -93,7 +92,8 @@
             grid-template-columns: auto;
 
             .information {
-              display: flex;
+              display: grid;
+              grid-template-columns: 1fr 3fr;
               font-weight: 700;
 
               .label {
@@ -103,6 +103,13 @@
 
               .value {
                 color: #ffffff;
+
+                a {
+                  &:hover {
+                    text-decoration: underline;
+                    color: rgb(80, 80, 255);
+                  }
+                }
               }
             }
           }

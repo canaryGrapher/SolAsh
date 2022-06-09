@@ -138,13 +138,15 @@
                 color: #ffffff;
                 margin-bottom: 0;
               }
-
+              p:nth-of-type(2) {
+                text-align: center;
+              }
               p:last-of-type {
-                text-align: right;
+                text-align: center;
               }
 
               display: grid;
-              grid-template-columns: 4fr 1fr 1fr;
+              grid-template-columns: 3fr 1fr 1fr;
               margin-bottom: 10px;
               border: 2px solid #ff5846;
               border-radius: 5px;

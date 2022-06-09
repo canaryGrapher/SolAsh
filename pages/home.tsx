@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import styles from "@styles/pages/home/Home.module.scss";
 import RootLayout from "@layouts/Root";
 import Image from "next/image";

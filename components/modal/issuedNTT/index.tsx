@@ -130,7 +130,16 @@ const IssuedNTTCardModal: React.FC<ModalProps> = (props) => {
                       <div
                         className={styles.burn_button}
                         // pass token id and contract address to burn token
-                        onClick={props.burnToken}
+                        onClick={async () => {
+                          const tokenData = await getTokenData(
+                            props.contractAddress,
+                            claim.userAddress
+                          );
+                          props.burnToken(
+                            props.contractAddress,
+                            tokenData.tokenId
+                          );
+                        }}
                       >
                         <p>Burn</p>
                       </div>
