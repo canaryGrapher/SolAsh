@@ -224,7 +224,7 @@ const mintNTT = async (
     const startDateTimestamp = Math.floor(
         new Date(startDate).getTime() / 1000
     );
-    const endDateTimestamp = endDate.value && endDate.length > 0 ? Math.floor(
+    const endDateTimestamp = endDate && endDate.length > 0 ? Math.floor(
         new Date(endDate).getTime() / 1000
     ) : 0;
 

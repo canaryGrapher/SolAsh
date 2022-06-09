@@ -20,7 +20,9 @@ const Success = (props: { message: string }) => {
           <div className={styles.close}>
             <button
               className={styles.closeButton}
-              onClick={() => router.push("/dashboard")}
+              onClick={() => {
+                router.push("/dashboard");
+              }}
             >
               Close
             </button>

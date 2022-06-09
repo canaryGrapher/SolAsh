@@ -353,9 +353,9 @@ export default function CreateNTT({ parameters, mode, contractAddress }: any) {
                               name="startDate"
                               id="startDate"
                               type="datetime-local"
+                              value={startDateValue}
                               required={true}
                               min={StartFormat}
-                              value={startDateValue}
                               onChange={(e) =>
                                 setStartDateValue(e.target.value)
                               }
@@ -371,9 +371,10 @@ export default function CreateNTT({ parameters, mode, contractAddress }: any) {
                               id="endDate"
                               type="datetime-local"
                               value={endDateValue}
+                              required={false}
+                              min={NextFormat}
                               onChange={(e) => setEndDateValue(e.target.value)}
                               pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
-                              min={NextFormat}
                               placeholder="When should we stop redemption?"
                             />
                           </label>

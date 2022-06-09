@@ -41,7 +41,7 @@ const CreatorCards = (props: NTTtype) => {
   const { ethereum } = useMetaMask();
   const [informationModal, openInformationModal] = useState(false);
   const [editWhiteListModal, openEditWhiteListModal] = useState(false);
-
+  console.log("Creator Cards: ", props);
   const burnToken = async (contractAddress: string, tokenId: string) => {
     const confirmation = confirm("Are you sure you want to revoke this token?");
     props.setLoading(true);
@@ -147,7 +147,7 @@ const CreatorCards = (props: NTTtype) => {
                   <p>End date:</p>
                   <p>{`${
                     props.endDate === "0"
-                      ? "nil"
+                      ? "Eternity"
                       : new Date(parseInt(props.endDate) * 1000)
                           .toString()
                           .slice(0, -30)
