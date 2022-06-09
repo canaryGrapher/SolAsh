@@ -16,8 +16,8 @@ const getUserStatus = (contractAddress: string, username: string) => {
     if (loading) console.log("getUserStatus: Loading");
     if (error) console.log("getUserStatus: Error");
 
-    if (data) {
-        console.log("getUserStatus: ", data.whitelistItems[0].stat);
+    if (data && data.whitelistItems.length != 0) {
+        console.log("getUserStatus: ", data.whitelistItems[0].status);
         return data.whitelistItems[0].status;
     }
 

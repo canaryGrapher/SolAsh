@@ -350,7 +350,7 @@ export default function CreateNTT({ parameters, mode, contractAddress }: any) {
                               id="startDate"
                               type="datetime-local"
                               required={true}
-                              min={StartFormat}
+                              // min={StartFormat}
                               value={startDateValue}
                               onChange={(e) =>
                                 setStartDateValue(e.target.value)
