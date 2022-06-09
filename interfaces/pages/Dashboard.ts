@@ -29,8 +29,8 @@ interface NTTtype {
 interface WhiteLitEditModalTypes extends NTTtype {
     closeModal: () => void;
     getIssuerStatus: (contractAddress: string) => void;
-    removeFromWhiteList: (ethereum: any, nttContractAddress: string, list: string[]) => void;
-    addToWhiteList: (nttContractAddress: string, list: string[], ethereum: any) => void;
+    removeFromWhiteList: (ethereum: any, nttContractAddress: string, list: string[]) => any;
+    addToWhiteList: (nttContractAddress: string, list: string[], ethereum: any) => any;
 }
 
 

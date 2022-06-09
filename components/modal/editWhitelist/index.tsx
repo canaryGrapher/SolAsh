@@ -1,10 +1,12 @@
 import { useState } from "react";
 import styles from "@styles/components/modal/whitelistModal.module.scss";
 import { useMetaMask } from "metamask-react";
-
+import { useRouter } from "next/router";
 import { WhiteLitEditModalTypes } from "@interfaces/pages/Dashboard";
+import { stockImageUrl } from "config";
 
 const WhitelistEditModal = (props: WhiteLitEditModalTypes) => {
+  const router = useRouter();
   const issuerData = props.getIssuerStatus(props.contractAddress);
   const { ethereum } = useMetaMask();
 
@@ -13,14 +15,38 @@ const WhitelistEditModal = (props: WhiteLitEditModalTypes) => {
   const removeWallet = async (wallet: string) => {
     props.setLoading(true);
     props.setMessage("Removing address from whitelist...");
-    const data = props.removeFromWhiteList(ethereum, props.contractAddress, [
-      wallet,
-    ]);
+    const data = props
+      .removeFromWhiteList(ethereum, props.contractAddress, [wallet])
+      .then((res: any) => {
+        console.log(res);
+        props.setMessage(
+          "Please check your metamask extension for further instructions."
+        );
+      })
+      .finally(() => {
+        props.setMessage("Added address to whitelist.");
+        props.setLoading(false);
+        router.reload();
+      });
     console.log("Wallet removed: ", data);
   };
   const addWallet = async () => {
+    props.setLoading(true);
+    props.setMessage("Adding address to whitelist...");
     const wallet: string[] = [walletAddress];
-    const data = props.addToWhiteList(props.contractAddress, wallet, ethereum);
+    const data = props
+      .addToWhiteList(props.contractAddress, wallet, ethereum)
+      .then((res: any) => {
+        console.log(res);
+        props.setMessage(
+          "Please check your metamask extension for further instructions."
+        );
+      })
+      .finally(() => {
+        props.setMessage("Added address to whitelist.");
+        props.setLoading(false);
+        router.reload();
+      });
     console.log("Wallet added: ", data);
   };
   return (
@@ -33,7 +59,7 @@ const WhitelistEditModal = (props: WhiteLitEditModalTypes) => {
                 src={
                   props.imageHash
                     ? `https://ipfs.io/ipfs/${props.imageHash}`
-                    : "https://images.unsplash.com/photo-1642388538891-38b2d14e750e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
+                    : stockImageUrl
                 }
                 height={300}
                 width={300}

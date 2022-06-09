@@ -143,6 +143,10 @@ export default function CreateNTT({ parameters, mode, contractAddress }: any) {
         })
         .catch((err) => {
           console.log(err);
+          alert(
+            "There was an error completing your request. Please try again. Error: " +
+              err
+          );
           setMessage("There was an error minting your NTT. Please try again.");
         })
         .finally(() => {
@@ -244,7 +248,7 @@ export default function CreateNTT({ parameters, mode, contractAddress }: any) {
   return (
     <Fragment>
       {loading ? <Waiting message={message} /> : null}
-      {mintedAddress.length > 0 ? (
+      {mintedAddress?.length > 0 ? (
         <Success message={"http://localhost:3000/claim/" + mintedAddress} />
       ) : null}
       <RootLayout>
@@ -350,7 +354,7 @@ export default function CreateNTT({ parameters, mode, contractAddress }: any) {
                               id="startDate"
                               type="datetime-local"
                               required={true}
-                              min={StartFormat}
+                              // min={StartFormat}
                               value={startDateValue}
                               onChange={(e) =>
                                 setStartDateValue(e.target.value)

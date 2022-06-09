@@ -4,6 +4,9 @@ import styles from "@styles/pages/claim/Claims.module.scss";
 import { useMetaMask } from "metamask-react";
 import { useRouter } from "next/router";
 import { getUserStatus, getEventDetails, mintToken } from "@graphAPI/claim";
+import { stockImageUrl } from "config";
+
+import Waiting from "@components/modal/misc/Waiting";
 
 const getDate = (dateItemInSeconds: number) => {
   let date = new Date(1970, 0, 1);
@@ -12,7 +15,80 @@ const getDate = (dateItemInSeconds: number) => {
   return date.toLocaleString(undefined, { timeZone: "Asia/Kolkata" });
 };
 
+const showButtonForClaiming = (
+  status: string,
+  startDate: string,
+  endDate: string,
+  parsedUrl: string,
+  setMessage: (msg: string) => void,
+  setLoading: (state: boolean) => void,
+  router: any,
+  ethereum?: any
+) => {
+  const currentDate = Math.floor(new Date().getTime() / 1000);
+  const _endDate = Number(endDate);
+  const _startDate = Number(startDate);
+  console.log(
+    "currentDate: " +
+      currentDate +
+      " startDate: " +
+      startDate +
+      " endDate: " +
+      _endDate
+  );
+
+  if (_startDate > currentDate) {
+    return <p className={styles.notice}>Claiming period is yet to begin</p>;
+  }
+  if (_endDate < currentDate && _endDate != 0) {
+    return <p className={styles.notice}>Claiming period is over</p>;
+  }
+  if (status === "0") {
+    return <p className={styles.notice}>This Token is revoked</p>;
+  }
+  if (status === "1") {
+    // const data = confirm("You already claimed this Token. Go to home page?");
+    return <p className={styles.notice}>You already claimed this token</p>;
+  }
+  if (status === "2") {
+    return (
+      <button
+        onClick={() =>
+          mintFunction(parsedUrl, ethereum, setMessage, setLoading, router)
+        }
+      >
+        Claim
+      </button>
+    );
+  }
+  return <p className={styles.notice}>You shouldn't be here</p>;
+};
+
+const mintFunction = (
+  parsedUrl: string,
+  ethereum: any,
+  setMessage: (msg: string) => void,
+  setLoading: (state: boolean) => void,
+  router: any
+) => {
+  setMessage("Minting Token...");
+  setLoading(true);
+  mintToken(parsedUrl, ethereum)
+    .then((res) => {
+      setMessage("Token minted successfully");
+    })
+    .catch((err) => {
+      setMessage("Error while minting token");
+    })
+    .finally(() => {
+      setLoading(false);
+      router.reload();
+    });
+};
+
 export default function Claim() {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
   const { ethereum } = useMetaMask();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -39,7 +115,7 @@ export default function Claim() {
     const currentDate = new Date();
 
     if (
-      TempendDate != "Ethernity" &&
+      TempendDate != "Eternity" &&
       Math.floor(currentDate.getTime() / 1000) > Number(getEventData?.endDate)
     ) {
       setStatus("Expired");
@@ -49,93 +125,105 @@ export default function Claim() {
     setCreatedOnDate(TempcreatedOnDate);
     setEndDate(TempendDate);
     setStartDate(TempstartDate);
+    console.log("SSSS2: ", status);
   }, [getEventData, _status]);
 
   return (
-    <RootLayout>
-      <div className={styles.wrapper}>
-        <div className={styles.container}>
-          <div className={styles.imageContainer}>
-            <img src={getEventData?.imageHash} />
-            {status === "2" ? (
-              <button onClick={() => mintToken(parsedUrl, ethereum)}>
-                Claim
-              </button>
-            ) : status === "1" ? (
-              <p className={styles.notice}>You already claimed this token</p>
-            ) : status === "0" ? (
-              <p className={styles.notice}>This Token is not claimable</p>
-            ) : (
-              <p className={styles.notice}>Claimable status has expired</p>
-            )}
-          </div>
-          <div className={styles.informationContainer}>
-            <div className={styles.information_container}>
-              <h2>{getEventData?.title}</h2>
-              <p className={styles.community_information}>
-                Issued by: <span>{getEventData?.associatedCommunity}</span>
-              </p>
-              <p className={styles.ntt_description}>
-                {getEventData?.description}
-              </p>
-              <div className={styles.information_area}>
-                <div className={styles.information_about_dates}>
-                  <div className={styles.information}>
-                    <p className={styles.label}>Issue started on: </p>
-                    <p className={styles.value}>{startDate}</p>
+    <Fragment>
+      {loading ? <Waiting message={message} /> : null}
+      <RootLayout>
+        <div className={styles.wrapper}>
+          <div className={styles.container}>
+            <div className={styles.imageContainer}>
+              <img
+                src={
+                  getEventData?.imageHash
+                    ? getEventData?.imageHash
+                    : stockImageUrl
+                }
+                height={400}
+                width={400}
+              />
+              {showButtonForClaiming(
+                status,
+                getEventData?.startDate,
+                getEventData?.endDate,
+                parsedUrl,
+                setMessage,
+                setLoading,
+                router,
+                ethereum
+              )}
+            </div>
+            <div className={styles.informationContainer}>
+              <div className={styles.information_container}>
+                <h2>{getEventData?.title}</h2>
+                <p className={styles.community_information}>
+                  Issued by: <span>{getEventData?.associatedCommunity}</span>
+                </p>
+                <p className={styles.ntt_description}>
+                  {getEventData?.description}
+                </p>
+                <div className={styles.information_area}>
+                  <div className={styles.information_about_dates}>
+                    <div className={styles.information}>
+                      <p className={styles.label}>Issue started on: </p>
+                      <p className={styles.value}>{startDate}</p>
+                    </div>
+                    <div className={styles.information}>
+                      <p className={styles.label}>Claim before: </p>
+                      <p className={styles.value}>{endDate}</p>
+                    </div>
+                    <div className={styles.information}>
+                      <p className={styles.label}>Created on: </p>
+                      <p className={styles.value}>{createdOnDate}</p>
+                    </div>
+                    <div className={styles.information}>
+                      <p className={styles.label}>Created by: </p>
+                      <p className={styles.value}>
+                        <a
+                          href={`https://mumbai.polygonscan.com/address/${getEventData?.creatorAddress}`}
+                          target="_blank"
+                          referrerPolicy="no-referrer"
+                        >
+                          {getEventData?.creatorAddress}
+                        </a>
+                      </p>
+                    </div>
+                    <div className={styles.information}>
+                      <p className={styles.label}>Contract address: </p>
+                      <p className={styles.value}>
+                        <a
+                          href={`https://mumbai.polygonscan.com/address/${getEventData?.contractAddress}`}
+                          target="_blank"
+                          referrerPolicy="no-referrer"
+                        >
+                          {getEventData?.contractAddress}
+                        </a>
+                      </p>
+                    </div>
                   </div>
-                  <div className={styles.information}>
-                    <p className={styles.label}>Claim before: </p>
-                    <p className={styles.value}>{endDate}</p>
+                  <div className={styles.information_websites}>
+                    <p>Associated website(s):</p>
+                    {getEventData?.links?.map((item: string) => (
+                      <Fragment>
+                        <a
+                          href={item}
+                          target="_blank"
+                          referrerPolicy="no-referrer"
+                        >
+                          {item}
+                        </a>
+                        <br />
+                      </Fragment>
+                    ))}
                   </div>
-                  <div className={styles.information}>
-                    <p className={styles.label}>Created on: </p>
-                    <p className={styles.value}>{createdOnDate}</p>
-                  </div>
-                  <div className={styles.information}>
-                    <p className={styles.label}>Created by: </p>
-                    <p className={styles.value}>
-                      {getEventData?.creatorAddress}
-                    </p>
-                  </div>
-                  <div className={styles.information}>
-                    <p className={styles.label}>Contract address: </p>
-                    <p className={styles.value}>
-                      {getEventData?.contractAddress}
-                    </p>
-                  </div>
-                </div>
-                <div className={styles.information_websites}>
-                  <p>Associated website(s):</p>
-                  {getEventData?.links?.map((item: string) => (
-                    <Fragment>
-                      <a
-                        href={item}
-                        target="_blank"
-                        referrerPolicy="no-referrer"
-                      >
-                        {item}
-                      </a>
-                      <br />
-                    </Fragment>
-                  ))}
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </RootLayout>
+      </RootLayout>
+    </Fragment>
   );
 }
-
-// export async function getStaticgetEventData(context: any) {
-//   const contractAddress = context.params.claim;
-//   const status = getUserStatus(contractAddress);
-//   return {
-//     getEventData: {
-//       contractAddress,
-//       status,
-//     },
-//   };
-// }

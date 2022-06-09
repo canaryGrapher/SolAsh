@@ -30,8 +30,13 @@ const getEventDetails = async (contractAddress: string) => {
             console.error(response.data.errors);
             throw new Error(`Error making subgraph query ${response.data.errors}`);
         }
-        console.log("AXIOS: ", response.data.data.nttcontracts[0]);
-        return response.data.data.nttcontracts[0];
+
+        if (response.data.data.nttcontracts.length != 0) {
+            console.log("AXIOS: ", response.data.data.nttcontracts[0]);
+            return response.data.data.nttcontracts[0];
+        }
+        return {};
+
     } catch (error: any) {
         console.error(error);
         throw new Error(`Could not query the subgraph ${error.message}`);
@@ -79,6 +84,7 @@ const deployNTT = async (
         //Navigate to dashboard : ntts in queue
     } catch (err) {
         console.log("DeployNTT: " + err);
+        alert("Metamask error: " + err);
     }
 };
 

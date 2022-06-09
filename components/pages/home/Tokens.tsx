@@ -6,6 +6,7 @@ import { ethers } from "ethers";
 import NTTEvent from "../../../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
 import { Fragment, useState } from "react";
 import { useRouter } from "next/router";
+import { stockImageUrl } from "config";
 
 const Certificates = (props: TokenDetailType) => {
   const router = useRouter();
@@ -64,7 +65,7 @@ const Certificates = (props: TokenDetailType) => {
             src={
               props.imageHash
                 ? `https://ipfs.io/ipfs/${props.imageHash}`
-                : "https://images.unsplash.com/photo-1642388538891-38b2d14e750e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
+                : stockImageUrl
             }
             height={200}
             width={200}
