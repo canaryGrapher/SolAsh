@@ -227,7 +227,6 @@ const mintNTT = async (
     const endDateTimestamp = endDate && endDate.length > 0 ? Math.floor(
         new Date(endDate).getTime() / 1000
     ) : 0;
-
     return await deployNTT(
         nttTitle,
         nttDescription,

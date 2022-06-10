@@ -21,7 +21,7 @@ const Success = (props: { message: string }) => {
             <button
               className={styles.closeButton}
               onClick={() => {
-                router.push("/dashboard");
+                router.push("/dashboard?refreshAfterLoad=true&reloadCount=1");
               }}
             >
               Close

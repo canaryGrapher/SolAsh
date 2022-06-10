@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import styles from "@styles/pages/dashboard/Dashboard.module.scss";
 import RootLayout from "@layouts/Root";
 import Image from "next/image";
@@ -9,8 +9,17 @@ import { NTTtype } from "@interfaces/pages/Dashboard";
 import UserContext from "@context/UserContext";
 import { inQueueEvents, issuedEvents } from "@graphAPI/dashboard";
 import Waiting from "@components/modal/misc/Waiting";
+import { useRouter } from "next/router";
 
 export default function Dashboard() {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.query.refreshAfterLoad && router.query.reloadCount === "1") {
+      router.push("/dashboard");
+    }
+  }, []);
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [selectedTab, setSelectedTab] = useState<"inQueue" | "issued">(
