@@ -8,6 +8,6 @@ module.exports = withPWA({
     runtimeCaching,
   },
   images: {
-    domains: ['via.placeholder.com', 'images.unsplash.com'],
+    domains: ['via.placeholder.com', 'images.unsplash.com', 'ipfs.io'],
   },
 })

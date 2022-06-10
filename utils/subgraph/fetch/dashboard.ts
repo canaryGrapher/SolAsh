@@ -24,6 +24,9 @@ function inQueueEvents(creatorAddress: string) {
                 image: ntt.imageHash,
                 type: "Certificate",
                 claimedStatus: [],
+                contractAddress: ntt.contractAddress,
+                startDate: ntt.startDate,
+                endDate: ntt.endDate,
             };
         });
         return formatted_data;
@@ -50,6 +53,9 @@ function issuedEvents(creatorAddress: string) {
                 image: ntt.imageHash,
                 type: "Certificate",
                 claimedStatus: [],
+                contractAddress: ntt.contractAddress,
+                startDate: ntt.startDate,
+                endDate: ntt.endDate,
             };
         });
         return formatted_data;

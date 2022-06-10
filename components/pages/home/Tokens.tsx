@@ -1,39 +1,40 @@
 import styles from "@styles/components/pages/Tokens.module.scss";
-import { NTTtype } from "@interfaces/pages/Home";
+import { TokenDetailType } from "@interfaces/pages/Home";
 import InformationModal from "@components/modal/information";
-import Image from "next/image";
 import { useMetaMask } from "metamask-react";
 import { ethers } from "ethers";
-import NTTEvent from "../../../artifacts/contracts/NTTEvent.sol/NTTEvent.json";
+import NTTEvent from "@contracts/NTTEvent.sol/NTTEvent.json";
 import { Fragment, useState } from "react";
+import { useRouter } from "next/router";
+import { stockImageUrl } from "config";
 
-const Certificates = (props: NTTtype) => {
+const Certificates = (props: TokenDetailType) => {
+  const router = useRouter();
   const { ethereum } = useMetaMask();
   const [modal, openModal] = useState(false);
 
-  const revokeToken = async () => {
+  const revokeToken = async (contractAddress: string, tokenId: BigInt) => {
     const confirmation = confirm("Are you sure you want to revoke this token?");
     if (confirmation) {
-      const burnTokenEvent = async (
-        contractAddress: string,
-        tokenId: BigInt
-      ) => {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(
-          contractAddress,
-          NTTEvent.abi,
-          signer
-        );
-        try {
-          const transaction = await contract.burnTokenEvent(tokenId);
-          const status = await transaction.wait();
-          console.log("STATUS: ", status);
-        } catch (err: any) {
-          console.log("burnTokenEvent: ", err.data.message);
-        }
-      };
+      props.loaderState(true);
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        contractAddress,
+        NTTEvent.abi,
+        signer
+      );
+      try {
+        const transaction = await contract.burnTokenEvent(tokenId);
+        const status = await transaction.wait();
+        console.log("STATUS: ", status);
+        props.loaderState(false);
+        router.reload();
+      } catch (err: any) {
+        props.loaderState(false);
+      }
     }
+    // }
   };
 
   const viewInformationModal = () => {
@@ -45,19 +46,29 @@ const Certificates = (props: NTTtype) => {
   };
 
   // burnTokenEvent("0xcdf2edc9cf96e277913566d3b04e6b63bfe5e7c0", BigInt(3));
-
+  console.log("IMG: ", props.imageHash);
   return (
     <Fragment>
       {modal ? (
         <InformationModal
           {...props}
           closeModal={closeModal}
-          revokeToken={revokeToken}
+          revokeToken={() =>
+            revokeToken(props.contractAddress, BigInt(props.tokenId))
+          }
         />
       ) : null}
       <div className={styles.certificate_container}>
         <div className={styles.certificate_image}>
-          <Image src={props.image} height={200} width={200} />
+          <img
+            src={
+              props.imageHash
+                ? `https://ipfs.io/ipfs/${props.imageHash}`
+                : stockImageUrl
+            }
+            height={200}
+            width={200}
+          />
         </div>
         <div className={styles.certificate_information_container}>
           <div className={styles.certificate_information}>

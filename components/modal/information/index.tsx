@@ -1,7 +1,7 @@
 import { InformationModalProps } from "@interfaces/components/InformationModal";
-import Image from "next/image";
 import styles from "@styles/components/modal/Information.module.scss";
 import { Fragment } from "react";
+import { stockImageUrl } from "config";
 
 const InformationModal: React.FC<InformationModalProps> = (props) => {
   return (
@@ -10,7 +10,15 @@ const InformationModal: React.FC<InformationModalProps> = (props) => {
         <div className={styles.modal}>
           <div className={styles.image_container}>
             <div className={styles.certificate_image}>
-              <Image src={props.image} height={300} width={300} />
+              <img
+                src={
+                  props.imageHash
+                    ? `https://ipfs.io/ipfs/${props.imageHash}`
+                    : stockImageUrl
+                }
+                height={300}
+                width={300}
+              />
               <div className={styles.action_area}>
                 <div
                   className={styles.action_area_button}
@@ -35,25 +43,61 @@ const InformationModal: React.FC<InformationModalProps> = (props) => {
             <p className={styles.ntt_description}>{props.description}</p>
             <div className={styles.information_area}>
               <div className={styles.information_about_dates}>
-                {/* <div className={styles.information}>
-                  <p className={styles.label}>Issued on: </p>
-                  <p className={styles.value}>{props.issueDate}</p>
-                </div> */}
-                {/* <div className={styles.information}>
-                  <p className={styles.label}>Expiry date: </p>
-                  <p className={styles.value}>
-                    {props.expiryDate ? props.expiryDate : "null"}
-                  </p>
-                </div> */}
                 <div className={styles.information}>
                   <p className={styles.label}>Claimed on: </p>
-                  <p className={styles.value}>{props.claimedOn}</p>
+                  <p className={styles.value}>{`${
+                    props.timeStamp === "0"
+                      ? "nil"
+                      : new Date(parseInt(props.timeStamp) * 1000)
+                          .toString()
+                          .slice(0, -30)
+                  }`}</p>
+                </div>
+                <div className={styles.information}>
+                  <p className={styles.label}>Token Id: </p>
+                  <p className={styles.value}>{props.tokenId}</p>
+                </div>
+                <div className={styles.information}>
+                  <p className={styles.label}>Creator Address: </p>
+                  <p className={styles.value}>
+                    <a
+                      href={`https://mumbai.polygonscan.com/address/${props.creatorAddress}`}
+                      target="_blank"
+                      referrerPolicy="no-referrer"
+                    >
+                      {props.creatorAddress}
+                    </a>
+                  </p>
+                </div>
+                <div className={styles.information}>
+                  <p className={styles.label}>Contract Address: </p>
+                  <p className={styles.value}>
+                    <a
+                      href={`https://mumbai.polygonscan.com/address/${props.contractAddress}`}
+                      target="_blank"
+                      referrerPolicy="no-referrer"
+                    >
+                      {props.contractAddress}
+                    </a>
+                  </p>
+                </div>
+                <div className={styles.information}>
+                  <p className={styles.label}>Transaction: </p>
+                  <p className={styles.value}>
+                    <a
+                      href={`https://mumbai.polygonscan.com/tx/${props.transactionHash}`}
+                      target="_blank"
+                      referrerPolicy="no-referrer"
+                    >
+                      mumbai.polygonscan.com
+                    </a>
+                  </p>
                 </div>
               </div>
               <div className={styles.information_websites}>
                 <p>Associated website(s):</p>
-                {props.link?.map((item) => (
-                  <Fragment>
+                {props.links?.map((item, index) => (
+                  <Fragment key={index}>
                     <a href={item} target="_blank" referrerPolicy="no-referrer">
                       {item}
                     </a>

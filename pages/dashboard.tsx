@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import styles from "@styles/pages/dashboard/Dashboard.module.scss";
 import RootLayout from "@layouts/Root";
 import Image from "next/image";
@@ -6,20 +6,33 @@ import CreatorCards from "@components/pages/dashboard/CreatorCards";
 import IssueChooser from "@components/pages/dashboard/IssueChooser";
 import { Home_Banner } from "@resources/exports";
 import { NTTtype } from "@interfaces/pages/Dashboard";
-import { useMetaMask } from "metamask-react";
 import UserContext from "@context/UserContext";
 import { inQueueEvents, issuedEvents } from "@graphAPI/dashboard";
+import Waiting from "@components/modal/misc/Waiting";
+import { useRouter } from "next/router";
 
 export default function Dashboard() {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.query.refreshAfterLoad && router.query.reloadCount === "1") {
+      router.push("/dashboard");
+    }
+  }, []);
+
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const [selectedTab, setSelectedTab] = useState<"inQueue" | "issued">(
     "inQueue"
   );
-
   const userContext = useContext(UserContext);
   const inQueue = inQueueEvents(userContext.userName);
   const issued = issuedEvents(userContext.userName);
-
-  return (
+  console.log(inQueue);
+  console.log(issued);
+  return loading ? (
+    <Waiting message={message} />
+  ) : (
     <RootLayout>
       <main className={styles.main}>
         <div className={styles.container}>
@@ -72,7 +85,13 @@ export default function Dashboard() {
                 {selectedTab === "inQueue" &&
                   inQueue.length > 0 &&
                   inQueue.map((certificate: NTTtype, index: number) => (
-                    <CreatorCards {...certificate} type="inQueue" key={index} />
+                    <CreatorCards
+                      {...certificate}
+                      type="inQueue"
+                      key={index}
+                      setLoading={setLoading}
+                      setMessage={setMessage}
+                    />
                   ))}
                 {selectedTab === "inQueue" && inQueue.length === 0 ? (
                   <div className={styles.emptyBox}>
@@ -82,7 +101,14 @@ export default function Dashboard() {
                 {selectedTab === "issued" &&
                   issued.length > 0 &&
                   issued.map((token: NTTtype, index: number) => (
-                    <CreatorCards {...token} type="issued" key={index} />
+                    <CreatorCards
+                      {...token}
+                      type="issued"
+                      key={index}
+                      contractAddress={token.contractAddress}
+                      setLoading={setLoading}
+                      setMessage={setMessage}
+                    />
                   ))}
                 {selectedTab === "issued" && issued.length === 0 ? (
                   <div className={styles.emptyBox}>

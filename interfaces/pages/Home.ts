@@ -44,14 +44,18 @@ interface TokenDetailType {
     contractAddress: string;
     creatorAddress: string;
     receiverAddress: string;
+    transactionHash: string;
     title: string;
     description: string;
     links: string[] | [];
     imageHash: string;
     associatedCommunity: string;
     timeStamp: string;
+    loaderState: (arg: boolean) => void;
 }
+
+type TokenDetailsProps = TokenDetailType[] | []
 
 type finalTokenType = NTTtype[] | []
 
-export type { IPassedProps, NTTtype, TokenType, EventDetailsType, TokenDetailType, finalTokenType }
+export type { IPassedProps, NTTtype, TokenType, EventDetailsType, TokenDetailType, finalTokenType, TokenDetailsProps };

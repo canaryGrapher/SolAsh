@@ -1,63 +1,54 @@
-.overlay {
+.wrapper {
   width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.55);
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 600;
+  min-height: 80vh;
+  background-color: #111111;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  justify-content: center;
 
   .container {
-    width: 80%;
-    margin: 30px auto 20px auto;
-    background-color: #000000;
+    max-height: 60%;
+    width: 60%;
+    background-color: #2d2d2d;
+    margin: auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
 
-    .modal {
-      position: relative;
-      width: 85%;
-      margin: 20px auto;
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      column-gap: 20px;
+    .imageContainer {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
 
-      .certificate_image {
-        text-align: center;
-        .action_area {
-          margin-top: 20px;
+      img {
+        width: 100%;
+        height: 80%;
+      }
+      button {
+        width: 100%;
+        height: 30px;
+        background-color: #ff5846;
+        color: #ffffff;
+        border: none;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 14px;
+        cursor: pointer;
+        margin-top: 10px;
 
-          .action_area_button {
-            cursor: pointer;
-            width: 100%;
-            font-weight: bold;
-            padding: 10px;
-            text-align: center;
-            margin: 5px 2px;
-            border-radius: 20px;
-
-            &:first-of-type {
-              background-color: #ffffff;
-              color: #ff5846;
-              &:hover {
-                background-color: #ff5846;
-                color: #ffffff;
-              }
-            }
-            &:nth-of-type(2) {
-              background-color: #ff5846;
-              color: #ffffff;
-              &:hover {
-                background-color: #ffffff;
-                color: #ff5846;
-              }
-            }
-          }
+        &:hover {
+          background-color: #ffffff;
+          color: #ff5846;
         }
       }
+    }
 
+    .informationContainer {
+      padding-left: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       .information_container {
         h2 {
           color: #ff5846;
@@ -89,11 +80,11 @@
 
           .information_about_dates {
             display: grid;
-            grid-template-columns: auto;
+            grid-template-columns: 1fr;
 
             .information {
               display: grid;
-              grid-template-columns: 1fr 3fr;
+              grid-template-columns: 1fr 2fr;
               font-weight: 700;
 
               .label {
@@ -102,9 +93,10 @@
               }
 
               .value {
+                font-weight: normal;
                 color: #ffffff;
 
-                a {
+                .polygonscan_link {
                   &:hover {
                     text-decoration: underline;
                     color: rgb(80, 80, 255);

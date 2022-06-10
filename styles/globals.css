@@ -31,3 +31,24 @@ h6 {
 .done {
   background-color: #ff5846 !important;
 }
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  color       : rgba(0, 0, 0, 0);
+  opacity     : 1;
+  display     : block;
+  background  : url(calendar.png) no-repeat;
+  width       : 20px;
+  height      : 20px;
+  border-width: thin;
+}
+
+input[type=search]::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button;
+  color             : #ffffff;
+}
+
+input[type=search] {
+  -webkit-appearance: none;
+  color             : #ffffff;
+
+}

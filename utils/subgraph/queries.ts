@@ -56,7 +56,7 @@ const GET_EVENT_DETAILS = (contractAddress: string) => gql`
 `;
 
 
-const GET_EVENTS_IN_QUEUE = (currentTime: any, creatorAddress : string) => gql`
+const GET_EVENTS_IN_QUEUE = (currentTime: any, creatorAddress: string) => gql`
   query {
     nttcontracts(
       where: { 
@@ -79,7 +79,7 @@ const GET_EVENTS_IN_QUEUE = (currentTime: any, creatorAddress : string) => gql`
   }
 `;
 
-const GET_EVENTS_ISSUED = (currentTime: any, creatorAddress : string) => gql`
+const GET_EVENTS_ISSUED = (currentTime: any, creatorAddress: string) => gql`
   query {
     nttcontracts(
       where: { 
@@ -117,7 +117,39 @@ const GET_TOKENS_ISSUED = (userAddress: string) => gql`
       tokenId
       creatorAddress
       receiverAddress
+      transactionHash
       title
+      description
+      links
+      imageHash
+      associatedCommunity
+      isValid
+      timeStamp
+    }
+  }
+`;
+
+
+const GET_TOKEN = (contractAddress : string, userAddress : string) => gql`
+  query {
+    tokens(
+      where: {
+        receiverAddress: "${userAddress}",
+        contractAddress: "${contractAddress}",
+        isValid: true
+      },
+      orderBy: timeStamp
+    ) {
+      id
+      contractAddress
+      tokenId
+      creatorAddress
+      receiverAddress
+      transactionHash
+      title
+      description
+      links
+      imageHash
       associatedCommunity
       isValid
       timeStamp
@@ -138,7 +170,21 @@ const GET_ISSUER_STATUS = (contractAddress: string) => gql`
   }
 `;
 
-const GET_USER_STATUS = (contractAddress : string, userAddress : string) => gql`
+const GET_NOTCLAIMED_USERS = (contractAddress: string) => gql`
+  query {
+    whitelistItems(
+      where: { contractAddress: "${contractAddress}", status: "2" }
+    ) {
+      id
+      contractAddress
+      userAddress
+      status
+    }
+  }
+`;
+
+
+const GET_USER_STATUS = (contractAddress: string, userAddress: string) => gql`
   query {
     whitelistItems(
       where: { 
@@ -163,5 +209,7 @@ export {
   GET_EVENTS_IN_QUEUE,
   GET_EVENTS_ISSUED,
   GET_ISSUER_STATUS,
-  GET_USER_STATUS
+  GET_USER_STATUS,
+  GET_NOTCLAIMED_USERS,
+  GET_TOKEN,
 };

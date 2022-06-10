@@ -2,30 +2,56 @@ import { ethers } from "ethers";
 import Factory from "@contracts/Factory.sol/Factory.json";
 import NTTEvent from "@contracts/NTTEvent.sol/NTTEvent.json";
 import { factoryContractAddress } from "../../../config";
-import { useQuery } from "@apollo/client";
-import { GET_EVENT_DETAILS } from "@utils/subgraph/queries";
+import axios from "axios";
+const SUBGRAPH_URL = "https://api.thegraph.com/subgraphs/name/jatin17solanki/solash-subgraph";
 
-const getEventDetails = (contractAddress: string) => {
-    //write code to fetch contract data from contractaddress
-    const { loading, error, data } = useQuery(
-        GET_EVENT_DETAILS(contractAddress)
-    );
-    if (loading) console.log("getEventDetails: Loading");
+const getEventDetails = async (contractAddress: string) => {
+    const query = `query {
+        nttcontracts(where:{contractAddress: "${contractAddress}"}) {
+        id
+        contractAddress
+        creatorAddress
+        title
+        description
+        links
+        imageHash
+        associatedCommunity
+        startDate
+        endDate
+        timeStamp
+        }
+    }`;
 
-    if (error) console.log("getEventDetails: Error");
+    try {
+        const response = await axios.post(SUBGRAPH_URL, {
+            query,
+        });
+        if (response.data.errors) {
+            console.error(response.data.errors);
+            throw new Error(`Error making subgraph query ${response.data.errors}`);
+        }
 
-    if (data) console.log("getEventDetails: ", data.nttcontracts);
+        if (response.data.data.nttcontracts.length != 0) {
+            console.log("AXIOS: ", response.data.data.nttcontracts[0]);
+            return response.data.data.nttcontracts[0];
+        }
+        return {};
+
+    } catch (error: any) {
+        console.error(error);
+        throw new Error(`Could not query the subgraph ${error.message}`);
+    }
 };
 
 const deployNTT = async (
     title: string = "",
     description: string = "",
-    links: [] = [],
+    links: string[] = [""],
     imageHash: string = "",
     associatedCommunity: string = "",
     startDate: BigInt, //default value should be current time
     endDate: BigInt = BigInt(0),
-    list: [] = [],
+    list: string[] = [""],
     ethereum: any
 ) => {
     const provider = new ethers.providers.Web3Provider(ethereum);
@@ -50,14 +76,61 @@ const deployNTT = async (
         const status = await transaction.wait();
         console.log("DeployNTT: ", status);
 
+        const events = status?.events;
+        const deployedContractAddr = extractReturnValue(events);
+        console.log("deployedContractAddr: ", deployedContractAddr);
+        return deployedContractAddr;
+
         //Navigate to dashboard : ntts in queue
     } catch (err) {
-        alert("DeployNTT: " + err);
+        console.log("DeployNTT: " + err);
+        alert("Metamask error: " + err);
     }
 };
 
+const extractReturnValue = (events: any) => {
+    let addr;
+    events.forEach((eventItem: any) => {
+        if (eventItem && eventItem.event === "NTTContractCreated") {
+            addr = eventItem.args.contractAddress;
+            console.log("EXT1: ", addr);
+        }
+    });
+
+    return addr;
+}
+
+
+const getNTTContractCreatedEvent = async (ethereum: any) => {
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const contract = new ethers.Contract(
+        factoryContractAddress,
+        Factory.abi,
+        provider
+    );
+
+    const addr = contract.on("NTTContractCreated", (
+        contractId: BigInt,
+        contractAddress: string,
+        creatorAddress: string,
+        title: string,
+        description: string,
+        links: string[],
+        imageHash: string,
+        associatedCommunity: string,
+        startDate: BigInt,
+        endDate: BigInt,
+    ) => {
+        console.log("NTTContractCreated: ", contractAddress);
+        return contractAddress;
+    });
+    // console.log("getNTTContractCreatedEvent: ", addr);
+    return addr
+}
+
+
 //Functions to update details
-const addToWhitelist = async (nttContractAddress: string, list: [], ethereum: any) => {
+const addToWhitelist = async (nttContractAddress: string, list: string[], ethereum: any) => {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
@@ -75,7 +148,7 @@ const addToWhitelist = async (nttContractAddress: string, list: [], ethereum: an
     }
 };
 
-const removeFromWhitelist = async (ethereum: any, nttContractAddress: string, list: []) => {
+const removeFromWhitelist = async (ethereum: any, nttContractAddress: string, list: string[]) => {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
@@ -97,7 +170,7 @@ const updateDetails = async (
     nttContractAddress: string,
     title: string = "",
     description: string = "",
-    links: [] = [],
+    links: string,
     imageHash: string = "",
     associatedCommunity: string = "",
     ethereum: any
@@ -114,7 +187,7 @@ const updateDetails = async (
         const transaction = await contract.updateDetails(
             title,
             description,
-            links,
+            links.split(","),
             imageHash,
             associatedCommunity
         );
@@ -125,4 +198,46 @@ const updateDetails = async (
     }
 };
 
-export { getEventDetails, deployNTT, addToWhitelist, removeFromWhitelist, updateDetails };
+const mintNTT = async (
+    nttTitle: string,
+    nttDescription: string,
+    associatedWebsite: string,
+    imageFile: string,
+    associatedCommunity: string,
+    startDate: any,
+    endDate: any,
+    walletAddresses: string,
+    ethereum: any) => {
+
+
+    console.log(
+        nttTitle,
+        nttDescription,
+        associatedWebsite,
+        imageFile,
+        associatedCommunity,
+        startDate,
+        endDate,
+        walletAddresses
+    );
+
+    const startDateTimestamp = Math.floor(
+        new Date(startDate).getTime() / 1000
+    );
+    const endDateTimestamp = endDate && endDate.length > 0 ? Math.floor(
+        new Date(endDate).getTime() / 1000
+    ) : 0;
+    return await deployNTT(
+        nttTitle,
+        nttDescription,
+        associatedWebsite.split(","),
+        imageFile,
+        associatedCommunity,
+        BigInt(startDateTimestamp),
+        BigInt(endDateTimestamp),
+        walletAddresses.split(","),
+        ethereum
+    );
+};
+
+export { getEventDetails, deployNTT, addToWhitelist, removeFromWhitelist, updateDetails, mintNTT };

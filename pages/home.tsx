@@ -1,33 +1,28 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import styles from "@styles/pages/home/Home.module.scss";
 import RootLayout from "@layouts/Root";
 import Image from "next/image";
 import Certificates from "@components/pages/home/Tokens";
 import { Home_Banner } from "@resources/exports";
-import { NTTtype } from "@interfaces/pages/Home";
+import { TokenDetailType } from "@interfaces/pages/Home";
 import UserContext from "@context/UserContext";
 import { getHomeData } from "@graphAPI/home";
+import Waiting from "@components/modal/misc/Waiting";
 
 export default function Home() {
+  const [loading, setLoading] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<"certificate" | "ticket">(
     "certificate"
   );
 
   const userContext = useContext(UserContext);
 
-  //  const tokensData: NTTtype[] = getTokenData(userContext.userName);
-  // const [tokensData, setTokensData] = useState<NTTtype[] | []>([]);
+  const tokensData: TokenDetailType[] = getHomeData(userContext.userName);
+  const ticketsData: TokenDetailType[] = [];
 
-  const fetchData = async () => {
-    const data = await getHomeData(userContext.userName);
-    console.log("Data1: ", data);
-  };
-
-  fetchData();
-  const tokensData: NTTtype[] = [];
-  const ticketsData: NTTtype[] = [];
-
-  return (
+  return loading ? (
+    <Waiting message="Your Transaction is in progrees" />
+  ) : (
     <RootLayout>
       <main className={styles.main}>
         <div className={styles.container}>
@@ -79,9 +74,15 @@ export default function Home() {
               <div className={styles.actual_content}>
                 {selectedTab === "certificate" &&
                   tokensData.length > 0 &&
-                  tokensData.map((certificate: NTTtype, index: number) => (
-                    <Certificates {...certificate} key={index} />
-                  ))}
+                  tokensData?.map(
+                    (certificate: TokenDetailType, index: number) => (
+                      <Certificates
+                        {...certificate}
+                        key={index}
+                        loaderState={setLoading}
+                      />
+                    )
+                  )}
                 {selectedTab === "certificate" && tokensData.length === 0 && (
                   <div className={styles.emptyBox}>
                     <p>Ooops! Nothing found here.</p>
@@ -89,8 +90,12 @@ export default function Home() {
                 )}
                 {selectedTab === "ticket" &&
                   ticketsData.length > 0 &&
-                  ticketsData.map((token: NTTtype, index: number) => (
-                    <Certificates {...token} key={index} />
+                  ticketsData.map((token: TokenDetailType, index: number) => (
+                    <Certificates
+                      {...token}
+                      key={index}
+                      loaderState={setLoading}
+                    />
                   ))}
                 {selectedTab === "ticket" && ticketsData.length === 0 && (
                   <div className={styles.emptyBox}>

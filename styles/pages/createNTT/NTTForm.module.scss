@@ -127,55 +127,16 @@
                   outline: none;
                 }
               }
+            }
 
-              .wallet_input_container {
-                clear: both;
-                border: 3px solid #ff5846;
-                border-radius: 5px;
-                background-color: transparent;
-                color: #f8f8f8;
-                font-size: 1rem;
-                font-weight: bold;
-                padding: 5px;
-                margin: 5px 0;
-                width: 100%;
-                display: inline;
-                min-height: 15vh;
-                height: max-content;
-                line-height: 35px;
-
-                span {
-                  font-size: 1rem;
-                  color: #f8f8f8;
-                  font-weight: bold;
-                  margin-right: 10px;
-                  margin-top: 10px;
-                  font-weight: normal;
-                  word-wrap: break-word;
-                  border: 2px solid #ff5846;
-                  padding: 2px;
-                }
-
-                input {
-                  border: none;
-                  background-color: #0a0a08;
-                  color: #f8f8f8;
-                  margin: auto 2px;
-                  width: 400px !important;
-                  &:focus {
-                    outline: none;
-                  }
-                }
-              }
-
-              .tag-input {
-                background-color: #0a0a08 !important;
-                background-color: transparent;
-                color: #f8f8f8;
-                font-size: 1rem;
-                font-weight: bold;
-                padding: 5px;
-                margin: 5px 0;
+            .errorMessage {
+              color: #ffffff;
+              font-size: 1.05rem;
+              text-align: center;
+              font-weight: bold;
+              margin: 5px 0;
+              span {
+                color: #ff5846;
               }
             }
 
@@ -193,6 +154,19 @@
                 color: #ff5846;
               }
             }
+          }
+
+          .uploadMessage {
+            font-size: 1rem;
+            color: #ffffff;
+            margin: 1px 0 5px 0;
+          }
+
+          .imageView {
+            height: 180px !important;
+            width: 180px !important;
+            border: 2px solid #ff5846;
+            padding: 10px;
           }
         }
       }
